@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Ratta | Product Designer</title>
+    <!-- Rename this file to about.html when saving -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        :root {
+            --primary: #0e1621;
+            --secondary: #0ea5e9;
+            --accent: #38bdf8;
+            --light: #f0f9ff;
+            --dark: #0f172a;
+            --text: #e2e8f0;
+            --text-dark: #334155;
+            --bg-light: #f1f5f9;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 70px;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: var(--text);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 5rem;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(14, 165, 233, 0.2);
+            color: var(--secondary);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--secondary);
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 500px;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: right;
+            position: relative;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            top: 20px;
+            left: 20px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .hero-image:hover img {
+            transform: translateY(-5px);
+        }
+
+        /* Story Sections */
+        .story-section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .story-section:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .story-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .story-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .story-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        .story-image img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.5s ease;
+        }
+
+        .story-image:hover img {
+            transform: translateY(-5px);
+        }
+
+        .story-section:nth-child(even) .story-container {
+            flex-direction: row-reverse;
+        }
+
+        /* Path Elements */
+        .path-element {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+            border-left: 2px dashed rgba(14, 165, 233, 0.3);
+        }
+
+        .path-element::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+        }
+
+        .path-element h3 {
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-size: 1.5rem;
+        }
+
+        .path-element p {
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        /* Skills Section */
+        .skills {
+            padding: 8rem 0;
+            background-color: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            height: 4px;
+            width: 60px;
+            background: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        .skills-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(14, 165, 233, 0.2);
+            color: var(--secondary);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .skill-icon {
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            font-size: 2rem;
+        }
+
+        .skill-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .skill-description {
+            color: var(--text);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta {
+            position: relative;
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .cta-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: white;
+            color: var(--secondary);
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .footer-logo span {
+            color: var(--secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links li {
+            margin: 0 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .social-link i {
+            font-size: 1.2rem;
+            color: var(--light);
+        }
+
+        .footer-text {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+        }
+
+        .fade-right {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .fade-left {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                order: 2;
+            }
+
+            .hero-image {
+                order: 1;
+                margin-bottom: 2rem;
+            }
+
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .story-container {
+                flex-direction: column !important;
+                text-align: center;
+            }
+
+            .story-text {
+                order: 2;
+            }
+
+            .story-image {
+                order: 1;
+                margin-bottom: 2rem;
+            }
+
+            .path-element {
+                padding-left: 0;
+                border-left: none;
+                text-align: center;
+            }
+
+            .path-element::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .path-element h3 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Ratta</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Work</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text fade-right">
+                    <span class="hero-badge">ABOUT</span>
+                    <h1>Hey I'm Ratta Kidakarn, a <span>Product Designer</span> who loves building engaging experiences</h1>
+                    <p>During my time as a flight attendant, I became interested in UX design, which was gaining popularity. This sparked my desire to learn something completely new while using my current skills.</p>
+                </div>
+                <div class="hero-image fade-left">
+                    <img src="/api/placeholder/500/400" alt="Ratta as flight attendant">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section 1 -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-container">
+                <div class="story-text fade-right">
+                    <div class="path-element">
+                        <h3>The Beginning</h3>
+                        <p>It was tough at first, balancing my job and learning new skills like using design tools and understanding design principles during my days off and after flights.</p>
+                    </div>
+                </div>
+                <div class="story-image fade-left">
+                    <img src="/api/placeholder/500/350" alt="Ratta learning design">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section 2 -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-container">
+                <div class="story-text fade-left">
+                    <div class="path-element">
+                        <h3>The Learning Journey</h3>
+                        <p>I started learning on my own by watching YouTube videos about design. Eventually, I realized I needed more structured learning, so I signed up for a design boot camp in the USA. This meant I had to adjust to a tough schedule, waking up very early (like 3 a.m.) because of the time difference, to attend mentor calls and sessions. But, I was very passionate about it.</p>
+                    </div>
+                </div>
+                <div class="story-image fade-right">
+                    <img src="/api/placeholder/500/350" alt="Ratta at design bootcamp">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section 3 -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-container">
+                <div class="story-text fade-right">
+                    <div class="path-element">
+                        <h3>First Design Projects</h3>
+                        <p>I began with basic tasks like drawing wireframes on paper, learning how to use Figma, and figuring out how to apply for jobs with no previous experience. I even did something creative by conducting quick user interviews at Starbucks, offering people a free drink for their time. This hands-on approach helped me create my first design project from start to finish, and I'm still proud of it today.</p>
+                    </div>
+                </div>
+                <div class="story-image fade-left">
+                    <img src="/api/placeholder/500/350" alt="Ratta conducting user research">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section 4 -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-container">
+                <div class="story-text fade-left">
+                    <div class="path-element">
+                        <h3>Growth as a Designer</h3>
+                        <p>After years in the industry, my experiences shaped me into a better designer, one who bridges the gap between digital and physical spaces in both consumer and enterprise products. I now bring human-centered design to the forefront, advocate for user needs, and employ strategic design in complex problem spaces to deliver compelling user experiences.</p>
+                    </div>
+                </div>
+                <div class="story-image fade-right">
+                    <img src="/api/placeholder/500/350" alt="Ratta facilitating design workshop">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section 5 -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-container">
+                <div class="story-text fade-right">
+                    <div class="path-element">
+                        <h3>My Philosophy</h3>
+                        <p>Through all the ups and downs, I learned an important lesson: even if the world says "no," never say "no" to yourself. Keep going, keep learning, and always believe in your own journey.</p>
+                    </div>
+                </div>
+                <div class="story-image fade-left">
+                    <img src="/api/placeholder/500/350" alt="Ratta speaking at event">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills">
+        <div class="container">
+            <div class="section-title fade-up">
+                <span class="skills-badge">SERVICES</span>
+                <h2>Discover my unique skillset</h2>
+                <p>To create seamless user experiences. From initial research to ongoing support, my comprehensive skill set ensures that every aspect of UX design is covered with precision and creativity. Here's how I can bring value to your project:</p>
+            </div>
+            
+            <div class="skills-grid">
+                <!-- Skill 1 -->
+                <div class="skill-card fade-up">
+                    <div class="skill-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="skill-title">UX Research</h3>
+                    <p class="skill-description">Dive into user needs and behaviors using interviews, surveys, and testing, laying a user-centered foundation for each project.</p>
+                </div>
+                
+                <!-- Skill 2 -->
+                <div class="skill-card fade-up">
+                    <div class="skill-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="skill-title">Design</h3>
+                    <p class="skill-description">Translate research into intuitive, visually appealing interfaces, focusing on user satisfaction from wireframes to prototypes.</p>
+                </div>
+                
+                <!-- Skill 3 -->
+                <div class="skill-card fade-up">
+                    <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="skill-title">Development</h3>
+                    <p class="skill-description">Collaborate with developers to ensure designs are not only visually striking but also technically sound and scalable.</p>
+                </div>
+                
+                <!-- Skill 4 -->
+                <div class="skill-card fade-up">
+                    <div class="skill-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="skill-title">Support</h3>
+                    <p class="skill-description">Post-launch, I engage in refining and enhancing user experiences based on feedback, ensuring continuous improvement and relevance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-container fade-up">
+                <h2>Design solves business problems</h2>
+                <p>Book a call with me today for a quick 15 mins demo.</p>
+                <a href="#" class="btn">Contact Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo"><span>R</span>Ratta</div>
+            <ul class="footer-links">
+                <li><a href="index.html">Work</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-behance"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="footer-text">© 2025 Ratta Kidakarn. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Animation on scroll
+        function reveal() {
+            const fadeUps = document.querySelectorAll('.fade-up');
+            const fadeIns = document.querySelectorAll('.fade-in');
+            const fadeRights = document.querySelectorAll('.fade-right');
+            const fadeLefts = document.querySelectorAll('.fade-left');
+            
+            const elements = [
+                { items: fadeUps, className: 'active' },
+                { items: fadeIns, className: 'active' },
+                { items: fadeRights, className: 'active' },
+                { items: fadeLefts, className: 'active' }
+            ];
+            
+            elements.forEach(element => {
+                for (let i = 0; i < element.items.length; i++) {
+                    const windowHeight = window.innerHeight;
+                    const elementTop = element.items[i].getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < windowHeight - elementVisible) {
+                        element.items[i].classList.add(element.className);
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        // Initial check
+        reveal();
+        
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

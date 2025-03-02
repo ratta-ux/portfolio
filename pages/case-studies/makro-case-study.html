@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makro Pro E-commerce App | Ratta Design Case Study</title>
+    <!-- Rename this file to makro-pro.html when saving -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        :root {
+            --primary: #0e1621;
+            --secondary: #e83030;
+            --accent: #ff4d4d;
+            --light: #f0f9ff;
+            --dark: #0f172a;
+            --text: #e2e8f0;
+            --text-dark: #334155;
+            --bg-light: #f1f5f9;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: var(--text);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 5rem;
+            background-color: var(--primary);
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 2rem;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .back-link:hover {
+            color: var(--secondary);
+        }
+
+        .hero-features {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-feature i {
+            color: var(--secondary);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            background-color: var(--bg-light);
+            position: relative;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow);
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 5rem;
+            height: calc(100vh - 5rem);
+            overflow-y: auto;
+            z-index: 100;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: rgba(232, 48, 48, 0.1);
+            color: var(--secondary);
+        }
+
+        /* Content Sections */
+        .content {
+            flex: 1;
+            padding: 2rem 1rem 2rem 3rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .section-content {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Video container */
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 2rem 0;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+        }
+
+        .info-card ul li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card ul li i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .gallery-caption {
+            padding: 1rem;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Statistic Cards */
+        .stat-cards {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* User Feedback */
+        .user-feedback {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feedback-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .feedback-avatar i {
+            color: white;
+        }
+
+        .feedback-user {
+            font-weight: 600;
+        }
+
+        .feedback-meta {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .feedback-content {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-stats {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .feedback-stats span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        .feedback-stats i {
+            margin-right: 0.3rem;
+        }
+
+        /* Design Principles */
+        .design-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .principle-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .principle-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(232, 48, 48, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .principle-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .principle-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .principle-description {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            margin: 2rem 0;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 15px;
+            width: 2px;
+            height: 100%;
+            background-color: #e2e8f0;
+        }
+
+        .process-step {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            z-index: 1;
+        }
+
+        .process-step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .step-content {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+        }
+
+        /* App Download Button */
+        .app-download {
+            display: inline-block;
+            margin-top: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .app-download:hover {
+            transform: translateY(-3px);
+        }
+
+        .app-download img {
+            height: 50px;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(232, 48, 48, 0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(232, 48, 48, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                padding-left: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                border-radius: 0;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+                white-space: nowrap;
+            }
+
+            .content {
+                padding-left: 1rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .info-cards,
+            .stat-cards {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-nav {
+                flex-wrap: wrap;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Custom cursor effects for images */
+        .zoom-cursor {
+            cursor: zoom-in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Ratta</a>
+            <ul class="nav-links">
+                <li><a href="#">Work</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <a href="index.html" class="back-link fade-in"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+            
+            <div class="hero-content">
+                <div class="hero-text fade-up">
+                    <span class="hero-badge">MAKRO PRO</span>
+                    <h1>Makro Pro E-commerce App</h1>
+                    <p>Access supermarket with your fingertips</p>
+                    
+                    <div class="hero-features">
+                        <div class="hero-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Access supermarket with your fingertips</span>
+                        </div>
+                        <div class="hero-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Find more than 40,000 products</span>
+                        </div>
+                        <div class="hero-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Order online, delivered directly to your home</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="app-download">
+                        <img src="/api/placeholder/160/60" alt="Download on the App Store">
+                    </a>
+                </div>
+                
+                <div class="hero-image fade-up">
+                    <img src="/api/placeholder/500/300" alt="Makro Pro App Screenshots">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#outcome">Outcome</a></li>
+                <li><a href="#process">The Process</a></li>
+                <li><a href="#what-i-learn">What I Learn</a></li>
+            </ul>
+        </div>
+        
+        <!-- Content Sections -->
+        <div class="content">
+            <!-- Overview Section -->
+            <section id="overview" class="section">
+                <h2 class="section-title fade-up">Overview</h2>
+                <div class="section-content fade-up">
+                    <p>Makro Pro is a mega wholesale e-commerce platform similar to Costco; there is also Costco in South East Asia.</p>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="info-cards">
+                        <div class="info-card fade-up">
+                            <h3>Role:</h3>
+                            <ul>
+                                <li><i class="fas fa-user-check"></i> UX Lead</li>
+                                <li><i class="fas fa-pen-fancy"></i> Interaction design</li>
+                                <li><i class="fas fa-pencil-ruler"></i> Visual design</li>
+                                <li><i class="fas fa-route"></i> User flows</li>
+                                <li><i class="fas fa-bolt"></i> Rapid prototype</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-card fade-up">
+                            <h3>Tools:</h3>
+                            <ul>
+                                <li><i class="fas fa-palette"></i> Figma</li>
+                                <li><i class="fas fa-sticky-note"></i> Mural board</li>
+                                <li><i class="fas fa-wave-square"></i> Amplitude</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Problem Section -->
+            <section id="problem" class="section">
+                <h2 class="section-title fade-up">Problem</h2>
+                <div class="section-content fade-up">
+                    <p>The existing design exhibited inefficiencies, particularly in navigation. Users frequently encountered difficulties such as extensive scrolling to locate desired content, occasional navigation stalls requiring restarting from the beginning, and an overall challenging experience in finding information.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/300/600" alt="Old design - Homepage issues" class="zoom-cursor">
+                            <div class="gallery-caption">Difficult to find product category</div>
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/300/600" alt="Old design - Category page issues" class="zoom-cursor">
+                            <div class="gallery-caption">Hard to scroll to find products</div>
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/300/600" alt="Old design - Search issues" class="zoom-cursor">
+                            <div class="gallery-caption">Difficult to find products via search</div>
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/300/600" alt="Old design - Navigation issues" class="zoom-cursor">
+                            <div class="gallery-caption">Hard to navigate between screens</div>
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/300/600" alt="Old design - Checkout issues" class="zoom-cursor">
+                            <div class="gallery-caption">Too many steps in checkout</div>
+                        </div>
+                    </div>
+                    
+                    <p class="fade-up">The existing flow created significant friction in the user journey, leading to frustration and abandoned purchases.</p>
+                </div>
+            </section>
+            
+            <!-- Solution Section -->
+            <section id="solution" class="section">
+                <h2 class="section-title fade-up">Solution</h2>
+                <div class="section-content fade-up">
+                    <p>Here is the design solution that addresses the key pain points identified during research:</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/350/700" alt="New homepage design" class="zoom-cursor">
+                            <div class="gallery-caption">New homepage, new product category layout</div>
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/350/700" alt="New category page layout" class="zoom-cursor">
+                            <div class="gallery-caption">Optimized category accessibility</div>
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/350/700" alt="Enhanced search functionality" class="zoom-cursor">
+                            <div class="gallery-caption">Enhanced search accuracy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/350/700" alt="Simplified checkout process" class="zoom-cursor">
+                            <div class="gallery-caption">Enable smooth navigation back</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Outcome Section -->
+            <section id="outcome" class="section">
+                <h2 class="section-title fade-up">Outcome</h2>
+                <div class="section-content fade-up">
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/300" alt="Sales and engagement metrics" class="zoom-cursor">
+                        </div>
+                    </div>
+                    
+                    <div class="stat-cards">
+                        <div class="stat-card fade-up">
+                            <div class="stat-value">16.8M</div>
+                            <div class="stat-label">THB/day in GMV</div>
+                        </div>
+                        <div class="stat-card fade-up">
+                            <div class="stat-value">486,000</div>
+                            <div class="stat-label">US$ per day</div>
+                        </div>
+                        <div class="stat-card fade-up">
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">User retention increase</div>
+                        </div>
+                        <div class="stat-card fade-up">
+                            <div class="stat-value">67%</div>
+                            <div class="stat-label">Higher conversion rate</div>
+                        </div>
+                    </div>
+                    
+                    <p class="fade-up">Impact to the business after we launch the app:</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/250" alt="User reviews" class="zoom-cursor">
+                            <div class="gallery-caption">We also received numerous positive reviews from users in the app store</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- The Process Section -->
+            <section id="process" class="section">
+                <h2 class="section-title fade-up">The Process</h2>
+                <div class="section-content fade-up">
+                    <h3 class="process-step-title fade-up">Workshop</h3>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/400" alt="Workshop sessions" class="zoom-cursor">
+                            <div class="gallery-caption">I led workshop at client's office and interviews operation team</div>
+                        </div>
+                    </div>
+                    
+                    <p class="fade-up">Before redesigning, I led a workshop and collaborated with product managers, developers, and business analysts to identify business and tech constraints and user pain points to build our roadmap. I also interviewed the operations team since the design changes would directly affect their work routines.</p>
+                    
+                    <h3 class="process-step-title fade-up">Workshop Insights</h3>
+                    
+                    <div class="process-steps">
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p><i class="fas fa-exclamation-circle" style="color: var(--secondary);"></i> Users struggle to find products using the search function.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p><i class="fas fa-exclamation-circle" style="color: var(--secondary);"></i> Users must input text correctly for the app to recognize it.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p><i class="fas fa-exclamation-circle" style="color: var(--secondary);"></i> 80% of users abandon the app after encountering the need to repeat the process twice.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Competitor Analysis</h3>
+                    
+                    <div class="process-steps">
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p>1. They organize information by utilizing a category menu at the top and employing simple icons.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p>2. Additionally, the homepage should offer curated content.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p>3. The category page should be simplified.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">User Feedback</h3>
+                    
+                    <div class="user-feedback">
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">A Retail User</div>
+                                    <div class="feedback-meta">Bangkok</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "The search function is still difficult...Sometimes I spend 5 or 6 tries to find the right product."
+                            </div>
+                            <div class="feedback-stats">
+                                <span><i class="fas fa-thumbs-up"></i> 126</span>
+                                <span><i class="fas fa-comment"></i> 18</span>
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">A Retail User</div>
+                                    <div class="feedback-meta">Chiang Mai</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "Why can't I go back to the previous page when I'm browsing? It's already inconvenient and disrupts my entire shopping process!"
+                            </div>
+                            <div class="feedback-stats">
+                                <span><i class="fas fa-thumbs-up"></i> 93</span>
+                                <span><i class="fas fa-comment"></i> 7</span>
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">A Retail User</div>
+                                    <div class="feedback-meta">Bangkok</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "Why do I have to endlessly scroll for product categories? I need to find products quickly, not waste time scrolling!"
+                            </div>
+                            <div class="feedback-stats">
+                                <span><i class="fas fa-thumbs-up"></i> 154</span>
+                                <span><i class="fas fa-comment"></i> 22</span>
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">A Retail User</div>
+                                    <div class="feedback-meta">Pattaya</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "The keywords for search required are too specific."
+                            </div>
+                            <div class="feedback-stats">
+                                <span><i class="fas fa-thumbs-up"></i> 78</span>
+                                <span><i class="fas fa-comment"></i> 5</span>
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">A Retail User</div>
+                                    <div class="feedback-meta">Phuket</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "The navigation on this app is horrendous!"
+                            </div>
+                            <div class="feedback-stats">
+                                <span><i class="fas fa-thumbs-up"></i> 136</span>
+                                <span><i class="fas fa-comment"></i> 12</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Design Principles</h3>
+                    
+                    <div class="design-principles">
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <img src="/api/placeholder/30/30" alt="Efficiency icon">
+                            </div>
+                            <h4 class="principle-title">Efficient</h4>
+                            <p class="principle-description">Shopping needs to be efficient.</p>
+                        </div>
+                        
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <img src="/api/placeholder/30/30" alt="Consistency icon">
+                            </div>
+                            <h4 class="principle-title">Consistent</h4>
+                            <p class="principle-description">Consistent for users.</p>
+                        </div>
+                        
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <img src="/api/placeholder/30/30" alt="Simplicity icon">
+                            </div>
+                            <h4 class="principle-title">Simple</h4>
+                            <p class="principle-description">Easy to use despite many features.</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Collaboration</h3>
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/350/250" alt="Weekly catchup sessions" class="zoom-cursor">
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/350/250" alt="Design review feedback" class="zoom-cursor">
+                        </div>
+                    </div>
+                    
+                    <p class="fade-up">In the photograph, I presented a wireframe on Figma, discussing design pros and cons from a designer's perspective. However, I value the insights of product managers and engineers to collectively address challenges. We collaborate on product strategy, understand the requirements, assess feasibility within a year, and discuss implementation approaches while considering trade-offs.</p>
+                    
+                    <h3 class="process-step-title fade-up">Update Flow</h3>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/800/300" alt="User flow diagram" class="zoom-cursor">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- What I Learn Section -->
+            <section id="what-i-learn" class="section">
+                <h2 class="section-title fade-up">What I Learn</h2>
+                <div class="section-content fade-up">
+                    <div class="process-steps">
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <h4>Communication is key</h4>
+                                <p>It serves as a preventive measure against issues and helps identify any blocks the team may face.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <h4>Break down complexity and focus on solving</h4>
+                                <p>Simplification is crucial, as users should not have to ponder when shopping.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <h4>Open to feedback from various stakeholders</h4>
+                                <p>Listen from different perspectives while advocating for users' needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Animation on scroll
+        function reveal() {
+            const fadeUps = document.querySelectorAll('.fade-up');
+            const fadeIns = document.querySelectorAll('.fade-in');
+            
+            for (let i = 0; i < fadeUps.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = fadeUps[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    fadeUps[i].classList.add('active');
+                }
+            }
+            
+            for (let i = 0; i < fadeIns.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = fadeIns[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    fadeIns[i].classList.add('active');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', reveal);
+        // Initial check
+        reveal();
+        
+        // Active menu item based on scroll position
+        const sections = document.querySelectorAll('.section');
+        const navItems = document.querySelectorAll('.sidebar-nav a');
+        
+        function setActiveNavItem() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - sectionHeight * 0.3) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', setActiveNavItem);
+        
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Image zoom effect
+        const zoomImages = document.querySelectorAll('.zoom-cursor');
+        
+        zoomImages.forEach(img => {
+            img.addEventListener('click', function() {
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
+                overlay.style.cursor = 'zoom-out';
+                
+                // Create zoomed image
+                const zoomedImg = document.createElement('img');
+                zoomedImg.src = this.src;
+                zoomedImg.style.maxWidth = '90%';
+                zoomedImg.style.maxHeight = '90%';
+                zoomedImg.style.objectFit = 'contain';
+                
+                overlay.appendChild(zoomedImg);
+                document.body.appendChild(overlay);
+                document.body.style.overflow = 'hidden';
+                
+                // Close on click
+                overlay.addEventListener('click', function() {
+                    document.body.removeChild(overlay);
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIA Health Insurance App | Ratta Design Case Study</title>
+    <!-- Rename this file to aia-health.html when saving -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        :root {
+            --primary: #0e1621;
+            --secondary: #e6007e;
+            --accent: #ff4d9e;
+            --light: #f0f9ff;
+            --dark: #0f172a;
+            --text: #e2e8f0;
+            --text-dark: #334155;
+            --bg-light: #f1f5f9;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: var(--text);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 5rem;
+            background-color: var(--primary);
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 2rem;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .back-link:hover {
+            color: var(--secondary);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            background-color: var(--bg-light);
+            position: relative;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow);
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 5rem;
+            height: calc(100vh - 5rem);
+            overflow-y: auto;
+            z-index: 100;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: rgba(230, 0, 126, 0.1);
+            color: var(--secondary);
+        }
+
+        /* Content Sections */
+        .content {
+            flex: 1;
+            padding: 2rem 1rem 2rem 3rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .section-content {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+        }
+
+        .info-card ul li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card ul li i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .gallery-caption {
+            padding: 1rem;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Solution Cards */
+        .solution-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .solution-header {
+            background-color: rgba(230, 0, 126, 0.1);
+            padding: 1rem 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .solution-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .solution-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .solution-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .solution-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .solution-text h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        .solution-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-features {
+            margin-top: 1.5rem;
+        }
+
+        .solution-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .solution-feature i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .before-after {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .before, .after {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .before h4, .after h4 {
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .before h4 i, .after h4 i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+
+        /* Outcome Cards */
+        .outcome-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .outcome-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .outcome-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(230, 0, 126, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .outcome-icon i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .outcome-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .outcome-content p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        /* User Feedback */
+        .user-feedback {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feedback-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .feedback-avatar i {
+            color: white;
+        }
+
+        .feedback-user {
+            font-weight: 600;
+        }
+
+        .feedback-meta {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .feedback-content {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        /* Persona Card */
+        .persona-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .persona-header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .persona-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1.5rem;
+            border: 3px solid white;
+        }
+
+        .persona-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .persona-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .persona-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .persona-details {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .persona-info {
+            display: flex;
+            margin-bottom: 0.8rem;
+        }
+
+        .persona-info-label {
+            width: 100px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .persona-info-value {
+            flex: 1;
+        }
+
+        .persona-story {
+            flex: 1;
+            min-width: 300px;
+            padding: 1.5rem;
+        }
+
+        .persona-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .persona-goals, .persona-pain-points {
+            margin-bottom: 1.5rem;
+        }
+
+        .persona-goals ul, .persona-pain-points ul {
+            list-style: none;
+        }
+
+        .persona-goals li, .persona-pain-points li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .persona-goals li i, .persona-pain-points li i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Design Principles */
+        .design-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .principle-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .principle-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(230, 0, 126, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .principle-icon i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .principle-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .principle-content p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        /* Process Steps */
+        .process-steps {
+            margin: 2rem 0;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 15px;
+            width: 2px;
+            height: 100%;
+            background-color: #e2e8f0;
+        }
+
+        .process-step {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            z-index: 1;
+        }
+
+        .process-step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .step-content {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Learn Points */
+        .learn-points {
+            margin: 2rem 0;
+        }
+
+        .learn-point {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .learn-point h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .learn-point h3 span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            margin-right: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(230, 0, 126, 0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(230, 0, 126, 0.4);
+        }
+
+        /* Brand logo centered */
+        .brand-logo {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .brand-logo img {
+            max-width: 200px;
+            border-radius: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                padding-left: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                border-radius: 0;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+                white-space: nowrap;
+            }
+
+            .content {
+                padding-left: 1rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .solution-content {
+                flex-direction: column;
+            }
+
+            .before-after {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .persona-content {
+                flex-direction: column;
+            }
+
+            .persona-details {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-nav {
+                flex-wrap: wrap;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Custom cursor effects for images */
+        .zoom-cursor {
+            cursor: zoom-in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Ratta</a>
+            <ul class="nav-links">
+                <li><a href="#">Work</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <a href="index.html" class="back-link fade-in"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+            
+            <div class="hero-content">
+                <div class="hero-text fade-up">
+                    <span class="hero-badge">AIA HEALTH INSURANCE</span>
+                    <h1>AIA Health Insurance App</h1>
+                    <p>Revitalizing user engagement: An insurance sale tool for agents and clients.</p>
+                </div>
+                
+                <div class="hero-image fade-up">
+                    <img src="/api/placeholder/500/300" alt="AIA Health Insurance App on iPad">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#outcome">Outcome</a></li>
+                <li><a href="#process">The Process</a></li>
+                <li><a href="#what-differently">What Will I Do Differently</a></li>
+                <li><a href="#what-learn">What I Learn</a></li>
+            </ul>
+        </div>
+        
+        <!-- Content Sections -->
+        <div class="content">
+            <!-- Overview Section -->
+            <section id="overview" class="section">
+                <h2 class="section-title fade-up">Overview</h2>
+                <div class="section-content fade-up">
+                    <p>AIA Group Limited, Asia's largest life insurer, is a Hong Kong-based multinational insurance and finance corporation comparable to Manulife Financial, Canada's largest insurance provider.</p>
+                    
+                    <div class="brand-logo fade-up">
+                        <img src="/api/placeholder/250/150" alt="AIA Logo" class="zoom-cursor">
+                    </div>
+                    
+                    <div class="info-cards">
+                        <div class="info-card fade-up">
+                            <h3>Role:</h3>
+                            <ul>
+                                <li><i class="fas fa-user-check"></i> UX Lead</li>
+                                <li><i class="fas fa-pen-fancy"></i> Interaction design</li>
+                                <li><i class="fas fa-pencil-ruler"></i> Visual design</li>
+                                <li><i class="fas fa-route"></i> User flows</li>
+                                <li><i class="fas fa-bolt"></i> Rapid prototype</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-card fade-up">
+                            <h3>Tools:</h3>
+                            <ul>
+                                <li><i class="fas fa-palette"></i> Figma</li>
+                                <li><i class="fas fa-sticky-note"></i> Mural board</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Problem Section -->
+            <section id="problem" class="section">
+                <h2 class="section-title fade-up">Problem</h2>
+                <div class="section-content fade-up">
+                    <p>Agents didn't use sale tool on iPad. iPad is part of the selling insurance in front of the client. However, agents avoided the existing sales tool due to its inefficiencies and limitations, so they used alternative methods for managing customer data and sales processes.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/800/400" alt="Alternative spreadsheets and tools used by agents" class="zoom-cursor">
+                            <div class="gallery-caption">Alternative ways that agents use</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Solution Section -->
+            <section id="solution" class="section">
+                <h2 class="section-title fade-up">Solution</h2>
+                <div class="section-content fade-up">
+                    <div class="solution-card fade-up">
+                        <div class="solution-header">Sidebar navigation</div>
+                        <div class="solution-content">
+                            <div class="solution-image">
+                                <img src="/api/placeholder/500/350" alt="Sidebar navigation design" class="zoom-cursor">
+                            </div>
+                            <div class="solution-text">
+                                <div class="solution-features">
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Quick access to key features</span>
+                                    </div>
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Minimize cognitive load</span>
+                                    </div>
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Improved navigation</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="before-after">
+                                    <div class="before">
+                                        <h4><i class="fas fa-history"></i> Before</h4>
+                                        <p>Agents had no tracking feature and had to call the office or recheck emails to determine the status of applicants, which was time-consuming and inefficient.</p>
+                                    </div>
+                                    <div class="after">
+                                        <h4><i class="fas fa-check"></i> Solution</h4>
+                                        <p>I introduced sidebar navigation that allows agents to easily track the status of applications and maintain consistency with the main app.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-card fade-up">
+                        <div class="solution-header">Personalization insurance plan</div>
+                        <div class="solution-content">
+                            <div class="solution-image">
+                                <img src="/api/placeholder/500/350" alt="Personalization insurance plan interface" class="zoom-cursor">
+                            </div>
+                            <div class="solution-text">
+                                <div class="solution-features">
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Personalization</span>
+                                    </div>
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Reduced training time</span>
+                                    </div>
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Faster process</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="before-after">
+                                    <div class="before">
+                                        <h4><i class="fas fa-history"></i> Before</h4>
+                                        <p>Agents could only sell select products through the app, while customized products required time-consuming paperwork and approval from the office.</p>
+                                    </div>
+                                    <div class="after">
+                                        <h4><i class="fas fa-check"></i> Solution</h4>
+                                        <p>Now agents can personalize products and quotations within the app, eliminating the need to visit the office to submit hard copies.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-card fade-up">
+                        <div class="solution-header">Signature sign in app</div>
+                        <div class="solution-content">
+                            <div class="solution-image">
+                                <img src="/api/placeholder/500/350" alt="Digital signature functionality" class="zoom-cursor">
+                            </div>
+                            <div class="solution-text">
+                                <div class="solution-features">
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Cost and resource savings</span>
+                                    </div>
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Error reduction</span>
+                                    </div>
+                                    <div class="solution-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Legally binding</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="before-after">
+                                    <div class="before">
+                                        <h4><i class="fas fa-history"></i> Before</h4>
+                                        <p>Agents had to submit hard copies of documents to the office to initiate the sales process and obtain approval.</p>
+                                    </div>
+                                    <div class="after">
+                                        <h4><i class="fas fa-check"></i> Solution</h4>
+                                        <p>I introduced a digital signature feature that enables agents to take photos of documents and easily upload them directly into the app.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Outcome Section -->
+            <section id="outcome" class="section">
+                <h2 class="section-title fade-up">Outcome</h2>
+                <div class="section-content fade-up">
+                    <div class="outcome-cards">
+                        <div class="outcome-card fade-up">
+                            <div class="outcome-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="outcome-content">
+                                <h3>Conversion rate increased</h3>
+                                <p>The iPad app significantly improved conversion rates for agents by providing a centralized platform to store and access data effectively.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="outcome-card fade-up">
+                            <div class="outcome-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="outcome-content">
+                                <h3>Close sale faster</h3>
+                                <p>The user-friendly interface made it easy for new agents to learn and navigate the app without additional in-person training.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="outcome-card fade-up">
+                            <div class="outcome-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="outcome-content">
+                                <h3>Onboarding time reduced</h3>
+                                <p>The "real-time" tool - made quotations streamlined processes, minimized time spent on submission, tracking, and closing sales, and made it easier to track applications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- The Process Section -->
+            <section id="process" class="section">
+                <h2 class="section-title fade-up">The Process</h2>
+                <div class="section-content fade-up">
+                    <h3 class="process-step-title fade-up">Research and discovery</h3>
+                    
+                    <p class="fade-up">To identify the pain points and understand user expectations, we conducted interviews with both AIA's life insurance agents and end users.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/400/250" alt="User interview sessions" class="zoom-cursor">
+                        </div>
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/400/250" alt="User research findings on Mural board" class="zoom-cursor">
+                            <div class="gallery-caption">User interview with users</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Voice of users</h3>
+                    
+                    <div class="user-feedback">
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-frown"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">Insurance Agent</div>
+                                    <div class="feedback-meta">Bangkok</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "Cannot create real-time, tailor-made quotations within the app, leading to delayed approvals."
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-frown"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">Insurance Agent</div>
+                                    <div class="feedback-meta">Chiang Mai</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "Difficulty tracking applications from submission to close the sale."
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-card fade-up">
+                            <div class="feedback-header">
+                                <div class="feedback-avatar">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <div>
+                                    <div class="feedback-user">Insurance Agent</div>
+                                    <div class="feedback-meta">Pattaya</div>
+                                </div>
+                            </div>
+                            <div class="feedback-content">
+                                "Unable to sign within the app, causing delays in closing deals compared to competitors."
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">How might we</h3>
+                    
+                    <div class="step-content fade-up">
+                        <p>How might we transform the existing sales tool to address its inefficiencies and limitations, ensuring a seamless, heuristic and user-friendly experience for agents while streamlining customer data management and sales processes?</p>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">UI design principles</h3>
+                    
+                    <div class="design-principles">
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="principle-content">
+                                <h3>Clarity</h3>
+                                <p>Make the next step obvious and easy to complete.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="principle-content">
+                                <h3>Efficiency</h3>
+                                <p>Remove unnecessary steps for completing a task.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <div class="principle-content">
+                                <h3>Invisibility</h3>
+                                <p>Make your product so easy to use that the user doesn't notice design elements.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="principle-card fade-up">
+                            <div class="principle-icon">
+                                <i class="fas fa-thumbs-up"></i>
+                            </div>
+                            <div class="principle-content">
+                                <h3>Consistency</h3>
+                                <p>Make your product consistency then user will not get lost.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Our target users</h3>
+                    
+                    <div class="persona-card fade-up">
+                        <div class="persona-header">
+                            <div class="persona-avatar">
+                                <img src="/api/placeholder/80/80" alt="Linda Anderson">
+                            </div>
+                            <div>
+                                <div class="persona-name">Linda Anderson</div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-content">
+                            <div class="persona-details">
+                                <div class="persona-info">
+                                    <div class="persona-info-label">Age</div>
+                                    <div class="persona-info-value">30</div>
+                                </div>
+                                <div class="persona-info">
+                                    <div class="persona-info-label">Education</div>
+                                    <div class="persona-info-value">Masters in Business</div>
+                                </div>
+                                <div class="persona-info">
+                                    <div class="persona-info-label">Status</div>
+                                    <div class="persona-info-value">Single</div>
+                                </div>
+                                <div class="persona-info">
+                                    <div class="persona-info-label">Occupation</div>
+                                    <div class="persona-info-value">Insurance agent</div>
+                                </div>
+                                <div class="persona-info">
+                                    <div class="persona-info-label">Location</div>
+                                    <div class="persona-info-value">Thailand</div>
+                                </div>
+                                <div class="persona-info">
+                                    <div class="persona-info-label">Tech Literacy</div>
+                                    <div class="persona-info-value">High</div>
+                                </div>
+                                
+                                <div class="persona-section-title">Bio</div>
+                                <p>Agent represents both new and old agents who are currently using a mix of digital and paper methods to sell insurance.</p>
+                            </div>
+                            
+                            <div class="persona-story">
+                                <div class="persona-goals">
+                                    <div class="persona-section-title">Goals</div>
+                                    <ul>
+                                        <li><i class="fas fa-check-circle"></i> Streamline the sales process by consolidating data storage and usage.</li>
+                                        <li><i class="fas fa-check-circle"></i> Use an app that is user-friendly and meets expectations.</li>
+                                        <li><i class="fas fa-check-circle"></i> Close sales faster by generating real-time, tailor-made quotations and tracking applications.</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="persona-pain-points">
+                                    <div class="persona-section-title">Pain points</div>
+                                    <ul>
+                                        <li><i class="fas fa-exclamation-circle"></i> Cannot create real-time, tailor-made quotations within the app, leading to delayed approvals.</li>
+                                        <li><i class="fas fa-exclamation-circle"></i> Difficulty tracking applications from submission to closing the sale.</li>
+                                        <li><i class="fas fa-exclamation-circle"></i> Struggles with managing data across various storage methods (paper, Google Drive, Excel, etc.)</li>
+                                        <li><i class="fas fa-exclamation-circle"></i> Unable to sign within the app, causing delays in closing deals compared to competitors.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- What will I do differently Section -->
+            <section id="what-differently" class="section">
+                <h2 class="section-title fade-up">What will I do differently</h2>
+                <div class="section-content fade-up">
+                    <div class="process-steps">
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p>1. Allocate more time for usability testing in the project timeline. The more we test and gather user feedback, the more we can refine and enhance the user experience.</p>
+                            </div>
+                        </div>
+                        <div class="process-step fade-up">
+                            <div class="step-content">
+                                <p>2. Set a way of working with the developer team right from the start. This way, I can reduce misunderstandings and make sure everyone is on the same page, leading to smoother project execution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- What I Learn Section -->
+            <section id="what-learn" class="section">
+                <h2 class="section-title fade-up">What I Learn</h2>
+                <div class="section-content fade-up">
+                    <div class="learn-points">
+                        <div class="learn-point fade-up">
+                            <h3><span>1</span> Learning to lead design</h3>
+                            <p>This first time not having a senior designer to support me the whole way taught me to advocate for design on my own.</p>
+                        </div>
+                        
+                        <div class="learn-point fade-up">
+                            <h3><span>2</span> Learn true resilience</h3>
+                            <p>As this was my first assignment as a consultant, I faced numerous challenges including tight timelines and a broad project scope. However, instead of succumbing to these pressures, I chose to learn from them, ultimately demonstrating perseverance and resilience.</p>
+                        </div>
+                        
+                        <div class="learn-point fade-up">
+                            <h3><span>3</span> Learn to pivot quickly</h3>
+                            <p>Constant change pushed me to grow during times of uncertainty, I always needed to adapt to new business and engineering requirements.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Animation on scroll
+        function reveal() {
+            const fadeUps = document.querySelectorAll('.fade-up');
+            const fadeIns = document.querySelectorAll('.fade-in');
+            
+            for (let i = 0; i < fadeUps.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = fadeUps[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    fadeUps[i].classList.add('active');
+                }
+            }
+            
+            for (let i = 0; i < fadeIns.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = fadeIns[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    fadeIns[i].classList.add('active');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', reveal);
+        // Initial check
+        reveal();
+        
+        // Active menu item based on scroll position
+        const sections = document.querySelectorAll('.section');
+        const navItems = document.querySelectorAll('.sidebar-nav a');
+        
+        function setActiveNavItem() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - sectionHeight * 0.3) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', setActiveNavItem);
+        
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Image zoom effect
+        const zoomImages = document.querySelectorAll('.zoom-cursor');
+        
+        zoomImages.forEach(img => {
+            img.addEventListener('click', function() {
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
+                overlay.style.cursor = 'zoom-out';
+                
+                // Create zoomed image
+                const zoomedImg = document.createElement('img');
+                zoomedImg.src = this.src;
+                zoomedImg.style.maxWidth = '90%';
+                zoomedImg.style.maxHeight = '90%';
+                zoomedImg.style.objectFit = 'contain';
+                
+                overlay.appendChild(zoomedImg);
+                document.body.appendChild(overlay);
+                document.body.style.overflow = 'hidden';
+                
+                // Close on click
+                overlay.addEventListener('click', function() {
+                    document.body.removeChild(overlay);
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

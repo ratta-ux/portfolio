@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocab Go Learning App | Ratta Design Case Study</title>
+    <!-- Rename this file to vocab-go.html when saving -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        :root {
+            --primary: #0e1621;
+            --secondary: #7161ef;
+            --accent: #9488f5;
+            --light: #f0f9ff;
+            --dark: #0f172a;
+            --text: #e2e8f0;
+            --text-dark: #334155;
+            --bg-light: #f1f5f9;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: var(--text);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 5rem;
+            background-color: var(--primary);
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 2rem;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .back-link:hover {
+            color: var(--secondary);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            background-color: var(--bg-light);
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow);
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 5rem;
+            height: calc(100vh - 5rem);
+            overflow-y: auto;
+            z-index: 100;
+            border-radius: 0 12px 12px 0;
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .sidebar-nav a:hover {
+            background-color: rgba(113, 97, 239, 0.05);
+            color: var(--secondary);
+        }
+
+        .sidebar-nav a.active {
+            background-color: rgba(113, 97, 239, 0.1);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Content Sections */
+        .content {
+            flex: 1;
+            padding: 2rem 1rem 2rem 2rem;
+            max-width: 100%;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            overflow: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .section-content {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+        }
+
+        .info-card ul li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card ul li i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .gallery-caption {
+            padding: 1rem;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            margin: 2rem 0;
+        }
+
+        .process-step {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+
+        .process-step-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(113, 97, 239, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .process-step-icon i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+
+        .process-step-content {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            flex: 1;
+        }
+
+        .process-step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Competition Analysis Table */
+        .competition-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .competition-table th, 
+        .competition-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .competition-table th {
+            background-color: rgba(113, 97, 239, 0.1);
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .competition-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feature-yes {
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+
+        .feature-no {
+            color: #ef4444;
+            font-size: 1.2rem;
+        }
+
+        /* Persona Card */
+        .persona-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .persona-header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .persona-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1.5rem;
+            border: 3px solid white;
+        }
+
+        .persona-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .persona-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .persona-quote {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .persona-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .persona-details {
+            flex: 1;
+            min-width: 300px;
+            padding: 1.5rem;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .persona-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .persona-goals, .persona-pain-points {
+            margin-bottom: 1.5rem;
+        }
+
+        .persona-goals ul, .persona-pain-points ul {
+            list-style: none;
+        }
+
+        .persona-goals li, .persona-pain-points li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .persona-goals li i, .persona-pain-points li i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* User Flow */
+        .user-flow {
+            margin: 2rem 0;
+        }
+
+        .user-flow-header {
+            background-color: rgba(113, 97, 239, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-flow-header i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .user-flow-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .user-flow-image {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .user-flow-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Style Guide */
+        .style-guide {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .style-guide-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .style-guide-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .style-guide-description {
+            color: #64748b;
+        }
+
+        .colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-block {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 0.5rem;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .typography {
+            margin-top: 2rem;
+        }
+
+        .font-display {
+            margin-bottom: 1.5rem;
+        }
+
+        .font-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .font-sample {
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .font-regular, .font-medium, .font-bold {
+            margin: 0.5rem 0;
+        }
+
+        .font-regular {
+            font-weight: 400;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            margin: 2rem 0;
+        }
+
+        .next-step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .next-step-item i {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Findings Block */
+        .findings-block {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .findings-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .findings-header i {
+            margin-right: 0.8rem;
+            color: var(--secondary);
+        }
+
+        .findings-list {
+            list-style: none;
+        }
+
+        .findings-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .findings-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(113, 97, 239, 0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(113, 97, 239, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+                min-width: 200px;
+            }
+
+            .content {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            
+            .section-content {
+                padding: 1.5rem;
+            }
+            
+            .app-showcase {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                border-radius: 0;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+                white-space: nowrap;
+            }
+
+            .content {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .persona-content {
+                flex-direction: column;
+            }
+
+            .persona-details {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .gallery-item {
+                grid-column: span 1 !important;
+            }
+            
+            .app-showcase {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-nav {
+                flex-wrap: wrap;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0.5rem;
+            }
+            
+            .section-content {
+                padding: 1rem;
+            }
+            
+            .app-showcase {
+                padding: 1.5rem 0.5rem;
+            }
+            
+            .app-screen {
+                width: 150px;
+            }
+        }
+
+        /* Custom cursor effects for images */
+        .zoom-cursor {
+            cursor: zoom-in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Ratta</a>
+            <ul class="nav-links">
+                <li><a href="#">Work</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <a href="index.html" class="back-link fade-in"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+            
+            <div class="hero-content">
+                <div class="hero-text fade-up">
+                    <span class="hero-badge">VOCAB GO</span>
+                    <h1>Vocab Go Learning App</h1>
+                    <p>A better Way to learn vocabulary on the Go!</p>
+                </div>
+                
+                <div class="hero-image fade-up">
+                    <img src="/api/placeholder/500/300" alt="Vocab Go App on iPhone">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar" id="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#process">The Process</a></li>
+                <li><a href="#style-guide">Style Guide</a></li>
+                <li><a href="#next-step">Next Step</a></li>
+            </ul>
+        </div>
+        
+        <!-- Content Sections -->
+        <div class="content">
+            <!-- Overview Section -->
+            <section id="overview" class="section">
+                <h2 class="section-title fade-up">Overview</h2>
+                <div class="section-content fade-up">
+                    <p>The Vocab Go project was created to address the challenge of learning a new language, which can be difficult and time-consuming. To create an effective solution, the UX design process was applied by following the design thinking methodology, which included five stages: Understand, Define, Ideate, Prototype and Test.</p>
+                    
+                    <div class="info-cards">
+                        <div class="info-card fade-up">
+                            <h3>Role:</h3>
+                            <ul>
+                                <li><i class="fas fa-user-check"></i> Lead designer</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-card fade-up">
+                            <h3>Tools:</h3>
+                            <ul>
+                                <li><i class="fas fa-palette"></i> Figma</li>
+                                <li><i class="fas fa-sticky-note"></i> Miro board</li>
+                                <li><i class="fas fa-table"></i> Excel sheet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Problem Section -->
+            <section id="problem" class="section">
+                <h2 class="section-title fade-up">Problem</h2>
+                <div class="section-content fade-up">
+                    <p>Learning a new language often lead to frustration and difficult, it requires commitment, repetition, and time. This case study explores the experience of learning and understanding words by carefully researching how people learn language.</p>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-exclamation-circle"></i> Key Pain Points</h3>
+                        <ul class="findings-list">
+                            <li>Difficulty remembering vocabulary after initial learning</li>
+                            <li>Lack of context for new words makes them harder to retain</li>
+                            <li>Existing apps don't provide enough repetition or practice</li>
+                            <li>Learning feels tedious rather than engaging</li>
+                            <li>Hard to track progress across multiple learning sessions</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Solution Section -->
+            <section id="solution" class="section">
+                <h2 class="section-title fade-up">Solution</h2>
+                <div class="section-content fade-up">
+                    <p>100% task completion rate: All participants can easily complete the given task.</p>
+                    
+                    <style>
+                        /* App Screens Showcase Styles */
+                        .app-showcase-container {
+                            position: relative;
+                            margin: 3rem 0;
+                            overflow: hidden;
+                        }
+                        
+                        .app-showcase {
+                            display: flex;
+                            overflow-x: auto;
+                            scroll-snap-type: x mandatory;
+                            scroll-behavior: smooth;
+                            -webkit-overflow-scrolling: touch;
+                            padding: 2rem 0;
+                            gap: 1.5rem;
+                            background-color: #0e1621;
+                            padding: 3rem 1.5rem;
+                            border-radius: 16px;
+                        }
+                        
+                        .app-showcase::-webkit-scrollbar {
+                            height: 8px;
+                        }
+                        
+                        .app-showcase::-webkit-scrollbar-track {
+                            background: rgba(255, 255, 255, 0.1);
+                            border-radius: 4px;
+                        }
+                        
+                        .app-showcase::-webkit-scrollbar-thumb {
+                            background: var(--secondary);
+                            border-radius: 4px;
+                        }
+                        
+                        .app-screen {
+                            flex: 0 0 auto;
+                            width: 250px;
+                            scroll-snap-align: center;
+                            position: relative;
+                            transition: transform 0.3s ease;
+                        }
+                        
+                        .app-screen:hover {
+                            transform: translateY(-10px);
+                        }
+                        
+                        .app-screen img {
+                            width: 100%;
+                            border-radius: 24px;
+                            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                            border: 8px solid #f8fafc;
+                        }
+
+                        .app-screen-caption {
+                            text-align: center;
+                            color: var(--light);
+                            margin-top: 1rem;
+                            font-size: 0.9rem;
+                        }
+                        
+                        .showcase-controls {
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 1.5rem;
+                            gap: 1rem;
+                        }
+                        
+                        .showcase-nav {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            background-color: var(--secondary);
+                            color: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            box-shadow: 0 4px 10px rgba(113, 97, 239, 0.3);
+                            transition: all 0.3s ease;
+                        }
+                        
+                        .showcase-nav:hover {
+                            background-color: var(--accent);
+                            transform: translateY(-3px);
+                        }
+                        
+                        .showcase-dots {
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 1rem;
+                            gap: 0.5rem;
+                        }
+                        
+                        .showcase-dot {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                            background-color: rgba(113, 97, 239, 0.3);
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        }
+                        
+                        .showcase-dot.active {
+                            background-color: var(--secondary);
+                            transform: scale(1.2);
+                        }
+                        
+                        .showcase-title {
+                            text-align: center;
+                            margin-bottom: 2rem;
+                            color: var(--light);
+                            font-size: 1.5rem;
+                            font-weight: 600;
+                        }
+                        
+                        @media (max-width: 768px) {
+                            .app-screen {
+                                width: 220px;
+                            }
+                        }
+                        
+                        @media (max-width: 480px) {
+                            .app-screen {
+                                width: 180px;
+                            }
+                        }
+                    </style>
+                    
+                    <div class="app-showcase-container fade-up">
+                        <div class="showcase-title">Vocab Go Onboarding Experience</div>
+                        <div class="app-showcase" id="appShowcase">
+                            <div class="app-screen">
+                                <img src="/api/placeholder/250/500" alt="Splash Screen" class="zoom-cursor">
+                                <div class="app-screen-caption">Welcome Splash</div>
+                            </div>
+                            <div class="app-screen">
+                                <img src="/api/placeholder/250/500" alt="App Introduction" class="zoom-cursor">
+                                <div class="app-screen-caption">App Introduction</div>
+                            </div>
+                            <div class="app-screen">
+                                <img src="/api/placeholder/250/500" alt="Language Selection" class="zoom-cursor">
+                                <div class="app-screen-caption">Language Selection</div>
+                            </div>
+                            <div class="app-screen">
+                                <img src="/api/placeholder/250/500" alt="Getting Started" class="zoom-cursor">
+                                <div class="app-screen-caption">Getting Started</div>
+                            </div>
+                            <div class="app-screen">
+                                <img src="/api/placeholder/250/500" alt="User Onboarding" class="zoom-cursor">
+                                <div class="app-screen-caption">User Onboarding</div>
+                            </div>
+                            <div class="app-screen">
+                                <img src="/api/placeholder/250/500" alt="Quick Questions" class="zoom-cursor">
+                                <div class="app-screen-caption">7 Quick Questions</div>
+                            </div>
+                        </div>
+                        
+                        <div class="showcase-controls">
+                            <div class="showcase-nav prev" onclick="scrollShowcase(-1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="showcase-nav next" onclick="scrollShowcase(1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="showcase-dots" id="showcaseDots">
+                            <span class="showcase-dot active" data-index="0" onclick="goToScreen(0)"></span>
+                            <span class="showcase-dot" data-index="1" onclick="goToScreen(1)"></span>
+                            <span class="showcase-dot" data-index="2" onclick="goToScreen(2)"></span>
+                            <span class="showcase-dot" data-index="3" onclick="goToScreen(3)"></span>
+                            <span class="showcase-dot" data-index="4" onclick="goToScreen(4)"></span>
+                            <span class="showcase-dot" data-index="5" onclick="goToScreen(5)"></span>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        // Variables to track current screen
+                        let currentScreenIndex = 0;
+                        const showcase = document.getElementById('appShowcase');
+                        const screens = document.querySelectorAll('.app-screen');
+                        const dots = document.querySelectorAll('.showcase-dot');
+                        
+                        // Function to scroll to a specific screen
+                        function goToScreen(index) {
+                            if (index < 0) index = 0;
+                            if (index >= screens.length) index = screens.length - 1;
+                            
+                            currentScreenIndex = index;
+                            const screen = screens[index];
+                            showcase.scrollLeft = screen.offsetLeft - (showcase.offsetWidth / 2) + (screen.offsetWidth / 2);
+                            
+                            // Update active dot
+                            dots.forEach(dot => dot.classList.remove('active'));
+                            dots[index].classList.add('active');
+                        }
+                        
+                        // Function to scroll showcase left or right
+                        function scrollShowcase(direction) {
+                            goToScreen(currentScreenIndex + direction);
+                        }
+                        
+                        // Handle scroll events to update active dot
+                        showcase.addEventListener('scroll', function() {
+                            const scrollPosition = showcase.scrollLeft;
+                            
+                            // Find which screen is most visible
+                            let minDistance = Infinity;
+                            let closestIndex = 0;
+                            
+                            screens.forEach((screen, index) => {
+                                const screenCenter = screen.offsetLeft + (screen.offsetWidth / 2);
+                                const showcaseCenter = scrollPosition + (showcase.offsetWidth / 2);
+                                const distance = Math.abs(screenCenter - showcaseCenter);
+                                
+                                if (distance < minDistance) {
+                                    minDistance = distance;
+                                    closestIndex = index;
+                                }
+                            });
+                            
+                            // Update current index and active dot
+                            if (currentScreenIndex !== closestIndex) {
+                                currentScreenIndex = closestIndex;
+                                dots.forEach(dot => dot.classList.remove('active'));
+                                dots[closestIndex].classList.add('active');
+                            }
+                        });
+                        
+                        // Auto scroll animation
+                        let autoScrollInterval;
+                        
+                        function startAutoScroll() {
+                            autoScrollInterval = setInterval(() => {
+                                const nextIndex = (currentScreenIndex + 1) % screens.length;
+                                goToScreen(nextIndex);
+                            }, 5000); // Change screen every 5 seconds
+                        }
+                        
+                        function stopAutoScroll() {
+                            clearInterval(autoScrollInterval);
+                        }
+                        
+                        // Start auto-scroll when the page loads
+                        startAutoScroll();
+                        
+                        // Pause auto-scroll when user interacts with the showcase
+                        showcase.addEventListener('mouseenter', stopAutoScroll);
+                        showcase.addEventListener('touchstart', stopAutoScroll);
+                        
+                        // Resume auto-scroll when user stops interacting
+                        showcase.addEventListener('mouseleave', startAutoScroll);
+                        showcase.addEventListener('touchend', startAutoScroll);
+                    
+        // Make sure the sidebar is visible
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.style.display = 'block';
+            }
+        });
+    </script>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 3;">
+                            <img src="/api/placeholder/850/450" alt="Vocab Go App Final Design" class="zoom-cursor">
+                            <div class="gallery-caption">The final design</div>
+                        </div>
+                    </div>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-lightbulb"></i> Key Features</h3>
+                        <ul class="findings-list">
+                            <li>Bite-sized learning sessions that fit into busy schedules</li>
+                            <li>Gamified experience with rewards and progress tracking</li>
+                            <li>Spaced repetition system for optimized memory retention</li>
+                            <li>Ability to add custom vocabulary based on user needs</li>
+                            <li>Audio pronunciation by native speakers</li>
+                            <li>Context-based learning with example sentences</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- The Process Section -->
+            <section id="process" class="section">
+                <h2 class="section-title fade-up">The Process</h2>
+                <div class="section-content fade-up">
+                    <p>My goal in creating Vocab Go was to bring ideas to life that are aligned to how users think, feel and behave when learning a new language. In order to tackle this, I applied the design thinking methodology.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/200" alt="Design Thinking Process" class="zoom-cursor">
+                            <div class="gallery-caption">Design process</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Understand competition</h3>
+                    
+                    <div class="competition-table fade-up">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Features</th>
+                                    <th>Duolingo</th>
+                                    <th>Memrise</th>
+                                    <th>Vocab Go</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Age-curated content library</td>
+                                    <td><i class="fas fa-check feature-yes"></i></td>
+                                    <td><i class="fas fa-check feature-yes"></i></td>
+                                    <td><i class="fas fa-check feature-yes"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>Users can add custom vocabulary</td>
+                                    <td><i class="fas fa-check feature-yes"></i></td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>Search for the definition of a word</td>
+                                    <td><i class="fas fa-check feature-yes"></i></td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>Study goal tracking</td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                    <td><i class="fas fa-times feature-no"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Understand business</h3>
+                    
+                    <p class="fade-up">I wanted to come as close as possible to a product that would work on the market after running some primary research, observing what was available on the market. I decided to fill a Business Model Canvas to understand better my project's.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/400" alt="Business Canvas Model" class="zoom-cursor">
+                            <div class="gallery-caption">Business canvas</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">User interview & findings</h3>
+                    
+                    <p class="fade-up">With the problem space explored, it was time to understand the needs and behaviors of the user.To kick things off, I conducted 5 user interviews with people who had tried to learn a language in the past to understand how people approach language learning.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up">
+                            <img src="/api/placeholder/400/250" alt="User Interview" class="zoom-cursor">
+                            <div class="gallery-caption">Photo from Unsplash</div>
+                        </div>
+                    </div>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-users"></i> Participants</h3>
+                        <ul class="findings-list">
+                            <li>Used language learning apps within the last 3 months.</li>
+                            <li>Know at least a second language, which they use for work, college, or any daily activity.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-question-circle"></i> Interview questions</h3>
+                        <ul class="findings-list">
+                            <li>What is your motivation to learn a new language?</li>
+                            <li>How do you learn a language from the beginning?</li>
+                            <li>Could you walk me through the last time how you learn a new vocabulary?</li>
+                            <li>What is your opinion about a vocabulary learning app?</li>
+                            <li>What do you think about vocabulary learning (offline/online)?</li>
+                            <li>Tell me about a moment when you felt frustrated while learning a new language?</li>
+                            <li>What makes you happy during the study process?</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-lightbulb"></i> Findings</h3>
+                        <ul class="findings-list">
+                            <li>Many users feel frustrated while learning a new language when they cannot remember the words that they have gone through many times.</li>
+                            <li>Many users feel happy when communicating in a second language with their friends.</li>
+                            <li>Many users feel that learning through applications encourages them to continue their studies more.</li>
+                            <li>Many users believe they can get more money if they can speak more languages.</li>
+                        </ul>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Persona</h3>
+                    
+                    <p class="fade-up">Based on the interviews with 5 people, I set up one persona to help clarify my user demographics, needs, goals, emotions, behaviors, fears, and challenges.</p>
+                    
+                    <p class="fade-up">By bringing my users' perspectives, I was able to restate my project brief in the form of user stories, to stories, and a problem/hypothesis statement.</p>
+                    
+                    <div class="persona-card fade-up">
+                        <div class="persona-header">
+                            <div class="persona-avatar">
+                                <img src="/api/placeholder/100/100" alt="Lisi">
+                            </div>
+                            <div>
+                                <div class="persona-name">Lisi</div>
+                                <div class="persona-quote">"I believe that if I can speak more languages I can get more money."</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-user-circle"></i> Challenges faced by persona</h3>
+                        <p>Lisi has limited knowledge of the Japanese language. Thus, she struggles to communicate using the Japanese language at work.</p>
+                    </div>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-file-alt"></i> Problem statement</h3>
+                        <p>Lisi (a freelance model) needs an easy-to-use vocabulary app with a minimal design concept in which she could listen to audio scripts spoken by native speakers, and expand her vocabulary in Japanese by using flashcards.</p>
+                        <p>We will know this to be true when we see Lisi communicating in Japanese at work.</p>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Hypothesis</h3>
+                    
+                    <div class="findings-block fade-up">
+                        <p>We believe that by building an intuitive vocabulary learning app with essential Japanese phrases, various words using flashcards, and features using the repetition method, we will help Lisi achieve her goal of speaking Japanese fluently and with the proper pronunciation.</p>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Task analysis</h3>
+                    
+                    <p class="fade-up">To explore this idea further, the next step was to map out user and task flows. This would help form the basic navigational hierarchy of the application.</p>
+                    
+                    <div class="user-flow fade-up">
+                        <div class="user-flow-header">
+                            <i class="fas fa-project-diagram"></i>
+                            <h4 class="user-flow-title">Task 1: Do a multiple-choice flashcards quiz</h4>
+                        </div>
+                        <p>Entry Point: Open App (Start)</p>
+                        <p>Success Criteria: Lesson Finished</p>
+                        <div class="user-flow-image">
+                            <img src="/api/placeholder/700/800" alt="User flow 1" class="zoom-cursor">
+                        </div>
+                    </div>
+                    
+                    <div class="user-flow fade-up">
+                        <div class="user-flow-header">
+                            <i class="fas fa-project-diagram"></i>
+                            <h4 class="user-flow-title">Task: Search a word in the app and create a new flashcard</h4>
+                        </div>
+                        <p>Entry Point: Open App (Start)</p>
+                        <p>Success Criteria: Successfully save the word</p>
+                        <div class="user-flow-image">
+                            <img src="/api/placeholder/700/800" alt="User flow 2" class="zoom-cursor">
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Low-fidelity wireframe</h3>
+                    
+                    <p class="fade-up">The paper sketches of the wireframe concept exploring my initial design ideas which represented interactive elements. This allowed me to move the blocks around and understand which solution would work best.</p>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/300" alt="Low-fidelity wireframes" class="zoom-cursor">
+                            <div class="gallery-caption">User flow 1: Do a multiple-choice flashcards quiz</div>
+                        </div>
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/300" alt="Low-fidelity wireframes" class="zoom-cursor">
+                            <div class="gallery-caption">User flow 2: Search a word in the app and create a new flashcard</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="process-step-title fade-up">Usability test</h3>
+                    
+                    <p class="fade-up">To start validating my design decisions as quickly as possible, I conducted 5 usability tests with the low fidelity prototype. Once the gathered feedback, it allows me to assess if the app is useful. This can be confirmed by asking users to perform a series of direct and scenario tasks, subsequently recording my findings.</p>
+                    
+                    <div class="findings-block fade-up">
+                        <h3 class="findings-header"><i class="fas fa-tasks"></i> Test plan</h3>
+                        <p><strong>SCOPE:</strong> This test will check how people do flashcard quizzes, search for the word, and create their flashcards with the Vocab Go app. Each session will run for about 10-15 minutes.</p>
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/300" alt="Test results" class="zoom-cursor">
+                            <div class="gallery-caption">Test result</div>
+                        </div>
+                    </div>
+                    
+                    <p class="fade-up">The prototyping, testing, and refinement process was repeated several times. Each time measuring the usefulness of that current iteration.</p>
+                </div>
+            </section>
+            
+            <!-- Style Guide Section -->
+            <section id="style-guide" class="section">
+                <h2 class="section-title fade-up">Style Guide</h2>
+                <div class="section-content fade-up">
+                    <div class="style-guide fade-up">
+                        <div class="style-guide-header">
+                            <h3 class="style-guide-title">Vocab Go Style Guide</h3>
+                            <p class="style-guide-description">Consistent design elements for the Vocab Go application</p>
+                        </div>
+                        
+                        <div class="colors">
+                            <div class="color-block" style="background-color: #2F2F4E;">#2F2F4E</div>
+                            <div class="color-block" style="background-color: #74CB5B;">#74CB5B</div>
+                            <div class="color-block" style="background-color: #6B85F5;">#6B85F5</div>
+                            <div class="color-block" style="background-color: #EEBABC;">#EEBABC</div>
+                            <div class="color-block" style="background-color: #FFFFFF; color: #333;">#FFFFFF</div>
+                        </div>
+                        
+                        <div class="typography">
+                            <h4 class="font-title">Typography - Roboto</h4>
+                            <div class="font-display">
+                                <div class="font-sample">
+                                    <div class="font-regular">Roboto Regular (Body Text)</div>
+                                    <div class="font-medium">Roboto Medium (Subheadings)</div>
+                                    <div class="font-bold">Roboto Bold (Headlines)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="/api/placeholder/700/300" alt="Style guide of the app" class="zoom-cursor">
+                            <div class="gallery-caption">Style guide of the app</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Next Step Section -->
+            <section id="next-step" class="section">
+                <h2 class="section-title fade-up">Next Step</h2>
+                <div class="section-content fade-up">
+                    <div class="next-steps">
+                        <div class="next-step-item fade-up">
+                            <i class="fas fa-comment-dots"></i>
+                            <p>Seek feedback early when facing obstacles for quicker solutions.</p>
+                        </div>
+                        <div class="next-step-item fade-up">
+                            <i class="fas fa-flask"></i>
+                            <p>Test extensively to understand user interactions and improve the user experience, mindful of time limitations.</p>
+                        </div>
+                        <div class="next-step-item fade-up">
+                            <i class="fas fa-sync-alt"></i>
+                            <p>Embrace revisions as a natural part of the design process, using feedback for refinement rather than striving for initial perfection.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Animation on scroll
+        function reveal() {
+            const fadeUps = document.querySelectorAll('.fade-up');
+            const fadeIns = document.querySelectorAll('.fade-in');
+            
+            for (let i = 0; i < fadeUps.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = fadeUps[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    fadeUps[i].classList.add('active');
+                }
+            }
+            
+            for (let i = 0; i < fadeIns.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = fadeIns[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    fadeIns[i].classList.add('active');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', reveal);
+        // Initial check
+        reveal();
+        
+        // Active menu item based on scroll position
+        const sections = document.querySelectorAll('.section');
+        const navItems = document.querySelectorAll('.sidebar-nav a');
+        
+        function setActiveNavItem() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - sectionHeight * 0.3) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', setActiveNavItem);
+        
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Image zoom effect
+        const zoomImages = document.querySelectorAll('.zoom-cursor');
+        
+        zoomImages.forEach(img => {
+            img.addEventListener('click', function() {
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
+                overlay.style.cursor = 'zoom-out';
+                
+                // Create zoomed image
+                const zoomedImg = document.createElement('img');
+                zoomedImg.src = this.src;
+                zoomedImg.style.maxWidth = '90%';
+                zoomedImg.style.maxHeight = '90%';
+                zoomedImg.style.objectFit = 'contain';
+                
+                overlay.appendChild(zoomedImg);
+                document.body.appendChild(overlay);
+                document.body.style.overflow = 'hidden';
+                
+                // Close on click
+                overlay.addEventListener('click', function() {
+                    document.body.removeChild(overlay);
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
