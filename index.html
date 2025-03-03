@@ -49,21 +49,43 @@
             top: 0;
             z-index: 1000;
             background-color: rgba(14, 22, 33, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        nav {
+        header.scrolled {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 1.2rem 1.5rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--secondary);
+            margin-right: 0.5rem;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
             list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+            position: relative;
         }
 
         .nav-links a {
@@ -71,10 +93,27 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: var(--accent);
+            color: var(--secondary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .hamburger {
@@ -788,23 +827,22 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <a href="index.html" class="logo">Ratta Kidakarn</a>
+    <!-- Header -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span>R</span>atta
+            </a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="pages/about-page.html">About</a></li>
                 <li><a href="pages/blog-page.html">Blog</a></li>
-                <li class="dropdown">
-                    <a href="#">Case Studies</a>
-                    <ul class="dropdown-content">
-                        <li><a href="pages/case-studies/aia-case-study.html">AIA</a></li>
-                        <li><a href="pages/case-studies/makro-case-study.html">Makro</a></li>
-                        <li><a href="pages/case-studies/vocab-go-case-study.html">VocabGo</a></li>
-                    </ul>
-                </li>
+                <li><a href="#projects">Projects</a></li>
             </ul>
-        </nav>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -847,7 +885,7 @@
                         <span class="project-badge">E-commerce (iOS, web)</span>
                         <h3 class="project-title">Makro Pro</h3>
                         <p class="project-description">Simplify e-commerce experience for all: Deciphering user needs triggering.</p>
-                        <a href="makro-pro.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="pages/case-studies/makro-case-study.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
 
@@ -860,7 +898,7 @@
                         <span class="project-badge">Health Insurance (iOS app)</span>
                         <h3 class="project-title">AIA Health</h3>
                         <p class="project-description">Revitalizing user engagement: An insurance sale tool for agents and clients.</p>
-                        <a href="aia-health.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="pages/case-studies/aia-case-study.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
 
@@ -873,7 +911,7 @@
                         <span class="project-badge">Learning Vocab (iOS app)</span>
                         <h3 class="project-title">Vocab Go</h3>
                         <p class="project-description">Designing an MVP mobile experience to learn a new language through quick, bite-sized lessons.</p>
-                        <a href="vocab-go.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="pages/case-studies/vocab-go-case-study.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
