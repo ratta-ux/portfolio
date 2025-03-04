@@ -134,7 +134,13 @@
 
         .hero-image img {
             max-width: 100%;
-            border-radius: 8px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image img:hover {
+            transform: translateY(-5px);
         }
 
         .hero-badge {
@@ -349,8 +355,13 @@
 
         .solution-image img {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 16px;
             box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .solution-image img:hover {
+            transform: translateY(-5px);
         }
 
         .solution-text {
@@ -534,6 +545,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .persona-avatar img:hover {
+            transform: translateY(-5px);
         }
 
         .persona-name {
@@ -792,7 +810,13 @@
 
         .brand-logo img {
             max-width: 200px;
-            border-radius: 8px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo img:hover {
+            transform: translateY(-5px);
         }
 
         /* Responsive */
@@ -911,7 +935,7 @@
                 </div>
                 
                 <div class="hero-image fade-up">
-                    <img src="/api/placeholder/500/300" alt="AIA Health Insurance App on iPad">
+                    <img src="../../assets/images/AIA_logo.jpeg" alt="AIA Health Insurance App on iPad">
                 </div>
             </div>
         </div>
@@ -941,7 +965,7 @@
                     <p>AIA Group Limited, Asia's largest life insurer, is a Hong Kong-based multinational insurance and finance corporation comparable to Manulife Financial, Canada's largest insurance provider.</p>
                     
                     <div class="brand-logo fade-up">
-                        <img src="/api/placeholder/250/150" alt="AIA Logo" class="zoom-cursor">
+                        <img src="../../assets/images/AIA_logo.jpeg" alt="AIA Logo" class="zoom-cursor">
                     </div>
                     
                     <div class="info-cards">
@@ -975,7 +999,7 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/800/400" alt="Alternative spreadsheets and tools used by agents" class="zoom-cursor">
+                            <img src="../../assets/images/AIA_problem.png" alt="Alternative spreadsheets and tools used by agents" class="zoom-cursor">
                             <div class="gallery-caption">Alternative ways that agents use</div>
                         </div>
                     </div>
@@ -990,7 +1014,7 @@
                         <div class="solution-header">Sidebar navigation</div>
                         <div class="solution-content">
                             <div class="solution-image">
-                                <img src="/api/placeholder/500/350" alt="Sidebar navigation design" class="zoom-cursor">
+                                <img src="../../assets/images/AIA_sidebar_navigation.png" alt="Sidebar navigation design" class="zoom-cursor">
                             </div>
                             <div class="solution-text">
                                 <div class="solution-features">
@@ -1026,7 +1050,7 @@
                         <div class="solution-header">Personalization insurance plan</div>
                         <div class="solution-content">
                             <div class="solution-image">
-                                <img src="/api/placeholder/500/350" alt="Personalization insurance plan interface" class="zoom-cursor">
+                                <img src="../../assets/images/AIA_personalization_plan.png" alt="Personalization insurance plan interface" class="zoom-cursor">
                             </div>
                             <div class="solution-text">
                                 <div class="solution-features">
@@ -1062,7 +1086,7 @@
                         <div class="solution-header">Signature sign in app</div>
                         <div class="solution-content">
                             <div class="solution-image">
-                                <img src="/api/placeholder/500/350" alt="Digital signature functionality" class="zoom-cursor">
+                                <img src="../../assets/images/AIA_signature_sign.png" alt="Digital signature functionality" class="zoom-cursor">
                             </div>
                             <div class="solution-text">
                                 <div class="solution-features">
@@ -1144,10 +1168,10 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up">
-                            <img src="/api/placeholder/400/250" alt="User interview sessions" class="zoom-cursor">
+                            <img src="../../assets/images/AIA_user_interview_session.png" alt="User interview sessions" class="zoom-cursor">
                         </div>
                         <div class="gallery-item fade-up">
-                            <img src="/api/placeholder/400/250" alt="User research findings on Mural board" class="zoom-cursor">
+                            <img src="../../assets/images/AIA_voice_of_user.png" alt="User research findings" class="zoom-cursor">
                             <div class="gallery-caption">User interview with users</div>
                         </div>
                     </div>
@@ -1256,7 +1280,7 @@
                     <div class="persona-card fade-up">
                         <div class="persona-header">
                             <div class="persona-avatar">
-                                <img src="/api/placeholder/80/80" alt="Linda Anderson">
+                                <img src="../../assets/images/AIA_target_users.png" alt="Linda Anderson">
                             </div>
                             <div>
                                 <div class="persona-name">Linda Anderson</div>
