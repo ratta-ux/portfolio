@@ -49,9 +49,9 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
         }
 
         /* Header Styles */
@@ -141,7 +141,8 @@
 
         .hero-image img {
             max-width: 100%;
-            border-radius: 8px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
         }
 
         .hero-badge {
@@ -180,24 +181,24 @@
             position: relative;
             width: 100%;
             max-width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         /* Sidebar Navigation */
         .sidebar {
-            width: 250px;
-            min-width: 250px;
+            width: 280px;
+            min-width: 280px;
             background-color: var(--bg-white);
             box-shadow: var(--shadow);
-            padding: 2rem 1rem;
+            padding: 2rem 1.5rem;
             position: sticky;
             top: 5rem;
             height: calc(100vh - 5rem);
             overflow-y: auto;
             z-index: 100;
             border-radius: 0 12px 12px 0;
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
+            margin-right: 2rem;
         }
 
         .sidebar-nav {
@@ -233,8 +234,8 @@
         /* Content Sections */
         .content {
             flex: 1;
-            padding: 2rem 1rem 2rem 2rem;
-            max-width: 100%;
+            padding: 2rem 0;
+            max-width: calc(100% - 300px);
         }
 
         .section {
@@ -315,24 +316,32 @@
         .image-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            gap: 2rem;
             margin: 2rem 0;
         }
 
         .gallery-item {
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: transform 0.3s;
+            background-color: var(--bg-white);
         }
 
-        .gallery-item:hover {
-            transform: translateY(-5px);
+        .gallery-item[style*="grid-column: span 2"] {
+            grid-column: span 2;
+        }
+
+        .gallery-item[style*="grid-column: span 3"] {
+            grid-column: span 3;
         }
 
         .gallery-item img {
             width: 100%;
+            height: auto;
             display: block;
+            border-radius: 16px 16px 0 0;
+            object-fit: cover;
         }
 
         .gallery-caption {
@@ -742,96 +751,102 @@
         }
 
         /* Responsive */
+        @media (max-width: 1400px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+
         @media (max-width: 992px) {
+            .container {
+                max-width: 960px;
+                padding: 0 1.5rem;
+            }
+
+            .main-content {
+                padding: 0 1.5rem;
+            }
+
             .sidebar {
-                width: 200px;
-                min-width: 200px;
+                width: 240px;
+                min-width: 240px;
             }
 
             .content {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
+                max-width: calc(100% - 260px);
             }
-            
-            .section-content {
-                padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
             }
-            
+
+            .main-content {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+                margin-right: 0;
+                margin-bottom: 2rem;
+                top: 0;
+                border-radius: 12px;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .sidebar-nav li {
+                margin: 0;
+                flex: 1 1 auto;
+            }
+
+            .sidebar-nav a {
+                padding: 0.5rem 1rem;
+                text-align: center;
+                white-space: nowrap;
+                font-size: 0.9rem;
+            }
+
+            .content {
+                max-width: 100%;
+                padding: 1rem 0;
+            }
+
+            .gallery-item[style*="grid-column:"] {
+                grid-column: span 1 !important;
+            }
+
+            .app-showcase-container {
+                margin: 2rem -1rem;
+                padding: 0 1rem;
+            }
+
             .app-showcase {
                 padding: 2rem 1rem;
             }
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                min-width: 100%;
-                position: relative;
-                top: 0;
-                height: auto;
-                border-radius: 0;
-                margin-bottom: 2rem;
-            }
-
-            .sidebar-nav {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 1rem;
-            }
-
-            .sidebar-nav li {
-                margin-bottom: 0;
-                margin-right: 0.5rem;
-                white-space: nowrap;
-            }
-
-            .content {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-
-            .hero-content {
-                flex-direction: column;
-            }
-
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 2rem;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .persona-content {
-                flex-direction: column;
-            }
-
-            .persona-details {
-                border-right: none;
-                border-bottom: 1px solid #e2e8f0;
-            }
-            
-            .gallery-item {
-                grid-column: span 1 !important;
-            }
-            
-            .app-showcase {
-                gap: 1rem;
-            }
-        }
-
         @media (max-width: 480px) {
             .sidebar-nav {
-                flex-wrap: wrap;
+                justify-content: flex-start;
             }
 
             .sidebar-nav li {
-                margin-bottom: 0.5rem;
+                flex: 0 0 auto;
+            }
+
+            .sidebar-nav a {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
             }
             
             .section-content {
@@ -871,7 +886,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <a href="index.html" class="back-link fade-in"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+            <a href="../../index.html#projects" class="back-link fade-in"><i class="fas fa-arrow-left"></i> Back to Projects</a>
             
             <div class="hero-content">
                 <div class="hero-text fade-up">
@@ -881,7 +896,7 @@
                 </div>
                 
                 <div class="hero-image fade-up">
-                    <img src="/api/placeholder/500/300" alt="Vocab Go App on iPhone">
+                    <img src="../../assets/images/Vocab_Go_App_on_iPhone.png" alt="Vocab Go App on iPhone">
                 </div>
             </div>
         </div>
@@ -958,8 +973,8 @@
                         /* App Screens Showcase Styles */
                         .app-showcase-container {
                             position: relative;
-                            margin: 3rem 0;
-                            overflow: hidden;
+                            margin: 3rem -2rem;
+                            padding: 0 2rem;
                         }
                         
                         .app-showcase {
@@ -968,10 +983,9 @@
                             scroll-snap-type: x mandatory;
                             scroll-behavior: smooth;
                             -webkit-overflow-scrolling: touch;
-                            padding: 2rem 0;
-                            gap: 1.5rem;
+                            padding: 3rem 2rem;
+                            gap: 2rem;
                             background-color: #0e1621;
-                            padding: 3rem 1.5rem;
                             border-radius: 16px;
                         }
                         
@@ -1087,27 +1101,27 @@
                         <div class="showcase-title">Vocab Go Onboarding Experience</div>
                         <div class="app-showcase" id="appShowcase">
                             <div class="app-screen">
-                                <img src="/api/placeholder/250/500" alt="Splash Screen" class="zoom-cursor">
+                                <img src="../../assets/images/app1.png" alt="Splash Screen" class="zoom-cursor">
                                 <div class="app-screen-caption">Welcome Splash</div>
                             </div>
                             <div class="app-screen">
-                                <img src="/api/placeholder/250/500" alt="App Introduction" class="zoom-cursor">
+                                <img src="../../assets/images/app1.png" alt="App Introduction" class="zoom-cursor">
                                 <div class="app-screen-caption">App Introduction</div>
                             </div>
                             <div class="app-screen">
-                                <img src="/api/placeholder/250/500" alt="Language Selection" class="zoom-cursor">
+                                <img src="../../assets/images/app1.png" alt="Language Selection" class="zoom-cursor">
                                 <div class="app-screen-caption">Language Selection</div>
                             </div>
                             <div class="app-screen">
-                                <img src="/api/placeholder/250/500" alt="Getting Started" class="zoom-cursor">
+                                <img src="../../assets/images/app1.png" alt="Getting Started" class="zoom-cursor">
                                 <div class="app-screen-caption">Getting Started</div>
                             </div>
                             <div class="app-screen">
-                                <img src="/api/placeholder/250/500" alt="User Onboarding" class="zoom-cursor">
+                                <img src="../../assets/images/app1.png" alt="User Onboarding" class="zoom-cursor">
                                 <div class="app-screen-caption">User Onboarding</div>
                             </div>
                             <div class="app-screen">
-                                <img src="/api/placeholder/250/500" alt="Quick Questions" class="zoom-cursor">
+                                <img src="../../assets/images/app1.png" alt="Quick Questions" class="zoom-cursor">
                                 <div class="app-screen-caption">7 Quick Questions</div>
                             </div>
                         </div>
@@ -1220,7 +1234,7 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 3;">
-                            <img src="/api/placeholder/850/450" alt="Vocab Go App Final Design" class="zoom-cursor">
+                            <img src="../../assets/images/vocab-go-final-design.png" alt="Vocab Go App Final Design" class="zoom-cursor">
                             <div class="gallery-caption">The final design</div>
                         </div>
                     </div>
@@ -1247,8 +1261,15 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/700/200" alt="Design Thinking Process" class="zoom-cursor">
-                            <div class="gallery-caption">Design process</div>
+                            <img src="../../assets/images/Design_thinking_process.png" alt="Design thinking process" class="zoom-cursor">
+                            <div class="gallery-caption">Our design thinking process</div>
+                        </div>
+                    </div>
+
+                    <div class="image-gallery">
+                        <div class="gallery-item fade-up" style="grid-column: span 2;">
+                            <img src="../../assets/images/Understand_business.jpeg" alt="Understanding business needs" class="zoom-cursor">
+                            <div class="gallery-caption">Understanding business requirements</div>
                         </div>
                     </div>
                     
@@ -1299,19 +1320,15 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/700/400" alt="Business Canvas Model" class="zoom-cursor">
-                            <div class="gallery-caption">Business canvas</div>
+                            <img src="../../assets/images/Understand_competitor.png" alt="Competitor analysis" class="zoom-cursor">
+                            <div class="gallery-caption">Analyzing competitors</div>
                         </div>
                     </div>
-                    
-                    <h3 class="process-step-title fade-up">User interview & findings</h3>
-                    
-                    <p class="fade-up">With the problem space explored, it was time to understand the needs and behaviors of the user.To kick things off, I conducted 5 user interviews with people who had tried to learn a language in the past to understand how people approach language learning.</p>
-                    
+
                     <div class="image-gallery">
                         <div class="gallery-item fade-up">
-                            <img src="/api/placeholder/400/250" alt="User Interview" class="zoom-cursor">
-                            <div class="gallery-caption">Photo from Unsplash</div>
+                            <img src="../../assets/images/User_interview_and_finding.jpg" alt="User interviews" class="zoom-cursor">
+                            <div class="gallery-caption">User interviews and findings</div>
                         </div>
                     </div>
                     
@@ -1355,7 +1372,7 @@
                     <div class="persona-card fade-up">
                         <div class="persona-header">
                             <div class="persona-avatar">
-                                <img src="/api/placeholder/100/100" alt="Lisi">
+                                <img src="../../assets/images/Persona.png" alt="Lisi">
                             </div>
                             <div>
                                 <div class="persona-name">Lisi</div>
@@ -1393,7 +1410,7 @@
                         <p>Entry Point: Open App (Start)</p>
                         <p>Success Criteria: Lesson Finished</p>
                         <div class="user-flow-image">
-                            <img src="/api/placeholder/700/800" alt="User flow 1" class="zoom-cursor">
+                            <img src="../../assets/images/Low_fidelity_user_flow_1.png" alt="Low fidelity wireframe 1" class="zoom-cursor">
                         </div>
                     </div>
                     
@@ -1405,7 +1422,7 @@
                         <p>Entry Point: Open App (Start)</p>
                         <p>Success Criteria: Successfully save the word</p>
                         <div class="user-flow-image">
-                            <img src="/api/placeholder/700/800" alt="User flow 2" class="zoom-cursor">
+                            <img src="../../assets/images/Low_fidelity_user_flow_2.png" alt="Low fidelity wireframe 2" class="zoom-cursor">
                         </div>
                     </div>
                     
@@ -1415,12 +1432,12 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/700/300" alt="Low-fidelity wireframes" class="zoom-cursor">
-                            <div class="gallery-caption">User flow 1: Do a multiple-choice flashcards quiz</div>
+                            <img src="../../assets/images/User_flow_1.png" alt="High fidelity user flow 1" class="zoom-cursor">
+                            <div class="gallery-caption">Final user flow - Part 1</div>
                         </div>
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/700/300" alt="Low-fidelity wireframes" class="zoom-cursor">
-                            <div class="gallery-caption">User flow 2: Search a word in the app and create a new flashcard</div>
+                            <img src="../../assets/images/User_flow_2.png" alt="High fidelity user flow 2" class="zoom-cursor">
+                            <div class="gallery-caption">Final user flow - Part 2</div>
                         </div>
                     </div>
                     
@@ -1435,8 +1452,8 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/700/300" alt="Test results" class="zoom-cursor">
-                            <div class="gallery-caption">Test result</div>
+                            <img src="../../assets/images/Test_result.png" alt="Testing results" class="zoom-cursor">
+                            <div class="gallery-caption">User testing results</div>
                         </div>
                     </div>
                     
@@ -1476,8 +1493,8 @@
                     
                     <div class="image-gallery">
                         <div class="gallery-item fade-up" style="grid-column: span 2;">
-                            <img src="/api/placeholder/700/300" alt="Style guide of the app" class="zoom-cursor">
-                            <div class="gallery-caption">Style guide of the app</div>
+                            <img src="../../assets/images/Styleguide.png" alt="Style guide" class="zoom-cursor">
+                            <div class="gallery-caption">Design system and style guide</div>
                         </div>
                     </div>
                 </div>
@@ -1507,7 +1524,7 @@
     </div>
     
     <!-- Back to Top Button -->
-    <a href="#" class="back-to-top">
+    <a href="#overview" class="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </a>
     
