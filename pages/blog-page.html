@@ -1,17 +1,4 @@
-        // Load more button
-        const loadMoreBtn = document.querySelector('.load-more-btn');
-        
-        loadMoreBtn.addEventListener('click', function() {
-            // Placeholder for load more functionality
-            // In a real implementation, this would fetch more blog posts from a server
-            // or reveal hidden posts that are already in the DOM
-            this.textContent = 'No more articles to load';
-            this.disabled = true;
-            setTimeout(() => {
-                this.textContent = 'Load More Articles';
-                this.disabled = false;
-            }, 2000);
-        });<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -256,7 +243,7 @@
 
         .blog-card {
             background-color: var(--bg-white);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
@@ -279,6 +266,7 @@
             height: 200px;
             overflow: hidden;
             position: relative;
+            border-radius: 16px;
         }
 
         .blog-image img {
@@ -286,6 +274,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+            border-radius: 16px;
         }
 
         .blog-card:hover .blog-image img {
@@ -757,7 +746,7 @@
                 <!-- Blog 1 -->
                 <div class="blog-card fade-up" data-category="Career">
                     <div class="blog-image">
-                        <img src="/api/placeholder/400/200" alt="Rejection Proof Book">
+                        <img src="../assets/images/Rejection_Proof_Book.png" alt="Rejection Proof Book">
                         <div class="blog-category">Career</div>
                     </div>
                     <div class="blog-content">
@@ -780,7 +769,7 @@
                 <!-- Blog 2 -->
                 <div class="blog-card fade-up" data-category="Mentorship">
                     <div class="blog-image">
-                        <img src="/api/placeholder/400/200" alt="Mentor at SFU Vancouver">
+                        <img src="../assets/images/Mentor_at_SFU_Vancouver.png" alt="Mentor at SFU Vancouver">
                         <div class="blog-category">Mentorship</div>
                     </div>
                     <div class="blog-content">
@@ -803,7 +792,7 @@
                 <!-- Blog 3 -->
                 <div class="blog-card fade-up" data-category="Career">
                     <div class="blog-image">
-                        <img src="/api/placeholder/400/200" alt="What I learned from AMA with Chris Do">
+                        <img src="../assets/images/What_I_learned_from_AMA_with_Chris_Do.png" alt="What I learned from AMA with Chris Do">
                         <div class="blog-category">Career</div>
                     </div>
                     <div class="blog-content">
@@ -826,7 +815,7 @@
                 <!-- Blog 4 -->
                 <div class="blog-card fade-up" data-category="Mentorship">
                     <div class="blog-image">
-                        <img src="/api/placeholder/400/200" alt="Mentor at Microsoft office Vancouver">
+                        <img src="../assets/images/Mentor_at_Microsoft_office_Vancouver.jpeg" alt="Mentor at Microsoft office Vancouver">
                         <div class="blog-category">Mentorship</div>
                     </div>
                     <div class="blog-content">
@@ -849,7 +838,7 @@
                 <!-- Blog 5 -->
                 <div class="blog-card fade-up" data-category="Speaking">
                     <div class="blog-image">
-                        <img src="/api/placeholder/400/200" alt="Speak at Google I/O in Vancouver">
+                        <img src="../assets/images/Speak_at_Google_IO_in_Vancouver.png" alt="Speak at Google I/O in Vancouver">
                         <div class="blog-category">Speaking</div>
                     </div>
                     <div class="blog-content">
@@ -872,7 +861,7 @@
                 <!-- Blog 6 -->
                 <div class="blog-card fade-up" data-category="UX Design">
                     <div class="blog-image">
-                        <img src="/api/placeholder/400/200" alt="Better Collaboration: Designers and Developers">
+                        <img src="../assets/images/Better_Collaboration_Designers_and_Developers.png" alt="Better Collaboration: Designers and Developers">
                         <div class="blog-category">UX Design</div>
                     </div>
                     <div class="blog-content">
@@ -975,6 +964,22 @@
         // Blog filters
         const filters = document.querySelectorAll('.blog-filter');
         const blogCards = document.querySelectorAll('.blog-card');
+        const loadMoreBtn = document.querySelector('.load-more-btn');
+        
+        // Load more button functionality
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                // Placeholder for load more functionality
+                // In a real implementation, this would fetch more blog posts from a server
+                // or reveal hidden posts that are already in the DOM
+                this.textContent = 'No more articles to load';
+                this.disabled = true;
+                setTimeout(() => {
+                    this.textContent = 'Load More Articles';
+                    this.disabled = false;
+                }, 2000);
+            });
+        }
         
         filters.forEach(filter => {
             filter.addEventListener('click', function() {
@@ -1044,7 +1049,6 @@
             });
         });
         
-        
         // Back to top button
         const backToTop = document.querySelector('.back-to-top');
         
@@ -1063,141 +1067,6 @@
                 behavior: 'smooth'
             });
         });
-    </script>
-    <!-- Back to Top Button -->
-    <a href="#" id="backToTopBtn" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-    // Execute code after DOM is fully loaded
-    window.addEventListener('DOMContentLoaded', function() {
-        // Get DOM elements
-        const fadeUps = document.querySelectorAll('.fade-up');
-        const filters = document.querySelectorAll('.blog-filter');
-        const blogCards = document.querySelectorAll('.blog-card');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        const backToTopBtn = document.getElementById('backToTopBtn');
-        
-        // Reveal animations when elements are in viewport
-        function reveal() {
-            for (let i = 0; i < fadeUps.length; i++) {
-                const windowHeight = window.innerHeight;
-                const elementTop = fadeUps[i].getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    fadeUps[i].classList.add('active');
-                }
-            }
-        }
-        
-        // Set up filtering functionality
-        if (filters && filters.length > 0) {
-            filters.forEach(filter => {
-                filter.addEventListener('click', function() {
-                    // Remove active class from all filters
-                    filters.forEach(f => f.classList.remove('active'));
-                    
-                    // Add active class to clicked filter
-                    this.classList.add('active');
-                    
-                    // Get selected category
-                    const selectedCategory = this.textContent;
-                    
-                    // Filter blog cards
-                    blogCards.forEach(card => {
-                        // Get card category from data attribute
-                        const cardCategory = card.getAttribute('data-category');
-                        
-                        // If "All" is selected or card matches selected category, show it
-                        if (selectedCategory === 'All' || selectedCategory === cardCategory) {
-                            card.classList.remove('hidden');
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'scale(1)';
-                            }, 50);
-                        } else {
-                            // Otherwise hide it
-                            card.style.opacity = '0';
-                            card.style.transform = 'scale(0.8)';
-                            setTimeout(() => {
-                                card.classList.add('hidden');
-                            }, 300);
-                        }
-                    });
-                    
-                    // Update load more button state
-                    const visibleCards = document.querySelectorAll('.blog-card:not(.hidden)');
-                    if (visibleCards.length === 0 && loadMoreBtn) {
-                        loadMoreBtn.textContent = 'No articles in this category';
-                        loadMoreBtn.disabled = true;
-                    } else if (loadMoreBtn) {
-                        loadMoreBtn.textContent = 'Load More Articles';
-                        loadMoreBtn.disabled = false;
-                    }
-                    
-                    // Refresh animations after filtering
-                    setTimeout(refreshAnimations, 350);
-                });
-            });
-            
-            // Initialize filtering (show all on page load)
-            if (document.querySelector('.blog-filter.active')) {
-                document.querySelector('.blog-filter.active').click();
-            }
-        }
-        
-        // Refresh animations for visible cards
-        function refreshAnimations() {
-            const visibleCards = document.querySelectorAll('.blog-card:not(.hidden)');
-            visibleCards.forEach(card => {
-                card.classList.remove('fade-up', 'active');
-                void card.offsetWidth; // Force reflow
-                card.classList.add('fade-up');
-                setTimeout(() => {
-                    card.classList.add('active');
-                }, 50);
-            });
-        }
-        
-        // Load more button functionality
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', function() {
-                this.textContent = 'No more articles to load';
-                this.disabled = true;
-                setTimeout(() => {
-                    this.textContent = 'Load More Articles';
-                    this.disabled = false;
-                }, 2000);
-            });
-        }
-        
-        // Back to top button functionality
-        if (backToTopBtn) {
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 500) {
-                    backToTopBtn.classList.add('show');
-                } else {
-                    backToTopBtn.classList.remove('show');
-                }
-            });
-            
-            backToTopBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-        
-        // Initial check for animations
-        window.addEventListener('scroll', reveal);
-        reveal();
-    });
     </script>
 </body>
 </html>
