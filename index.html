@@ -832,32 +832,30 @@
         .interactive-about {
             padding: 8rem 0;
             position: relative;
-            background-color: var(--primary);
-            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
+            background: linear-gradient(135deg, 
+                rgba(230, 220, 255, 0.95) 0%,
+                rgba(214, 207, 255, 0.95) 35%,
+                rgba(198, 219, 255, 0.95) 100%
+            );
             overflow: hidden;
         }
 
-        .interactive-about .section-title h2 {
-            color: var(--light);
-            position: relative;
-            display: inline-block;
-        }
-
-        .interactive-about .section-title h2::after {
-            content: '';
-            position: absolute;
-            height: 4px;
-            width: 60px;
-            background: var(--secondary);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-
+        .interactive-about .section-title h2,
+        .interactive-about .about-text p,
         .interactive-about .section-title p {
-            color: var(--text);
-            margin-top: 1.5rem;
+            color: var(--dark);
+        }
+
+        .about-heading h3 {
+            color: var(--dark) !important;
+        }
+
+        .location-indicator {
+            color: var(--primary) !important;
+        }
+
+        .location-indicator i {
+            color: var(--primary) !important;
         }
 
         .interactive-about-container {
@@ -908,7 +906,7 @@
             height: 60px;
             border-radius: 50%;
             border: 3px solid white;
-            background-image: url('assets/images/profile.png');
+            background-image: url('assets/images/French-bulldog.png');
             background-size: cover;
             background-position: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -1034,7 +1032,7 @@
         .interactive-about .about-text p {
             font-size: 1.1rem;
             margin-bottom: 1.5rem;
-            color: var(--text);
+            color: #1e293b;
             line-height: 1.7;
         }
 
@@ -1146,35 +1144,6 @@
             filter: brightness(1.1) contrast(1.05);
         }
 
-        .slide-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            color: white;
-            padding: 30px 20px 20px;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-            z-index: 3;
-        }
-
-        .image-carousel:hover .carousel-slide.active .slide-caption {
-            transform: translateY(0);
-        }
-
-        .slide-caption h3 {
-            margin: 0 0 5px;
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-
-        .slide-caption p {
-            margin: 0;
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-
         .carousel-dots {
             position: absolute;
             bottom: 20px;
@@ -1187,6 +1156,43 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 50px;
             backdrop-filter: blur(5px);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .image-carousel:hover .carousel-dots {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 30px 20px 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            z-index: 3;
+        }
+
+        .image-carousel:hover .carousel-slide.active .slide-caption {
+            transform: translateY(0);
+        }
+
+        .slide-caption h3 {
+            margin: 0 0 8px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slide-caption p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.95;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .dot {
@@ -1394,11 +1400,11 @@
                     </div>
                     
                     <div class="about-text">
-                        <p>I'm a UX designer with over 5 years of experience creating digital products and retail experiences. My background in customer-facing roles has given me a unique perspective on how users interact with both digital and physical spaces.</p>
+                        <p>👋 <strong>I'm a UX designer with a uniquely diverse background.</strong> My journey started in the skies as a <strong>flight attendant for a five-star airline</strong>, where I developed <strong>exceptional empathy</strong> and mastered the art of <strong>anticipating needs before they were expressed</strong>—skills that now shape my user-centered design approach.</p>
                         
-                        <p>When I'm not designing, you'll find me exploring new places, trying new restaurants, or working on my photography skills. I believe that great design should feel personal, and I bring that philosophy to every project.</p>
+                        <p>✨ <strong>Bridging digital and physical worlds</strong>, my experience spans <strong>retail design, digital experiences, and content creation.</strong> I even built a YouTube channel with over 1 million views, sharing insights on health, fitness, and career growth. This journey taught me how to <strong>simplify complex ideas and engage audiences effectively.</strong></p>
                         
-                        <p>My approach combines user-centered design principles with a passion for creating meaningful experiences that feel intuitive and delightful.</p>
+                        <p>🚀 <strong>Today, I merge all these perspectives to craft intuitive, user-friendly digital experiences that truly connect with people.</strong> My approach blends <strong>deep empathy, clear communication, and strategic thinking</strong> to tackle challenges with elegant, delightful solutions.</p>
                     </div>
                     
                     <div class="location-indicator">
@@ -1420,22 +1426,28 @@
                 </div>
                 
                 <div class="image-carousel">
-                    <div class="carousel-slide active" style="background-image: url('assets/images/profile.png');">
+                    <div class="carousel-slide active" style="background-image: url('assets/images/Ratta_as_flight_attendant.png');">
                         <div class="slide-caption">
-                            <h3>Design in Action</h3>
-                            <p>Creating engaging experiences that delight users</p>
+                            <h3>From the Skies to Screens ✈️</h3>
+                            <p>My journey began as a flight attendant at a five-star airline, where I mastered the art of understanding human needs</p>
                         </div>
                     </div>
                     <div class="carousel-slide next" style="background-image: url('assets/images/Ratta_speaking_at_an_event.png');">
                         <div class="slide-caption">
-                            <h3>Speaking Engagements</h3>
-                            <p>Sharing insights and knowledge with the design community</p>
+                            <h3>Sharing Design Knowledge 🎤</h3>
+                            <p>Speaking at events to inspire and educate the next generation of designers</p>
                         </div>
                     </div>
-                    <div class="carousel-slide" style="background-image: url('assets/images/profile.png');">
+                    <div class="carousel-slide" style="background-image: url('assets/images/Retail-experience-lululemon.png');">
                         <div class="slide-caption">
-                            <h3>Behind the Lens</h3>
-                            <p>Capturing moments through photography</p>
+                            <h3>Retail Experience 🛍️</h3>
+                            <p>Creating seamless customer journeys in physical spaces</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="background-image: url('assets/images/Youtuber-health-career-fitness.png');">
+                        <div class="slide-caption">
+                            <h3>YouTube Educator 📱</h3>
+                            <p>Sharing knowledge about health, fitness, and career to over 1 million viewers</p>
                         </div>
                     </div>
                     
@@ -1443,6 +1455,7 @@
                         <span class="dot active" data-index="0"></span>
                         <span class="dot" data-index="1"></span>
                         <span class="dot" data-index="2"></span>
+                        <span class="dot" data-index="3"></span>
                     </div>
                     
                     <div class="carousel-arrow prev">
@@ -1457,7 +1470,7 @@
                 <div class="fun-fact-wrapper">
                     <div class="fun-fact fade-up">
                         <div class="dog-image"></div>
-                        <p><strong>Fun Fact:</strong> My French Bulldog Bao helps me test all my designs. He has impeccable taste!</p>
+                        <p><strong>💡 Fun Fact:</strong> My French Bulldog, <strong>Stogie</strong>, helps me test all my designs. He has impeccable taste!</p>
                     </div>
                 </div>
             </div>
@@ -1813,7 +1826,8 @@
                 "My French Bulldog Bao helps me test all my designs. He has impeccable taste!",
                 "I've tried over 200 restaurants in Bangkok. Ask me for recommendations!",
                 "My camera goes everywhere with me - even on grocery runs.",
-                "I once redesigned an app interface while waiting in line for coffee."
+                "I once redesigned an app interface while waiting in line for coffee.",
+                "My YouTube videos on health and fitness have helped thousands of people transform their lives!"
             ];
             
             const funFactElement = document.querySelector('.fun-fact p');
