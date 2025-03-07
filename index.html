@@ -847,7 +847,40 @@
         }
 
         .about-heading h3 {
-            color: var(--dark) !important;
+            font-size: 2.5rem;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            color: #1e293b;
+            font-weight: 800;
+        }
+
+        .about-heading h3 a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+
+        .about-heading h3 a:hover {
+            color: var(--secondary);
+        }
+
+        .about-heading h3::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100px;
+            height: 12px;
+            background-color: #fcd34d;
+            z-index: -1;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .about-heading h3:hover::after {
+            width: 140px;
         }
 
         .location-indicator {
@@ -1013,7 +1046,7 @@
             margin: 0;
             position: relative;
             z-index: 2;
-            color: var(--light);
+            color: #1e293b;
             font-weight: 800;
         }
 
@@ -1396,7 +1429,7 @@
                 
                 <div class="interactive-about-content">
                     <div class="about-heading">
-                        <h3>About Me</h3>
+                        <h3><a href="pages/about-page.html">About Me</a></h3>
                     </div>
                     
                     <div class="about-text">
@@ -1823,7 +1856,7 @@
             
             // Fun facts rotation
             const funFacts = [
-                "My French Bulldog Bao helps me test all my designs. He has impeccable taste!",
+                "My French Bulldog, Stogie, helps me test all my designs. He has impeccable taste!",
                 "I've tried over 200 restaurants in Bangkok. Ask me for recommendations!",
                 "My camera goes everywhere with me - even on grocery runs.",
                 "I once redesigned an app interface while waiting in line for coffee.",
