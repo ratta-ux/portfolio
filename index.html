@@ -591,33 +591,272 @@
         .contact {
             padding: 8rem 0;
             text-align: center;
-            background: var(--gradient-bg);
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
             position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') 0 0/24px 24px;
+            opacity: 0.3;
+            animation: backgroundShift 20s linear infinite;
+        }
+
+        @keyframes backgroundShift {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 24px 24px;
+            }
         }
 
         .contact-content {
             max-width: 700px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .contact h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 3rem;
+            margin-bottom: 1rem;
             color: white;
+            font-weight: 800;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpFade 0.6s ease forwards;
+        }
+
+        .contact .highlight {
+            color: #fcd34d;
+            position: relative;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .contact .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(
+                90deg,
+                rgba(252, 211, 77, 0.3) 0%,
+                rgba(252, 211, 77, 0.6) 50%,
+                rgba(252, 211, 77, 0.3) 100%
+            );
+            z-index: -1;
+            border-radius: 4px;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
         }
 
         .contact p {
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            line-height: 1.7;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpFade 0.6s ease forwards 0.3s;
         }
 
         .contact .btn {
             background: white;
-            color: var(--secondary);
+            color: #0ea5e9;
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpFade 0.6s ease forwards 0.6s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .contact .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .contact .btn:hover {
-            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            background: #f0f9ff;
+        }
+
+        .contact .btn i {
+            transition: transform 0.3s ease;
+            animation: floatIcon 2s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .contact .btn:hover i {
+            animation: sendPlane 0.6s ease forwards;
+        }
+
+        @keyframes sendPlane {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(50px, -50px) rotate(45deg);
+                opacity: 0;
+            }
+            50.1% {
+                transform: translate(-50px, 50px) rotate(45deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(0);
+            }
+        }
+
+        .contact .availability {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpFade 0.6s ease forwards 0.9s;
+        }
+
+        .contact .availability .status {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.25rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite;
+            backdrop-filter: blur(5px);
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(15px, -15px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 30px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-15px, -15px) rotate(270deg);
+            }
         }
 
         /* Footer */
@@ -1279,6 +1518,17 @@
         .image-carousel:hover .carousel-arrow {
             opacity: 1;
         }
+
+        @keyframes slideUpFade {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1596,11 +1846,22 @@
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
         <div class="container">
             <div class="contact-content fade-up">
-                <h2>Design solves business problems</h2>
-                <p>Book a call with me today for a quick 15 mins demo.</p>
-                <a href="#" class="btn">Contact Now</a>
+                <h2>Let's create something <span class="highlight">amazing</span> together</h2>
+                <p>Ready to transform your ideas into delightful user experiences? I'm always excited to take on new challenges and collaborate on innovative projects.</p>
+                <a href="mailto:rattakids@gmail.com" class="btn">
+                    Let's Talk <i class="fas fa-paper-plane"></i>
+                </a>
+                <div class="availability">
+                    <span class="status"></span>
+                    Available for new projects
+                </div>
             </div>
         </div>
     </section>
