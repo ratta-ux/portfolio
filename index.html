@@ -390,6 +390,7 @@
             padding: 8rem 0;
             background-color: rgba(255, 255, 255, 0.02);
             position: relative;
+            overflow: hidden;
         }
 
         .skills-container {
@@ -397,6 +398,8 @@
             flex-wrap: wrap;
             justify-content: space-between;
             gap: 3rem;
+            position: relative;
+            z-index: 2;
         }
 
         .skills-text {
@@ -407,11 +410,33 @@
         .skills-text h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .skills-text h2::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 60%;
+            height: 8px;
+            background: linear-gradient(
+                90deg,
+                rgba(14, 165, 233, 0.2) 0%,
+                rgba(14, 165, 233, 0.4) 50%,
+                rgba(14, 165, 233, 0.2) 100%
+            );
+            z-index: -1;
+            border-radius: 4px;
+            animation: shine-slide 4s linear infinite;
+            background-size: 200% 100%;
         }
 
         .skills-text p {
             margin-bottom: 2rem;
             color: #94a3b8;
+            max-width: 500px;
         }
 
         .skills-cards {
@@ -427,28 +452,223 @@
             padding: 1.5rem;
             border-radius: 12px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .skill-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.2);
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
         }
 
         .skill-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: var(--secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: translateY(-5px);
+            color: var(--accent);
+        }
+
+        .skill-icon::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon::after {
+            width: 60px;
+            height: 60px;
+            background: rgba(14, 165, 233, 0.2);
         }
 
         .skill-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover .skill-title {
+            color: var(--accent);
         }
 
         .skill-description {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #94a3b8;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .skill-card:hover .skill-description {
+            color: #e2e8f0;
+        }
+
+        .skills-bg-shape {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(79, 70, 229, 0.05));
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            width: 500px;
+            height: 500px;
+            z-index: 1;
+            filter: blur(50px);
+            opacity: 0.5;
+            animation: morphShape 15s ease-in-out infinite alternate;
+        }
+
+        .skills-bg-shape-1 {
+            top: -10%;
+            right: -10%;
+        }
+
+        .skills-bg-shape-2 {
+            bottom: -10%;
+            left: -10%;
+            animation-delay: -5s;
+        }
+
+        @keyframes morphShape {
+            0% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+            25% {
+                border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+            }
+            50% {
+                border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+            }
+            75% {
+                border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+            }
+            100% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+        }
+
+        .skill-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 1rem;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            transform: scaleX(0.7);
+            transform-origin: left;
+            transition: all 0.4s ease 0.2s;
+        }
+
+        .skill-card:hover .skill-progress {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .skill-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+            width: 0;
+            transition: width 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s;
+        }
+
+        .skill-card:hover .skill-progress-bar {
+            width: 85%;
+        }
+
+        .skill-card:nth-child(2):hover .skill-progress-bar {
+            width: 90%;
+        }
+
+        .skill-card:nth-child(3):hover .skill-progress-bar {
+            width: 75%;
+        }
+
+        .skill-card:nth-child(4):hover .skill-progress-bar {
+            width: 80%;
+        }
+
+        .skills-text .btn {
+            margin-top: 1rem;
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.8rem 1.8rem;
+            font-weight: 600;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .skills-text .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .skills-text .btn:hover {
+            color: white;
+        }
+
+        .skills-text .btn:hover::before {
+            width: 100%;
+        }
+
+        .skills-text .btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .skills-text .btn:hover i {
+            transform: translateX(3px);
         }
 
         /* Testimonials */
@@ -1536,6 +1756,60 @@
                 background-position: 200% center;
             }
         }
+
+        .skills.in-view .skills-bg-shape {
+            opacity: 0.7;
+        }
+
+        .skill-card.animate {
+            animation: cardPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes cardPop {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .skills-text h2 {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .skills-text p {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition-delay: 0.2s;
+        }
+
+        .skills-text p:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+
+        .skills-text .btn {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition-delay: 0.4s;
+        }
+
+        .skills.in-view .skills-text h2,
+        .skills.in-view .skills-text p,
+        .skills.in-view .skills-text .btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -1632,12 +1906,17 @@
 
     <!-- Skills Section -->
     <section id="skills" class="skills">
+        <div class="skills-bg-shape-1"></div>
+        <div class="skills-bg-shape-2"></div>
         <div class="container">
             <div class="skills-container">
                 <div class="skills-text fade-up">
                     <h2>Discover my unique skillset</h2>
                     <p>To create seamless user experiences. From initial research to ongoing support, my comprehensive skill set ensures that every aspect of UX design is covered with precision and creativity.</p>
                     <p>Here's how I can bring value to your project:</p>
+                    <a href="#contact" class="btn">
+                        Let's discuss your project <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
                 <div class="skills-cards">
                     <div class="skill-card fade-up">
@@ -1646,6 +1925,9 @@
                         </div>
                         <h3 class="skill-title">UX Research</h3>
                         <p class="skill-description">Dive into user needs and behaviors using interviews, surveys, and testing.</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar"></div>
+                        </div>
                     </div>
                     <div class="skill-card fade-up">
                         <div class="skill-icon">
@@ -1653,6 +1935,9 @@
                         </div>
                         <h3 class="skill-title">Design</h3>
                         <p class="skill-description">Translate research into intuitive, visually appealing interfaces.</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar"></div>
+                        </div>
                     </div>
                     <div class="skill-card fade-up">
                         <div class="skill-icon">
@@ -1660,6 +1945,9 @@
                         </div>
                         <h3 class="skill-title">Development</h3>
                         <p class="skill-description">Collaborate with developers to ensure designs are technically sound.</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar"></div>
+                        </div>
                     </div>
                     <div class="skill-card fade-up">
                         <div class="skill-icon">
@@ -1667,6 +1955,9 @@
                         </div>
                         <h3 class="skill-title">Support</h3>
                         <p class="skill-description">Post-launch, I engage in refining and enhancing user experiences.</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2273,6 +2564,57 @@
                 });
             });
         });
+
+        // Enhanced skill cards animations
+        const skillCards = document.querySelectorAll('.skill-card');
+        
+        function setupSkillCards() {
+            skillCards.forEach((card, index) => {
+                // Add staggered animation delay
+                if (card.classList.contains('fade-up')) {
+                    card.style.transitionDelay = `${0.1 * index}s`;
+                }
+                
+                // Add hover sound effect (subtle)
+                card.addEventListener('mouseenter', () => {
+                    if (window.innerWidth > 768) { // Only on desktop
+                        const hoverSound = new Audio();
+                        hoverSound.volume = 0.05; // Very quiet
+                        hoverSound.src = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCIiIiIiIjAwMDAwMD4+Pj4+PkxMTExMTFpaWlpaWmhoaGhoaHZ2dnZ2doSEhISEhJKSkpKSkqCgoKCgoK6urq6urrKysrKysr6+vr6+vsbGxsbGxtTU1NTU1OTk5OTk5PLy8vLy8v7+/v7+/v///////////////0xhdmY1OC4xMi4xMDAAAAAAAAAAAAAAACQCQAAAAAAAAAB4MwScAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+                        hoverSound.play().catch(e => console.log('Audio play prevented by browser'));
+                    }
+                });
+            });
+        }
+        
+        // Run setup when page loads
+        document.addEventListener('DOMContentLoaded', setupSkillCards);
+        
+        // Enhance scroll animations for skills section
+        const skillsSection = document.querySelector('.skills');
+        const skillsText = document.querySelector('.skills-text');
+        
+        function animateSkillsOnScroll() {
+            const skillsSectionTop = skillsSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (skillsSectionTop < windowHeight * 0.75) {
+                // Add a class to trigger animations
+                skillsSection.classList.add('in-view');
+                
+                // Animate skill cards with staggered delay
+                skillCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('animate');
+                    }, 150 * index);
+                });
+            }
+        }
+        
+        // Check on scroll
+        window.addEventListener('scroll', animateSkillsOnScroll);
+        // Initial check
+        setTimeout(animateSkillsOnScroll, 500);
     </script>
 </body>
 </html>
