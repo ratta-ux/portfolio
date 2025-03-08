@@ -910,10 +910,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -922,47 +923,118 @@
         }
 
         .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 16px;
             max-width: 400px;
+            width: 90%;
             margin: auto;
             text-align: center;
             position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         .modal.active .modal-content {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .modal-title {
             color: var(--dark);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
         }
 
         .modal-text {
             color: var(--gray);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             line-height: 1.6;
+            font-size: 1.1rem;
         }
 
         .modal-button {
             display: inline-block;
-            padding: 0.8rem 1.5rem;
+            padding: 1rem 2rem;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 50px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1;
         }
 
         .modal-button:hover {
-            background: var(--secondary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 132, 255, 0.3);
+        }
+
+        .modal-button:hover::before {
+            transform: translateX(0);
+        }
+
+        .modal-button span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Add close button */
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-close::before,
+        .modal-close::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 2px;
+            background: var(--dark);
+            border-radius: 1px;
+        }
+
+        .modal-close::before {
+            transform: rotate(45deg);
+        }
+
+        .modal-close::after {
+            transform: rotate(-45deg);
         }
     </style>
 </head>
@@ -1422,9 +1494,12 @@
 
     <div class="modal" id="contactModal">
         <div class="modal-content">
+            <div class="modal-close"></div>
             <h3 class="modal-title">Case Study Coming Soon</h3>
             <p class="modal-text">This case study is currently being prepared. If you'd like to learn more about this project, I'd be happy to discuss it in detail.</p>
-            <a href="mailto:Rattakids@gmail.com" class="modal-button">Contact Me</a>
+            <a href="mailto:Rattakids@gmail.com" class="modal-button">
+                <span>Contact Me</span>
+            </a>
         </div>
     </div>
 
@@ -1478,14 +1553,21 @@
             }
         });
         
-        // Add modal function at the end of the script section
+        // Update modal handling
         function showContactModal() {
             const modal = document.getElementById('contactModal');
             modal.classList.add('active');
             
-            // Close modal when clicking outside
+            // Close modal when clicking outside or on close button
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
+                if (e.target === modal || e.target.closest('.modal-close')) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // Add escape key listener
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
                     modal.classList.remove('active');
                 }
             });
