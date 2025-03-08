@@ -2534,6 +2534,7 @@
             
             const funFactElement = document.querySelector('.fun-fact p');
             let currentFact = 0;
+            let funFactInterval;
             
             if (funFactElement) {
                 const funFactCard = document.querySelector('.fun-fact');
@@ -2546,6 +2547,23 @@
                 
                 // Check if we're on mobile initially
                 let isMobile = window.innerWidth <= 768;
+
+                // Auto-rotate fun facts every 5 seconds
+                function startFunFactRotation() {
+                    funFactInterval = setInterval(() => {
+                        rotateFunFact();
+                    }, 10000); // Change fact every 10 seconds
+                }
+
+                // Stop rotation on hover/touch
+                function pauseFunFactRotation() {
+                    clearInterval(funFactInterval);
+                }
+
+                // Resume rotation when hover/touch ends
+                function resumeFunFactRotation() {
+                    startFunFactRotation();
+                }
                 
                 function animateFunFact() {
                     if (!isMobile && isAnimating) {
@@ -2599,6 +2617,7 @@
                 funFactCard.addEventListener('touchstart', (e) => {
                     touchStartY = e.touches[0].clientY;
                     touchStartTime = Date.now();
+                    pauseFunFactRotation();
                 }, { passive: true });
                 
                 funFactCard.addEventListener('touchend', (e) => {
@@ -2610,12 +2629,29 @@
                     if (touchDuration < 200 && touchDistance < 10) {
                         rotateFunFact();
                     }
+                    resumeFunFactRotation();
                 });
                 
                 // Click handler for desktop
                 funFactCard.addEventListener('click', (e) => {
                     if (!e.touches) { // Only handle click if not touch device
                         rotateFunFact();
+                    }
+                });
+
+                // Pause rotation on hover
+                funFactCard.addEventListener('mouseenter', () => {
+                    if (!isMobile) {
+                        isAnimating = false;
+                        pauseFunFactRotation();
+                    }
+                });
+                
+                funFactCard.addEventListener('mouseleave', () => {
+                    if (!isMobile) {
+                        isAnimating = true;
+                        requestAnimationFrame(animateFunFact);
+                        resumeFunFactRotation();
                     }
                 });
                 
@@ -2647,18 +2683,9 @@
                         }
                     }, 300);
                 }
-                
-                // Pause animation on hover (desktop only)
-                funFactCard.addEventListener('mouseenter', () => {
-                    if (!isMobile) isAnimating = false;
-                });
-                
-                funFactCard.addEventListener('mouseleave', () => {
-                    if (!isMobile) {
-                        isAnimating = true;
-                        requestAnimationFrame(animateFunFact);
-                    }
-                });
+
+                // Start the auto-rotation when the page loads
+                startFunFactRotation();
             }
             
             // Add interactivity to skill pills
@@ -2690,7 +2717,7 @@
                     if (window.innerWidth > 768) { // Only on desktop
                         const hoverSound = new Audio();
                         hoverSound.volume = 0.05; // Very quiet
-                        hoverSound.src = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCIiIiIiIjAwMDAwMD4+Pj4+PkxMTExMTFpaWlpaWmhoaGhoaHZ2dnZ2doSEhISEhJKSkpKSkqCgoKCgoK6urq6urrKysrKysr6+vr6+vsbGxsbGxtTU1NTU1OTk5OTk5PLy8vLy8v7+/v7+/v///////////////0xhdmY1OC4xMi4xMDAAAAAAAAAAAAAAACQCQAAAAAAAAAB4MwScAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+                        hoverSound.src = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCIiIiIiIjAwMDAwMD4+Pj4+PkxMTExMTFpaWlpaWhoaGhoaHZ2dnZ2doSEhISEhJKSkpKSkqCgoKCgoK6urq6urrKysrKysr6+vr6+vsbGxsbGxtTU1NTU1OTk5OTk5PLy8vLy8v7+/v7+/v///////////////0xhdmY1OC4xMi4xMDAAAAAAAAAAAAAAACQCQAAAAAAAAAB4MwScAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
                         hoverSound.play().catch(e => console.log('Audio play prevented by browser'));
                     }
                 });
