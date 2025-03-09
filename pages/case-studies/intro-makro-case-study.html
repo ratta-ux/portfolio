@@ -255,6 +255,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-top: 40px;
+            font-size: 18px;
         }
         
         .problem-column p {
@@ -328,9 +329,10 @@
         
         .solution-showcase {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: 1fr;
+            gap: 20px;
             margin-top: 40px;
+            background-color: white;
         }
         
         .solution-card {
@@ -430,15 +432,18 @@
         
         .outcomes-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
             margin-top: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .outcome-card {
             background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 30px 20px;
+            border-radius: 16px;
+            padding: 40px 20px;
             text-align: center;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
@@ -449,13 +454,13 @@
         }
         
         .outcome-number {
-            font-size: 42px;
+            font-size: 48px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
         
         .outcome-text {
-            font-size: 16px;
+            font-size: 18px;
             opacity: 0.9;
         }
         
@@ -1064,20 +1069,6 @@
                 <span class="section-divider fade-in"></span>
                 <p class="section-content fade-in">Access supermarket with your fingertips</p>
                 <p class="section-content fade-in">Makro Pro is a mega wholesale e-commerce platform similar to Costco; there is also Costco in South East Asia.</p>
-                
-                <div class="collaborative-project fade-in">
-                    <h3>Collaborative Project</h3>
-                    <p>To truly deliver the best possible product for the client, I worked with the very experienced front-end developer and designer.</p>
-                    <div class="collaborator">
-                        <div class="collaborator-image">
-                            <img src="../../assets/images/collaborator.png" alt="Dave Hales">
-                        </div>
-                        <div class="collaborator-info">
-                            <h4>Dave Hales</h4>
-                            <a href="#">View Website</a>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <div class="intro-image fade-in">
@@ -1131,16 +1122,22 @@
     <section class="problem-section" id="problem">
         <div class="container">
             <span class="section-number fade-in">02/</span>
-            <h2 class="section-title fade-in">The Solution</h2>
+            <h2 class="section-title fade-in">How do you transform wholesale shopping into a seamless digital experience?</h2>
             <span class="section-divider fade-in"></span>
             
             <div class="problem-grid">
-                <div class="problem-column fade-in">
-                    <p>The Makro Pro mega e-commerce app achieved outstanding results. After launch, it generated 16.8M THB ($486,000 USD) per day, with 500,000 downloads, resonating strongly with users and driving significant revenue growth.</p>
+                <div class="fade-in">
+                    <p>
+                        During the pandemic, when in-person shopping became a challenge, Makro saw the need to bring its wholesale experience online. To meet this demand, they hired me to design and build their first mobile app, making bulk shopping more accessible for businesses and households.
+                    </p>
                 </div>
-                
-                <div class="problem-column fade-in">
-                    <p>During the pandemic, when in-person shopping became a challenge, Makro saw the need to bring its wholesale experience online. To meet this demand, they hired me to design and build their first mobile app, making bulk shopping more accessible for businesses and households. As the app gained traction, I later expanded the experience to the web platform, ensuring a seamless omni-channel journey.</p>
+            </div>
+
+            <div class="solution-showcase" style="display: grid; grid-template-columns: 1fr; gap: 20px; background-color: white;">
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/Workshop_session.png" alt="New Homepage Design" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -1149,82 +1146,41 @@
     <section class="solution-section" id="solution">
         <div class="container">
             <span class="section-number fade-in">03/</span>
-            <h2 class="section-title fade-in">The Design</h2>
+            <h2 class="section-title fade-in">The Solution</h2>
             <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in">Here is the design solution that addresses the key pain points identified during research:</p>
-            
-            <div class="solution-showcase">
-                <div class="solution-card fade-in">
-                    <div class="solution-card-image">
-                        <img src="../../assets/images/Solution_new_homepage_design.png" alt="New Homepage Design">
-                    </div>
-                    <div class="solution-card-content">
-                        <h4>New homepage, new product category layout</h4>
-                        <p>Redesigned the homepage with intuitive categorization and visual cues for easy navigation.</p>
-                    </div>
-                </div>
-                
-                <div class="solution-card fade-in">
-                    <div class="solution-card-image">
-                        <img src="../../assets/images/Solution_new_Optimized_category_accessibility.png" alt="Optimized Categories">
-                    </div>
-                    <div class="solution-card-content">
-                        <h4>Optimized category accessibility</h4>
-                        <p>Clear visual hierarchy and improved category labels reduce cognitive load.</p>
-                    </div>
-                </div>
-                
-                <div class="solution-card fade-in">
-                    <div class="solution-card-image">
-                        <img src="../../assets/images/Solution_new_Enhanced_search_accuracy.png" alt="Enhanced Search">
-                    </div>
-                    <div class="solution-card-content">
-                        <h4>Enhanced search accuracy</h4>
-                        <p>Implemented predictive search with spelling correction and search history.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="solution-showcase" style="margin-top: 30px;">
-                <div class="solution-card fade-in">
-                    <div class="solution-card-image">
-                        <img src="../../assets/images/Solution_new_Enable_smooth_navigation_back.png" alt="Smooth Navigation">
-                    </div>
-                    <div class="solution-card-content">
-                        <h4>Enable smooth navigation back</h4>
-                        <p>Consistent back buttons and breadcrumb navigation for clear user orientation.</p>
-                    </div>
-                </div>
-                
-                <div class="solution-card fade-in">
-                    <div class="solution-card-image">
-                        <img src="../../assets/images/Solution_new_Checkout_process.png" alt="Checkout Process">
-                    </div>
-                    <div class="solution-card-content">
-                        <h4>Streamlined checkout</h4>
-                        <p>Reduced steps and improved flow in the checkout process to decrease abandonment.</p>
-                    </div>
-                </div>
-                
-                <div class="solution-card fade-in">
-                    <div class="solution-card-image">
-                        <img src="../../assets/images/Solution_new_Error_prevention.png" alt="Error Prevention">
-                    </div>
-                    <div class="solution-card-content">
-                        <h4>Error prevention</h4>
-                        <p>Implemented forgiving search with spelling correction and helpful suggestions.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="quote-section">
-        <div class="container">
-            <div class="quote-container fade-in">
-                <div class="quote-mark">"</div>
-                <p class="quote-content">Making something look simple is easy. Making something simple to use is much harder.</p>
-                <p class="quote-attribution">— <span>UK Government Design Principles</span></p>
+            <div class="problem-grid">
+                <div class="fade-in">
+                    <p>
+                        As the lead designer, I owned the search, homepage, My List, and checkout experiences, collaborating closely with user research, product, design, engineering, and leadership to create a frictionless, high-performing shopping experience.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="solution-showcase" style="display: grid; grid-template-columns: 1fr; gap: 20px; background-color: white;">
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/Solution_new_homepage_design.png" alt="New Homepage Design" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
+                </div>
+                
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/Solution_new_Optimized_category_accessibility.png" alt="Optimized Categories" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
+                </div>
+                
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/Solution_new_Enhanced_search_accuracy.png" alt="Enhanced Search" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
+                </div>
+            
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/Solution_new_Enable_smooth_navigation_back.png" alt="Smooth Navigation" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1236,66 +1192,20 @@
             <span class="section-divider fade-in"></span>
             <p class="section-content fade-in" style="color: rgba(255,255,255,0.9);">Impact to the business after we launch the app</p>
             
-            <div class="outcomes-grid">
-                <div class="outcome-card fade-in">
-                    <div class="outcome-number">16.8M</div>
-                    <div class="outcome-text">THB/day in GMV</div>
+            <div class="outcomes-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+                <div class="outcome-card fade-in" style="background-color: rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 40px 20px; text-align: center;">
+                    <div class="outcome-number" style="font-size: 48px; font-weight: 700; margin-bottom: 16px;">16.8M</div>
+                    <div class="outcome-text" style="font-size: 18px; opacity: 0.9;">THB/day</div>
                 </div>
                 
-                <div class="outcome-card fade-in">
-                    <div class="outcome-number">486,000</div>
-                    <div class="outcome-text">US$ per day</div>
+                <div class="outcome-card fade-in" style="background-color: rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 40px 20px; text-align: center;">
+                    <div class="outcome-number" style="font-size: 48px; font-weight: 700; margin-bottom: 16px;">486,000$</div>
+                    <div class="outcome-text" style="font-size: 18px; opacity: 0.9;">US per day</div>
                 </div>
                 
-                <div class="outcome-card fade-in">
-                    <div class="outcome-number">60%</div>
-                    <div class="outcome-text">User retention increase</div>
-                </div>
-                
-                <div class="outcome-card fade-in">
-                    <div class="outcome-number">67%</div>
-                    <div class="outcome-text">Higher conversion rate</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="process-section" id="process">
-        <div class="container">
-            <span class="section-number fade-in">05/</span>
-            <h2 class="section-title fade-in">The Process</h2>
-            <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in">Our user-centered design approach followed these key steps</p>
-            
-            <div class="process-steps">
-                <div class="step fade-in">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Workshop</div>
-                    <div class="step-description">Collaborative sessions to identify pain points and opportunities</div>
-                </div>
-                
-                <div class="step fade-in">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Research</div>
-                    <div class="step-description">Competitive analysis and user feedback collection</div>
-                </div>
-                
-                <div class="step fade-in">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Wireframing</div>
-                    <div class="step-description">Creating low-fidelity mockups to test concepts</div>
-                </div>
-                
-                <div class="step fade-in">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Prototyping</div>
-                    <div class="step-description">Building interactive prototypes for user testing</div>
-                </div>
-                
-                <div class="step fade-in">
-                    <div class="step-number">5</div>
-                    <div class="step-title">Implementation</div>
-                    <div class="step-description">Working with developers to bring designs to life</div>
+                <div class="outcome-card fade-in" style="background-color: rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 40px 20px; text-align: center;">
+                    <div class="outcome-number" style="font-size: 48px; font-weight: 700; margin-bottom: 16px;">200,000</div>
+                    <div class="outcome-text" style="font-size: 18px; opacity: 0.9;">Downloads</div>
                 </div>
             </div>
         </div>
@@ -1303,81 +1213,17 @@
 
     <section class="gallery-section">
         <div class="container">
-            <span class="section-number fade-in">06/</span>
-            <h2 class="section-title fade-in">Design Showcase</h2>
+            <span class="section-number fade-in">05/</span>
+            <h2 class="section-title fade-in">Everything responsive, componentized, and documented</h2>
             <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in">Key screens and design elements from the final solution</p>
+            <p class="section-content fade-in"></p>
             
-            <div class="gallery-grid">
-                <div class="gallery-item fade-in">
-                    <img src="../../assets/images/Solution_new_homepage_design.png" alt="Homepage Design">
-                    <div class="gallery-item-overlay">
-                        <span>Homepage with Category Layout</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item fade-in">
-                    <img src="../../assets/images/Solution_new_Enhanced_search_accuracy.png" alt="Search Functionality">
-                    <div class="gallery-item-overlay">
-                        <span>Enhanced Search Interface</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item fade-in">
-                    <img src="../../assets/images/Solution_new_Optimized_category_accessibility.png" alt="Product Listing">
-                    <div class="gallery-item-overlay">
-                        <span>Product Listing Page</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item fade-in">
-                    <img src="../../assets/images/Solution_new_Enable_smooth_navigation_back.png" alt="Product Detail">
-                    <div class="gallery-item-overlay">
-                        <span>Product Detail View</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item fade-in">
-                    <img src="../../assets/images/User_flow_diagram.png" alt="Shopping Cart">
-                    <div class="gallery-item-overlay">
-                        <span>User Flow Diagram</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item fade-in">
-                    <img src="../../assets/images/Workshop_session.png" alt="Workshop Session">
-                    <div class="gallery-item-overlay">
-                        <span>Workshop Session</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="learnings-section">
-        <div class="container">
-            <span class="section-number fade-in">07/</span>
-            <h2 class="section-title fade-in">What I Learn</h2>
-            <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in">Key insights and takeaways from this project</p>
-            
-            <div class="learnings-grid">
-                <div class="learning-card fade-in">
-                    <div class="learning-card-number">01</div>
-                    <h3>Communication is key</h3>
-                    <p>It serves as a preventive measure against issues and helps identify any blocks the team may face. Regular and clear communication across teams was critical to the project's success.</p>
-                </div>
-                
-                <div class="learning-card fade-in">
-                    <div class="learning-card-number">02</div>
-                    <h3>Break down complexity</h3>
-                    <p>Simplification is crucial, as users should not have to ponder when shopping. Focus on solving key pain points first and create intuitive paths for users.</p>
-                </div>
-                
-                <div class="learning-card fade-in">
-                    <div class="learning-card-number">03</div>
-                    <h3>Open to feedback</h3>
-                    <p>Listen from different perspectives while advocating for users' needs. Diverse input from stakeholders leads to more robust solutions and better alignment.</p>
+            <div class="solution-showcase" style="display: grid; grid-template-columns: 1fr; gap: 20px; background-color: white;">
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/Workshop_session.png" alt="New Homepage Design" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -1396,7 +1242,7 @@
 
     <section class="more-projects">
         <div class="container">
-            <span class="section-number fade-in">08/</span>
+            <span class="section-number fade-in">06/</span>
             <h2 class="section-title fade-in">More Case Studies</h2>
             <span class="section-divider fade-in"></span>
             <p class="section-content fade-in">Other projects in my portfolio</p>
