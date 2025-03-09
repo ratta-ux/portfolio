@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIA Health Insurance App | UX Case Study</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0084ff;
+            --dark: #121729;
+            --light: #f5f5f7;
+            --light-gray: #eaeaef;
+            --gray: #626477;
+            --accent: #0084ff;
+            --purple-light: #e6e1f9;
+            --blue-cta: #0095ff;
+            --pink: #e91e63;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background-color: var(--dark);
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+            position: relative;
+        }
+        
+        .nav-links li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .intro-section {
+            padding: 120px 0 60px;
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .intro-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .intro-content {
+            width: 45%;
+        }
+        
+        .intro-image {
+            width: 50%;
+        }
+        
+        .intro-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-number {
+            color: var(--pink);
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-divider {
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--pink);
+            margin-bottom: 20px;
+        }
+        
+        .section-content {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .collaborative-project {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--pink);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .collaborative-project h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .collaborative-project p {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .project-tag {
+            display: inline-block;
+            background-color: var(--pink);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .collaborator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .collaborator-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .collaborator-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .collaborator-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .collaborator-info a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .main-content-section {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .summary-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary-column h3::before {
+            content: '—';
+            margin-right: 10px;
+            color: var(--pink);
+        }
+        
+        .summary-column ul {
+            list-style: none;
+        }
+        
+        .summary-column ul li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .summary-column ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--pink);
+            font-weight: bold;
+        }
+        
+        .summary-column p {
+            line-height: 1.6;
+        }
+        
+        .problem-section {
+            padding: 80px 0;
+            background-color: var(--purple-light);
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .problem-column p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+        
+        .problems-showcase {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .problem-showcase-image {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .problem-showcase-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .problem-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .problem-card-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .problem-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .problem-card:hover .problem-card-image img {
+            transform: scale(1.05);
+        }
+        
+        .problem-label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--pink);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .problem-card-content {
+            padding: 20px;
+        }
+        
+        .problem-card-content h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .solution-section {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .solution-showcase {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .solution-item {
+            background-color: var(--purple-light);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .solution-item-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .solution-item-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .solution-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .solution-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .solution-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .solution-benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .solution-benefit-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .solution-benefit-text {
+            font-size: 14px;
+        }
+        
+        .solution-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .comparison-column {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .comparison-column h5 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .comparison-column.before h5::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ff9800;
+        }
+        
+        .comparison-column.after h5::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4caf50;
+        }
+        
+        .quote-section {
+            padding: 60px 0;
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .quote-container {
+            position: relative;
+            padding: 0 80px;
+        }
+        
+        .quote-mark {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 120px;
+            color: rgba(233, 30, 99, 0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .quote-content {
+            font-size: 28px;
+            line-height: 1.4;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .quote-attribution {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .quote-attribution span {
+            color: var(--pink);
+            font-weight: 600;
+        }
+        
+        .outcomes-section {
+            padding: 80px 0;
+            background-color: var(--blue-cta);
+            color: white;
+        }
+        
+        .outcomes-section .section-title {
+            color: white;
+        }
+        
+        .outcomes-section .section-divider {
+            background-color: white;
+        }
+        
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .outcome-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px 20px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .outcome-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .outcome-icon {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .outcome-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .outcome-text {
+            font-size: 15px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .process-section {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .process-item {
+            margin-bottom: 60px;
+        }
+        
+        .process-item-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .process-item-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .process-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .process-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .process-details {
+            padding-right: 20px;
+        }
+        
+        .process-details p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .user-voices {
+            margin-top: 60px;
+        }
+        
+        .user-voices-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .user-voices-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .user-voice-card {
+            background-color: var(--purple-light);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .user-details h4 {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .user-details p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .user-quote {
+            font-size: 14px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        
+        .ui-principles {
+            margin-top: 60px;
+        }
+        
+        .ui-principles-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .ui-principles-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .principle-card {
+            padding: 20px;
+        }
+        
+        .principle-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--purple-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--pink);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .principle-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .principle-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--gray);
+        }
+        
+        .gallery-section {
+            padding: 80px 0;
+            background-color: var(--purple-light);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 250px;
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-item-overlay span {
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .learnings-section {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .learnings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .learning-card {
+            padding: 30px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--pink);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .learning-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .learning-card-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--pink);
+            margin-bottom: 15px;
+        }
+        
+        .learning-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .learning-card p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+        
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            background-color: var(--blue-cta);
+            color: white;
+        }
+        
+        .cta-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .cta-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .password-form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .password-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 30px 0 0 30px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .password-input:focus {
+            border-color: var(--primary);
+        }
+        
+        .password-button {
+            background-color: white;
+            color: var(--blue-cta);
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 30px 30px 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .password-button:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .more-projects {
+            padding: 80px 0;
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .project-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .project-card-content {
+            padding: 20px;
+        }
+        
+        .project-card-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .project-card-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .project-card-link {
+            display: inline-block;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .project-card-link:hover {
+            color: #0066cc;
+        }
+        
+        footer {
+            padding: 40px 0;
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-to-link {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-to-link:hover {
+            color: var(--primary);
+        }
+        
+        .back-to-link i {
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 992px) {
+            .intro-container {
+                flex-direction: column;
+            }
+            
+            .intro-content, .intro-image {
+                width: 100%;
+            }
+            
+            .intro-image {
+                margin-top: 30px;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .solution-item-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-item-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .outcomes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-voices-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ui-principles-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .learnings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark);
+                padding: 1rem 0;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-links li a {
+                display: block;
+                padding: 0.8rem 0;
+            }
+            
+            .hamburger {
+                display: block;
+                cursor: pointer;
+                color: white;
+                font-size: 24px;
+                z-index: 100;
+            }
+            
+            .quote-container {
+                padding: 0 40px;
+            }
+            
+            .quote-content {
+                font-size: 22px;
+            }
+            
+            .ui-principles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            margin: auto;
+            text-align: center;
+            position: relative;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-title {
+            color: var(--dark);
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+        }
+
+        .modal-text {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .modal-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .modal-button:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 132, 255, 0.3);
+        }
+
+        .modal-button:hover::before {
+            transform: translateX(0);
+        }
+
+        .modal-button span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Add close button */
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-close::before,
+        .modal-close::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 2px;
+            background: var(--dark);
+            border-radius: 1px;
+        }
+
+        .modal-close::before {
+            transform: rotate(45deg);
+        }
+
+        .modal-close::after {
+            transform: rotate(-45deg);
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="nav-container">
+            <a href="../../index.html" class="logo">
+                Ratta
+            </a>
+            <ul class="nav-links">
+                <li><a href="../../index.html#projects">Work</a></li>
+                <li><a href="../../index.html#skills">Services</a></li>
+                <li><a href="../about-page.html">About</a></li>
+                <li><a href="../blog-page.html">Blog</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="intro-section">
+        <div class="container intro-container">
+            <div class="intro-content">
+                <div class="project-tag fade-in">TDM</div>
+                <h1 class="section-title fade-in">TDM Bank Account Reconciliation Software</h1>
+                <span class="section-divider fade-in"></span>
+                <p class="section-content fade-in">Revitalizing user engagement: An insurance sale tool for agents and clients.</p>
+                <p class="section-content fade-in">AIA Group Limited, Asia's largest life insurer, is a Hong Kong-based multinational insurance and finance corporation comparable to Manulife Financial, Canada's largest insurance provider.</p>
+                
+            </div>
+            
+            <div class="intro-image fade-in">
+                <img src="../../assets/images/AIA_logo.jpeg" alt="AIA Health Insurance App" style="background-color: white; padding: 20px;">
+            </div>
+        </div>
+    </section>
+
+    <section class="main-content-section" id="summary">
+        <div class="container">
+            <span class="section-number fade-in">01/</span>
+            <h2 class="section-title fade-in">Summary</h2>
+            <span class="section-divider fade-in"></span>
+            <p class="section-content fade-in">What was delivered and how</p>
+            
+            <div class="summary-grid">
+                <div class="summary-column fade-in">
+                    <h3>Role</h3>
+                    <ul>
+                        <li>UX Lead</li>
+                        <li>Interaction design</li>
+                        <li>Visual design</li>
+                        <li>User flows</li>
+                        <li>Rapid prototype</li>
+                    </ul>
+                </div>
+                
+                <div class="summary-column fade-in">
+                    <h3>Deliverables</h3>
+                    <ul>
+                        <li>Problem defining workshop</li>
+                        <li>A fully-detailed journey map</li>
+                        <li>Wireframes</li>
+                        <li>User-interface designs</li>
+                        <li>High-fidelity prototype</li>
+                    </ul>
+                </div>
+                
+                <div class="summary-column fade-in">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li>Figma</li>
+                        <li>Mural board</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem-section" id="problem">
+        <div class="container">
+            <span class="section-number fade-in">02/</span>
+            <h2 class="section-title fade-in">
+                How do you transform bank reconciliation from spreadsheets to seamless automation?
+            </h2>
+            <span class="section-divider fade-in"></span>
+            
+            <div class="problem-grid">
+                <div class="problem-column fade-in">
+                    <p>
+                        TDM hired me to transforming Bank Account Reconciliation: From Spreadsheets to Seamless Automation
+A leading financial institution hired me to design and build a bank account reconciliation software, replacing manual Excel-based processes with a more efficient, automated solution. Previously, staff had to manually code transactions, match bank statements, and reconcile accounts, leading to errors, inefficiencies, and delays in closing periods.
+With this new system, staff can now automate transaction coding, compare balances in real-time, and generate reconciliation reports effortlessly, ensuring accuracy, compliance, and faster period closing.
+</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="solution-section" id="solution">
+        <div class="container">
+            <span class="section-number fade-in">03/</span>
+            <h2 class="section-title fade-in">Solution</h2>
+            <span class="section-divider fade-in"></span>
+            
+            <div class="problem-grid">
+                <div class="problem-column fade-in">
+                    <p>
+                        As the lead designer, I owned the transaction matching, statement reconciliation, and reporting experience, collaborating closely with user research, product, design, engineering, and leadership to create a seamless, high-performing financial tool that optimized reconciliation workflows.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="solution-item fade-in">
+                <h3 class="solution-item-title">Sidebar navigation</h3>
+                <div class="solution-item-content">
+                    <div class="solution-image">
+                        <img src="../../assets/images/AIA_sidebar_navigation.png" alt="Sidebar Navigation">
+                    </div>
+                    <div class="solution-details">
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Quick access to key features</strong> - Enabling agents to navigate efficiently
+                            </div>
+                        </div>
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Minimize cognitive load</strong> - Clear categorization of functions
+                            </div>
+                        </div>
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Improved navigation</strong> - Consistent navigation pattern throughout the app
+                            </div>
+                        </div>
+                        
+                        <div class="solution-comparison">
+                            <div class="comparison-column before">
+                                <h5>Before</h5>
+                                <p>Agents had no tracking feature and had to call the office or recheck emails to determine the status of applicants, which was time-consuming and inefficient.</p>
+                            </div>
+                            <div class="comparison-column after">
+                                <h5>Solution</h5>
+                                <p>I introduced sidebar navigation that allows agents to easily track the status of applications and maintain consistency with the main app.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="solution-item fade-in">
+                <h3 class="solution-item-title">Personalization insurance plan</h3>
+                <div class="solution-item-content">
+                    <div class="solution-image">
+                        <img src="../../assets/images/AIA_personalization_plan.png" alt="Personalization insurance plan">
+                    </div>
+                    <div class="solution-details">
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Personalization</strong> - Tailored insurance offerings to client needs
+                            </div>
+                        </div>
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Reduced training time</strong> - Intuitive interface requires less training
+                            </div>
+                        </div>
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Faster process</strong> - Streamlined workflows for creating quotes
+                            </div>
+                        </div>
+                        
+                        <div class="solution-comparison">
+                            <div class="comparison-column before">
+                                <h5>Before</h5>
+                                <p>Agents could only sell select products through the app, while customized products required time-consuming paperwork and approval from the office.</p>
+                            </div>
+                            <div class="comparison-column after">
+                                <h5>Solution</h5>
+                                <p>Now agents can personalize products and quotations within the app, eliminating the need to visit the office to submit hard copies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="solution-item fade-in">
+                <h3 class="solution-item-title">Signature sign in app</h3>
+                <div class="solution-item-content">
+                    <div class="solution-image">
+                        <img src="../../assets/images/AIA_signature_sign.png" alt="Digital Signature">
+                    </div>
+                    <div class="solution-details">
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Cost and resource savings</strong> - Eliminates paper documentation
+                            </div>
+                        </div>
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Error reduction</strong> - Minimizes human error in documentation
+                            </div>
+                        </div>
+                        <div class="solution-benefit">
+                            <div class="solution-benefit-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="solution-benefit-text">
+                                <strong>Legally binding</strong> - Digital signatures meet compliance requirements
+                            </div>
+                        </div>
+                        
+                        <div class="solution-comparison">
+                            <div class="comparison-column before">
+                                <h5>Before</h5>
+                                <p>Agents had to submit hard copies of documents to the office to initiate the sales process and obtain approval.</p>
+                            </div>
+                            <div class="comparison-column after">
+                                <h5>Solution</h5>
+                                <p>I introduced a digital signature feature that enables agents to take photos of documents and easily upload them directly into the app.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="outcomes-section" id="outcomes">
+        <div class="container">
+            <span class="section-number fade-in" style="color: white;">04/</span>
+            <h2 class="section-title fade-in">Outcome</h2>
+            <span class="section-divider fade-in"></span>
+            <p class="section-content fade-in" style="color: rgba(255,255,255,0.9);">The bank account reconciliation software</p>
+            
+            <div class="outcomes-grid">
+                <div class="outcome-card fade-in">
+                    <div class="outcome-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="outcome-title">Increased efficiency</h3>
+                    <p class="outcome-text">
+                        Saved 8 hours of paperwork per week, allowing staff to focus on higher-value tasks.
+                    </p>
+                </div>
+                
+                <div class="outcome-card fade-in">
+                    <div class="outcome-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="outcome-title">Faster reconciliation</h3>
+                    <p class="outcome-text">
+                        Reduced time to close financial periods by 50%, eliminating delays from manual spreadsheet processing.
+                    </p>
+                </div>
+                
+                <div class="outcome-card fade-in">
+                    <div class="outcome-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="outcome-title">Improved accuracy</h3>
+                    <p class="outcome-text">
+                        Decreased reconciliation errors by 40%, ensuring more reliable financial reporting and compliance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="portfolio">
+        <div class="container cta-container">
+            <h2 class="cta-title fade-in">Want to See More?</h2>
+            <p class="cta-description fade-in">Enter the password to access the complete portfolio with detailed case studies.</p>
+            <form class="password-form fade-in">
+                <input type="password" placeholder="Enter password" class="password-input">
+                <button type="submit" class="password-button">Access Full Portfolio</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="more-projects">
+        <div class="container">
+            <span class="section-number fade-in">05/</span>
+            <h2 class="section-title fade-in">More Case Studies</h2>
+            <span class="section-divider fade-in"></span>
+            <p class="section-content fade-in">Other projects in my portfolio</p>
+            
+            <div class="projects-grid">
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">Makro Pro E-commerce App</h3>
+                        <p class="project-card-description">Simplify e-commerce experience for all: Deciphering user needs triggering.</p>
+                        <a href="intro-makro-case-study.html" class="project-card-link">View Case Study →</a>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">Vocab Go Learning</h3>
+                        <p class="project-card-description">Designing an MVP mobile experience to learn a new language through quick, bite-sized lessons.</p>
+                        <a href="vocab-go-case-study.html" class="project-card-link">View Case Study →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-text">
+                &copy; 2025 Ratta. All rights reserved.
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-dribbble"></i></a>
+                <a href="#"><i class="fab fa-behance"></i></a>
+                <a href="#"><i class="fab fa-medium"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-close"></div>
+            <h3 class="modal-title">Case Study Coming Soon</h3>
+            <p class="modal-text">This case study is currently being prepared. If you'd like to learn more about this project, I'd be happy to discuss it in detail.</p>
+            <a href="mailto:Rattakids@gmail.com" class="modal-button">
+                <span>Contact Me</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        // Observe all elements with fade-in class
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Password form handling
+        document.querySelector('.password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.querySelector('.password-input').value;
+            if (password) {
+                showContactModal();
+            } else {
+                alert('Please enter the password');
+            }
+        });
+        
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Toggle hamburger icon between bars and times
+            const icon = hamburger.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        });
+        
+        // Close mobile menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            });
+        });
+
+        function showContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.add('active');
+            
+            // Close modal when clicking outside or on close button
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target.closest('.modal-close')) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // Add escape key listener
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
