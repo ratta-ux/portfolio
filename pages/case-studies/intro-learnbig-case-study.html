@@ -363,11 +363,112 @@
             background-color: #fff;
         }
         
-        .solution-showcase {
+        .solution-showcase-wrapper {
+            margin-top: 60px;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .solution-showcase-container {
             display: grid;
-            grid-template-columns: repeat(1, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-            margin-top: 40px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .solution-image-card {
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            background: var(--light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .solution-image-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .solution-image-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .solution-image-wrapper {
+            position: relative;
+            padding-top: 155%;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .solution-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top; /* Added to align from top */
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .solution-image-overlay {
+            position: absolute;
+            inset: auto 0 0 0; /* Changed from inset: 0 to align overlay at bottom */
+            height: 40%; /* Set specific height for overlay */
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 0.8) 40%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .solution-image-card:hover .solution-image {
+            transform: scale(1.05);
+        }
+        
+        .solution-image-card:hover .solution-image-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .solution-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--pink);
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .solution-caption {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .solution-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+            max-width: 280px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
         .solution-item {
@@ -978,118 +1079,40 @@
             margin-right: 5px;
         }
         
+        @media (max-width: 1200px) {
+            .solution-showcase-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 0 15px;
+            }
+        }
+        
         @media (max-width: 992px) {
-            .intro-container {
-                flex-direction: column;
-            }
-            
-            .intro-content, .intro-image {
-                width: 100%;
-            }
-            
-            .intro-image {
-                margin-top: 30px;
-            }
-            
-            .summary-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .problem-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .solution-item-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .process-item-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .outcomes-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .user-voices-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .ui-principles-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .learnings-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
+            .solution-showcase-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
         
         @media (max-width: 768px) {
-            .section-title {
-                font-size: 28px;
-            }
-            
-            .nav-links {
-                display: none;
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background-color: var(--dark);
-                padding: 1rem 0;
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .nav-links li {
-                margin: 0;
-                width: 100%;
-                text-align: center;
-            }
-            
-            .nav-links li a {
-                display: block;
-                padding: 0.8rem 0;
-            }
-            
-            .hamburger {
-                display: block;
-                cursor: pointer;
-                color: white;
-                font-size: 24px;
-                z-index: 100;
-            }
-            
-            .quote-container {
-                padding: 0 40px;
-            }
-            
-            .quote-content {
-                font-size: 22px;
-            }
-            
-            .ui-principles-grid {
+            .solution-showcase-container {
                 grid-template-columns: 1fr;
+                max-width: 500px;
             }
-            
-            .footer-container {
-                flex-direction: column;
-                gap: 20px;
+
+            .solution-image-wrapper {
+                padding-top: 133.33%; /* Adjusted for mobile, still maintaining taller aspect ratio */
+            }
+
+            .solution-image-overlay {
+                height: 45%; /* Slightly taller overlay on mobile for better readability */
+            }
+
+            .solution-number {
+                font-size: 36px;
+            }
+
+            .solution-caption {
+                font-size: 18px;
             }
         }
         
@@ -1226,6 +1249,13 @@
         .modal-close::after {
             transform: rotate(-45deg);
         }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1336,139 +1366,35 @@ With over 1,000 educational resources in Thai, Myanmar, Malay, and English, user
                 </div>
             </div>
 
-
-            <div class="solution-item fade-in">
-                <h3 class="solution-item-title">Sidebar navigation</h3>
-                <div class="solution-item-content">
-                    <div class="solution-image">
-                        <img src="../../assets/images/AIA_sidebar_navigation.png" alt="Sidebar Navigation">
-                    </div>
-                    <div class="solution-details">
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Quick access to key features</strong> - Enabling agents to navigate efficiently
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Minimize cognitive load</strong> - Clear categorization of functions
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Improved navigation</strong> - Consistent navigation pattern throughout the app
-                            </div>
-                        </div>
-                        
-                        <div class="solution-comparison">
-                            <div class="comparison-column before">
-                                <h5>Before</h5>
-                                <p>Agents had no tracking feature and had to call the office or recheck emails to determine the status of applicants, which was time-consuming and inefficient.</p>
-                            </div>
-                            <div class="comparison-column after">
-                                <h5>Solution</h5>
-                                <p>I introduced sidebar navigation that allows agents to easily track the status of applications and maintain consistency with the main app.</p>
+            <div class="solution-showcase-wrapper fade-in">
+                <div class="solution-showcase-container">
+                    <div class="solution-image-card">
+                        <div class="solution-image-wrapper">
+                            <img src="../../assets/images/learnbig-solution-01.png" alt="Learn Big Solution 1" class="solution-image">
+                            <div class="solution-image-overlay">
+                                <span class="solution-number">01</span>
+                                <p class="solution-caption">Multi-language Support</p>
+                                <p class="solution-description">Seamlessly switch between Thai, Myanmar, Malay, and English content</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="solution-item fade-in">
-                <h3 class="solution-item-title">Personalization insurance plan</h3>
-                <div class="solution-item-content">
-                    <div class="solution-image">
-                        <img src="../../assets/images/AIA_personalization_plan.png" alt="Personalization insurance plan">
-                    </div>
-                    <div class="solution-details">
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Personalization</strong> - Tailored insurance offerings to client needs
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Reduced training time</strong> - Intuitive interface requires less training
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Faster process</strong> - Streamlined workflows for creating quotes
-                            </div>
-                        </div>
-                        
-                        <div class="solution-comparison">
-                            <div class="comparison-column before">
-                                <h5>Before</h5>
-                                <p>Agents could only sell select products through the app, while customized products required time-consuming paperwork and approval from the office.</p>
-                            </div>
-                            <div class="comparison-column after">
-                                <h5>Solution</h5>
-                                <p>Now agents can personalize products and quotations within the app, eliminating the need to visit the office to submit hard copies.</p>
+                    <div class="solution-image-card">
+                        <div class="solution-image-wrapper">
+                            <img src="../../assets/images/learnbig-solution-02.png" alt="Learn Big Solution 2" class="solution-image">
+                            <div class="solution-image-overlay">
+                                <span class="solution-number">02</span>
+                                <p class="solution-caption">Interactive Learning</p>
+                                <p class="solution-description">Engaging educational content with interactive elements</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="solution-item fade-in">
-                <h3 class="solution-item-title">Signature sign in app</h3>
-                <div class="solution-item-content">
-                    <div class="solution-image">
-                        <img src="../../assets/images/AIA_signature_sign.png" alt="Digital Signature">
-                    </div>
-                    <div class="solution-details">
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Cost and resource savings</strong> - Eliminates paper documentation
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Error reduction</strong> - Minimizes human error in documentation
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Legally binding</strong> - Digital signatures meet compliance requirements
-                            </div>
-                        </div>
-                        
-                        <div class="solution-comparison">
-                            <div class="comparison-column before">
-                                <h5>Before</h5>
-                                <p>Agents had to submit hard copies of documents to the office to initiate the sales process and obtain approval.</p>
-                            </div>
-                            <div class="comparison-column after">
-                                <h5>Solution</h5>
-                                <p>I introduced a digital signature feature that enables agents to take photos of documents and easily upload them directly into the app.</p>
+                    <div class="solution-image-card">
+                        <div class="solution-image-wrapper">
+                            <img src="../../assets/images/learnbig-solution-03.png" alt="Learn Big Solution 3" class="solution-image">
+                            <div class="solution-image-overlay">
+                                <span class="solution-number">03</span>
+                                <p class="solution-caption">Resource Library</p>
+                                <p class="solution-description">Comprehensive collection of educational materials</p>
                             </div>
                         </div>
                     </div>
