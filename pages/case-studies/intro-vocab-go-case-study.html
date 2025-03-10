@@ -361,6 +361,7 @@
         .solution-section {
             padding: 80px 0;
             background-color: #fff;
+            overflow: hidden;
         }
         
         .solution-showcase {
@@ -1226,6 +1227,91 @@
         .modal-close::after {
             transform: rotate(-45deg);
         }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .solution-image-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .solution-image-card.animate {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .solution-image-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .solution-image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .solution-image-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .solution-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+
+        .solution-image-card:hover .solution-image-overlay {
+            opacity: 1;
+        }
+
+        .solution-image-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .solution-image-card:hover .solution-image-title {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .solution-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-animation {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -1331,145 +1417,58 @@ The Vocab Go project was designed to tackle these challenges by understanding ho
             <div class="problem-grid">
                 <div class="problem-column fade-in">
                     <p>
-                        As the lead designer, I owned the learning experience through multiple-choice questions, search, and flashcard creation, ensuring an interactive and effective approach to language learning. I collaborated closely with user research, product, design, engineering, and leadership to build a seamless, high-performing tool that enhances language learning for all users.                    </p>
+                        As the lead designer, I owned the learning experience through multiple-choice questions, search, and flashcard creation, ensuring an interactive and effective approach to language learning. I collaborated closely with user research, product, design, engineering, and leadership to build a seamless, high-performing tool that enhances language learning for all users.
+                    </p>
                 </div>
             </div>
 
-
-            <div class="solution-item fade-in">
-                <h3 class="solution-item-title">Sidebar navigation</h3>
-                <div class="solution-item-content">
-                    <div class="solution-image">
-                        <img src="../../assets/images/AIA_sidebar_navigation.png" alt="Sidebar Navigation">
-                    </div>
-                    <div class="solution-details">
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Quick access to key features</strong> - Enabling agents to navigate efficiently
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Minimize cognitive load</strong> - Clear categorization of functions
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Improved navigation</strong> - Consistent navigation pattern throughout the app
-                            </div>
-                        </div>
-                        
-                        <div class="solution-comparison">
-                            <div class="comparison-column before">
-                                <h5>Before</h5>
-                                <p>Agents had no tracking feature and had to call the office or recheck emails to determine the status of applicants, which was time-consuming and inefficient.</p>
-                            </div>
-                            <div class="comparison-column after">
-                                <h5>Solution</h5>
-                                <p>I introduced sidebar navigation that allows agents to easily track the status of applications and maintain consistency with the main app.</p>
-                            </div>
-                        </div>
+            <div class="solution-grid">
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-01.png" alt="Vocab Go Solution 1">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Interactive Learning Dashboard</h3>
                     </div>
                 </div>
-            </div>
-            
-            <div class="solution-item fade-in">
-                <h3 class="solution-item-title">Personalization insurance plan</h3>
-                <div class="solution-item-content">
-                    <div class="solution-image">
-                        <img src="../../assets/images/AIA_personalization_plan.png" alt="Personalization insurance plan">
-                    </div>
-                    <div class="solution-details">
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Personalization</strong> - Tailored insurance offerings to client needs
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Reduced training time</strong> - Intuitive interface requires less training
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Faster process</strong> - Streamlined workflows for creating quotes
-                            </div>
-                        </div>
-                        
-                        <div class="solution-comparison">
-                            <div class="comparison-column before">
-                                <h5>Before</h5>
-                                <p>Agents could only sell select products through the app, while customized products required time-consuming paperwork and approval from the office.</p>
-                            </div>
-                            <div class="comparison-column after">
-                                <h5>Solution</h5>
-                                <p>Now agents can personalize products and quotations within the app, eliminating the need to visit the office to submit hard copies.</p>
-                            </div>
-                        </div>
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-02.png" alt="Vocab Go Solution 2">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Flashcard Creation Interface</h3>
                     </div>
                 </div>
-            </div>
-            
-            <div class="solution-item fade-in">
-                <h3 class="solution-item-title">Signature sign in app</h3>
-                <div class="solution-item-content">
-                    <div class="solution-image">
-                        <img src="../../assets/images/AIA_signature_sign.png" alt="Digital Signature">
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-03.png" alt="Vocab Go Solution 3">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Multiple Choice Questions</h3>
                     </div>
-                    <div class="solution-details">
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Cost and resource savings</strong> - Eliminates paper documentation
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Error reduction</strong> - Minimizes human error in documentation
-                            </div>
-                        </div>
-                        <div class="solution-benefit">
-                            <div class="solution-benefit-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="solution-benefit-text">
-                                <strong>Legally binding</strong> - Digital signatures meet compliance requirements
-                            </div>
-                        </div>
-                        
-                        <div class="solution-comparison">
-                            <div class="comparison-column before">
-                                <h5>Before</h5>
-                                <p>Agents had to submit hard copies of documents to the office to initiate the sales process and obtain approval.</p>
-                            </div>
-                            <div class="comparison-column after">
-                                <h5>Solution</h5>
-                                <p>I introduced a digital signature feature that enables agents to take photos of documents and easily upload them directly into the app.</p>
-                            </div>
-                        </div>
+                </div>
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-04.png" alt="Vocab Go Solution 4">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Search Functionality</h3>
+                    </div>
+                </div>
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-05.png" alt="Vocab Go Solution 5">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Progress Tracking</h3>
+                    </div>
+                </div>
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-06.png" alt="Vocab Go Solution 6">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Achievement System</h3>
+                    </div>
+                </div>
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-07.png" alt="Vocab Go Solution 7">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">Practice Sessions</h3>
+                    </div>
+                </div>
+                <div class="solution-image-card fade-in">
+                    <img src="../../assets/images/vocab-go-solution-08.png" alt="Vocab Go Solution 8">
+                    <div class="solution-image-overlay">
+                        <h3 class="solution-image-title">User Profile</h3>
                     </div>
                 </div>
             </div>
@@ -1697,6 +1696,51 @@ The Vocab Go project was designed to tackle these challenges by understanding ho
                 }
             });
         }
+
+        // Solution images animation
+        const solutionCards = document.querySelectorAll('.solution-image-card');
+        const solutionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Add staggered delay based on index
+                    setTimeout(() => {
+                        entry.target.classList.add('animate');
+                    }, index * 150); // 150ms delay between each card
+                }
+            });
+        }, { threshold: 0.2 });
+
+        solutionCards.forEach(card => {
+            solutionObserver.observe(card);
+            
+            // Add floating animation to random cards
+            if (Math.random() > 0.5) {
+                card.classList.add('floating-animation');
+            }
+        });
+        
+        // Add hover effect for solution cards
+        solutionCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Add slight push effect to surrounding cards
+                const siblings = Array.from(card.parentElement.children);
+                siblings.forEach(sibling => {
+                    if (sibling !== card) {
+                        sibling.style.transform = 'scale(0.98)';
+                    }
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                // Reset surrounding cards
+                const siblings = Array.from(card.parentElement.children);
+                siblings.forEach(sibling => {
+                    if (sibling !== card) {
+                        sibling.style.transform = '';
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
