@@ -404,6 +404,7 @@
             background-size: 30px 30px;
             z-index: 0;
             opacity: 0.5;
+            pointer-events: none;
         }
         
         /* Enhanced animation for morphing shapes */
@@ -1822,6 +1823,7 @@
             overflow: visible;
             padding: 2rem 0;
             margin-bottom: 2rem;
+            z-index: 1;
         }
 
         /* Fun Fact Styles */
@@ -2133,6 +2135,7 @@
             background: #dc2626;
         }
 
+        /* Ensure image carousel is above grid */
         .image-carousel {
             position: relative;
             height: 500px;
@@ -2140,7 +2143,7 @@
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            z-index: 2;
+            z-index: 3;
         }
 
         .carousel-slide {
