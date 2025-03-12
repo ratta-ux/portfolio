@@ -1381,6 +1381,389 @@
                 transform: none;
             }
         }
+
+        .timeline-container {
+            padding: 4rem 0;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--blue-cta);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding: 2rem 0;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            align-self: flex-end;
+            justify-content: flex-start;
+            padding-left: 3rem;
+            left: 50%;
+        }
+
+        .timeline-item:nth-child(even) {
+            align-self: flex-start;
+            padding-right: 3rem;
+            text-align: right;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--blue-cta);
+            border-radius: 50%;
+            top: 50%;
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            left: -8px;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(even)::before {
+            right: -8px;
+            transform: translateY(-50%);
+        }
+
+        .timeline-content {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+        }
+
+        .timeline-content h3 {
+            color: var(--blue-cta);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-content p {
+            color: #626477;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 1rem;
+            background-color: var(--light-gray);
+        }
+
+        .timeline-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .timeline-content:hover .timeline-image img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-image {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-image {
+                height: 140px;
+            }
+        }
+
+        .timeline-item::after {
+            content: attr(data-date);
+            position: absolute;
+            top: 50%;
+            padding: 0.5rem 1rem;
+            background-color: var(--blue-cta);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            right: calc(100% + 1.5rem);
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: calc(100% + 1.5rem);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-container {
+                padding: 1rem;
+                margin: 0;
+            }
+
+            .timeline {
+                padding: 0;
+            }
+
+            .timeline::before {
+                left: 0;
+                width: 2px;
+                background-color: var(--blue-cta);
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding: 0 0 2rem 1.5rem;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                text-align: left;
+                left: 0;
+            }
+
+            .timeline-item::before {
+                left: -4px !important;
+                width: 8px;
+                height: 8px;
+                top: 1rem;
+                transform: translateY(0) !important;
+            }
+
+            .timeline-item::after {
+                position: relative;
+                display: inline-block;
+                left: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+                margin-bottom: 0.75rem;
+                padding: 0.35rem 0.75rem;
+                border-radius: 16px;
+                font-size: 0.875rem;
+                background-color: var(--blue-cta);
+                order: -1;
+                align-self: flex-start;
+                margin-bottom: 1rem;
+            }
+
+            .timeline-content {
+                max-width: 100%;
+                margin: 0;
+                padding: 1.25rem;
+                border-radius: 12px;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .timeline-content h3 {
+                font-size: 1.125rem;
+                margin-bottom: 0.75rem;
+                color: var(--blue-cta);
+            }
+
+            .timeline-content p {
+                font-size: 0.9375rem;
+                line-height: 1.6;
+                color: var(--gray);
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-container {
+                padding: 0.5rem;
+            }
+
+            .timeline-item {
+                padding: 0 0 1.5rem 1.5rem;
+            }
+
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-content {
+                padding: 1rem;
+            }
+
+            .timeline-item::after {
+                font-size: 0.8125rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .timeline-content h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .timeline-content p {
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Add smooth scroll behavior for better UX */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Optimize for reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .timeline-item {
+                transition: none;
+            }
+
+            .timeline-content {
+                transition: none;
+            }
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2.5rem;
+            padding: 0 1rem;
+        }
+
+        .challenge-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .challenge-card h3 {
+            font-size: 1.25rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .challenge-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--light-gray);
+        }
+
+        .challenge-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .challenge-card:hover .challenge-image img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 992px) {
+            .challenges-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .challenge-card {
+                padding: 1.5rem;
+            }
+
+            .challenge-image {
+                height: 160px;
+            }
+
+            .challenge-card h3 {
+                font-size: 1.125rem;
+            }
+
+            .challenge-card p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .challenges-grid {
+                padding: 0;
+            }
+
+            .challenge-card {
+                padding: 1.25rem;
+            }
+
+            .challenge-image {
+                height: 140px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .challenge-card,
+            .challenge-image img {
+                transition: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1461,7 +1844,6 @@
     <section class="problem-section" id="problem">
         <div class="container">
             <span class="section-number fade-in">02/</span>
-            <h2 class="section-title fade-in">The Solution</h2>
             <h2 class="section-title fade-in">
                 Enhancing the food delivery tracking experience for LINE MAN users through iOS Live Activities.
             </h2>
@@ -1473,251 +1855,171 @@
                         Food delivery services rely heavily on timely status updates. When customers order food, they want to know: has the restaurant received my order? Is my food being prepared? Where is my rider? How long until my food arrives?
 
 In early 2023, our team at LINE MAN Wongnai identified an opportunity to leverage Apple's new Live Activities feature to provide real-time delivery updates directly on the iPhone lock screen and Dynamic Island.
+                </div>
+            </div>
+        </div>
+    </section>
 
-As the first food delivery service in Thailand to implement this feature, we faced unique design and implementation challenges that required innovative solutions and close collaboration between UX/UI and engineering teams.
+    <section class="solution-section" id="solution">
+        <div class="container">
+            <span class="section-number fade-in">03/</span>
+            <h2 class="section-title fade-in">Design Process</h2>
+            <span class="section-divider fade-in"></span>
+
+            <div class="problem-grid">
+                <div class="fade-in">
+                    <p>
+                        A collaborative journey from concept to implementation.
+                    </p>
                 </div>
             </div>
 
-            <div class="solution-gallery fade-in">
-                <div class="solution-image-container" data-index="1">
-                    <div class="solution-image-number">01</div>
-                    <img src="../../assets/images/lineman-01.png" alt="LINE MAN Live Activities Design" class="solution-image">
+            <div class="timeline-container fade-in">
+                <div class="timeline">
+                    <div class="timeline-item" data-date="September 2022">
+                        <div class="timeline-content">
+                            <h3>Research & Ideation</h3>
+                            <p>After Apple announced iOS 16 with Live Activities at WWDC, our UX team immediately began exploring how we could enhance the food delivery experience with this new feature. We analyzed user pain points during the waiting period and identified opportunities to reduce anxiety and improve transparency.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-date="October 2022">
+                        <div class="timeline-content">
+                            <h3>User Journey Mapping</h3>
+                            <p>We mapped the entire delivery journey to understand how Live Activities could integrate with our existing flow. From "Finding your rider" to "Arrived at destination," each step was analyzed to identify where real-time updates would add the most value.</p>
+                            <div class="timeline-image">
+                                <a href='../../assets/images/lineman-01.png' target="_blank">
+                                    <img src="../../assets/images/lineman-01.png" alt="User Journey Mapping Process" loading="lazy">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-date="November 2022">
+                        <div class="timeline-content">
+                            <h3>Prototyping & Testing</h3>
+                            <p>Our team created multiple design iterations and conducted guerilla testing with users. We tested different language options and visual elements to find the most intuitive and helpful presentation of delivery status information.</p>
+                            <div class="timeline-image">
+                                <a href='../../assets/images/lineman-02.png' target="_blank">
+                                    <img src="../../assets/images/lineman-02.png" alt="Prototyping and Testing Phase" loading="lazy">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-date="December 2022">
+                        <div class="timeline-content">
+                            <h3>Collaboration with Engineering</h3>
+                            <p>Working closely with iOS engineers, we refined our designs to work within technical constraints. We created detailed specifications and worked pixel-by-pixel to ensure the implementation matched our vision while being technically feasible.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-date="March 2023">
+                        <div class="timeline-content">
+                            <h3>Launch & Iteration</h3>
+                            <p>Live Activities launched with close monitoring of user engagement metrics. We continued to refine the experience based on real-world usage data and user feedback, making ongoing improvements to the feature.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="solution-image-container" data-index="2">
-                    <div class="solution-image-number">02</div>
-                    <img src="../../assets/images/lineman-02.png" alt="LINE MAN Live Activities Interface" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="3">
-                    <div class="solution-image-number">03</div>
-                    <img src="../../assets/images/lineman-03.png" alt="LINE MAN Delivery Tracking" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="4">
-                    <div class="solution-image-number">04</div>
-                    <img src="../../assets/images/lineman-04.png" alt="LINE MAN User Experience" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="5">
-                    <div class="solution-image-number">05</div>
-                    <img src="../../assets/images/lineman-05.gif" alt="LINE MAN Dynamic Island" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="6">
-                    <div class="solution-image-number">06</div>
-                    <img src="../../assets/images/lineman-06.png" alt="LINE MAN Status Updates" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="7">
-                    <div class="solution-image-number">07</div>
-                    <img src="../../assets/images/lineman-07.png" alt="LINE MAN Delivery Progress" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="8">
-                    <div class="solution-image-number">08</div>
-                    <img src="../../assets/images/lineman-08.png" alt="LINE MAN User Interface" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="9">
-                    <div class="solution-image-number">09</div>
-                    <img src="../../assets/images/lineman-09.png" alt="LINE MAN Implementation" class="solution-image">
-                </div>
-                <div class="solution-image-container" data-index="10">
-                    <div class="solution-image-number">10</div>
-                    <img src="../../assets/images/lineman-10.gif" alt="LINE MAN Final Design" class="solution-image">
+            </div>
+        </div>
+    </section>
+
+    <section class="problem-section" id="problem">
+        <div class="container">
+            <span class="section-number fade-in">04/</span>
+            <h2 class="section-title fade-in">Design Challenges</h2>
+            <span class="section-divider fade-in"></span>
+            
+            <div class="problem-grid">
+                <div class="fade-in">
+                    <p>
+                        Overcoming obstacles to create a seamless experience.
+                    </p>
                 </div>
             </div>
 
-            <style>
-                .solution-gallery {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 3rem;
-                    margin-top: 3rem;
-                    padding: 0 1rem;
-                    align-items: center;
-                }
+            <div class="challenges-grid">
+                <div class="challenge-card fade-in">
+                    <h3>Space Constraints</h3>
+                    <p>The limited space in Dynamic Island and lock screen notifications required us to prioritize the most critical information and use visual hierarchy effectively.</p>
+                    <div class="challenge-image">
+                        <a href='../../assets/images/lineman-d-01.png' target="_blank">
+                            <img src="../../assets/images/lineman-d-01.png" alt="Space Constraints Visualization" loading="lazy">
+                        </a>
+                    </div>
+                </div>
 
-                .solution-image-container {
-                    position: relative;
-                    border-radius: 16px;
-                    overflow: hidden;
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-                    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-                    background-color: #f5f5f7;
-                    opacity: 0;
-                    transform: translateY(30px);
-                    width: 75%;
-                    max-width: 900px;
-                }
+                <div class="challenge-card fade-in">
+                    <h3>Language & Tone</h3>
+                    <p>Finding the right voice and tone to communicate delivery status updates in a way that was clear, friendly, and reduced user anxiety.</p>
+                    <div class="challenge-image">
+                        <a href='../../assets/images/lineman-d-02.png' target="_blank">
+                            <img src="../../assets/images/lineman-d-02.png" alt="Language and Tone Example" loading="lazy">
+                        </a>
+                    </div>
+                </div>
 
-                .solution-image-container.visible {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                <div class="challenge-card fade-in">
+                    <h3>Dark Mode Support</h3>
+                    <p>Ensuring our design worked seamlessly in both light and dark modes, maintaining legibility and brand consistency across all contexts.</p>
+                    <div class="challenge-image">
+                        <a href='../../assets/images/lineman-d-03.gif' target="_blank">
+                            <img src="../../assets/images/lineman-d-03.gif" alt="Dark Mode Design Example" loading="lazy">
+                        </a>
+                    </div>
+                </div>
 
-                .solution-image-container:hover {
-                    transform: translateY(-10px) scale(1.02);
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-                }
+                <div class="challenge-card fade-in">
+                    <h3>Device Compatibility</h3>
+                    <p>Creating adaptable designs that worked across different iPhone models, from the compact view on standard iPhones to the Dynamic Island on iPhone 14 Pro.</p>
+                    <div class="challenge-image">
+                        <a href='../../assets/images/lineman-d-04.png' target="_blank">
+                            <img src="../../assets/images/lineman-d-04.png" alt="Device Compatibility Example" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                .solution-image {
-                    width: 100%;
-                    height: auto;
-                    display: block;
-                    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-                }
+    <section class="solution-section" id="solution">
+        <div class="container">
+            <span class="section-number fade-in">05/</span>
+            <h2 class="section-title fade-in">The Solution</h2>
+            <span class="section-divider fade-in"></span>
 
-                .solution-image-container:hover .solution-image {
-                    transform: scale(1.05);
-                }
+            <div class="problem-grid">
+                <div class="fade-in">
+                    A seamless real-time tracking experience that reduced anxiety and improved user satisfaction
+                </div>
+            </div>
 
-                .solution-image-number {
-                    position: absolute;
-                    top: 20px;
-                    left: 20px;
-                    background: var(--pink);
-                    color: white;
-                    font-size: 14px;
-                    font-weight: 600;
-                    padding: 6px 12px;
-                    border-radius: 20px;
-                    z-index: 2;
-                    opacity: 0;
-                    transform: translateX(-20px);
-                    transition: all 0.4s ease;
-                }
 
-                .solution-image-container:hover .solution-image-number {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
+            <div class="problem-grid">
+                <div class="fade-in">
+                    <p>
+                        Our final implementation of Live Activities addressed key user needs while working within technical constraints. We created a system that provided real-time, glanceable updates throughout the entire delivery journey.
 
-                .solution-image-container::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 20%);
-                    opacity: 0;
-                    transition: opacity 0.4s ease;
-                }
+We designed the experience to be conversational and empathetic, using language that resonated with users and reduced anxiety. The visual design maintained clear hierarchy of information, making status updates immediately understandable even at a glance.
 
-                .solution-image-container:hover::after {
-                    opacity: 1;
-                }
-
-                /* Loading animation */
-                .solution-image-container::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(90deg, 
-                        rgba(245,245,247,0) 0%, 
-                        rgba(245,245,247,0.6) 50%, 
-                        rgba(245,245,247,0) 100%);
-                    background-size: 200% 100%;
-                    animation: loading 1.5s infinite;
-                    opacity: 1;
-                    transition: opacity 0.3s ease;
-                }
-
-                .solution-image-container.loaded::before {
-                    opacity: 0;
-                }
-
-                @keyframes loading {
-                    0% { background-position: 200% 0; }
-                    100% { background-position: -200% 0; }
-                }
-
-                @media (max-width: 992px) {
-                    .solution-image-container {
-                        width: 85%;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .solution-gallery {
-                        padding: 0;
-                        gap: 2rem;
-                    }
-
-                    .solution-image-container {
-                        width: 90%;
-                    }
-
-                    .solution-image-number {
-                        top: 12px;
-                        left: 12px;
-                        font-size: 12px;
-                        padding: 4px 8px;
-                    }
-                }
-
-                @media (max-width: 480px) {
-                    .solution-image-container {
-                        width: 100%;
-                    }
-                }
-            </style>
-
-            <script>
-                // Enhanced intersection observer for scroll animations
-                const imageObserver = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            const container = entry.target;
-                            const index = parseInt(container.dataset.index);
-                            
-                            // Add visible class with delay based on index
-                            setTimeout(() => {
-                                container.classList.add('visible');
-                            }, index * 200); // 200ms delay between each image
-                            
-                            imageObserver.unobserve(container);
-                        }
-                    });
-                }, {
-                    threshold: 0.2,
-                    rootMargin: '50px'
-                });
-
-                // Observe all image containers
-                document.querySelectorAll('.solution-image-container').forEach(container => {
-                    imageObserver.observe(container);
-                });
-
-                // Handle image loading
-                document.querySelectorAll('.solution-image').forEach(img => {
-                    if (img.complete) {
-                        img.parentElement.classList.add('loaded');
-                    } else {
-                        img.addEventListener('load', () => {
-                            img.parentElement.classList.add('loaded');
-                        });
-                    }
-                });
-
-                // Add hover effect for touch devices
-                if ('ontouchstart' in window) {
-                    document.querySelectorAll('.solution-image-container').forEach(container => {
-                        container.addEventListener('touchstart', () => {
-                            container.classList.add('hover');
-                        });
-                        
-                        container.addEventListener('touchend', () => {
-                            setTimeout(() => {
-                                container.classList.remove('hover');
-                            }, 1000);
-                        });
-                    });
-                }
-            </script>
+The solution worked across different iPhone models, adapting from full lock screen presentations to the compact Dynamic Island format without losing clarity or functionality.                    </p>
+                </div>
+            </div>
+            
+            <div class="solution-showcase" style="display: grid; grid-template-columns: 1fr; gap: 20px; background-color: white;">            
+                <div class="solution-card fade-in" style="box-shadow: none; background: none;">
+                    <div class="solution-card-image" style="height: auto; box-shadow: none; background: none;">
+                        <img src="../../assets/images/lineman-10.gif" alt="Smooth Navigation" style="width: 100%; height: auto; box-shadow: none; filter: none;">
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section class="outcomes-section" id="outcomes">
         <div class="container">
-            <span class="section-number fade-in" style="color: white;">03/</span>
+            <span class="section-number fade-in" style="color: white;">06/</span>
             <h2 class="section-title fade-in">Impact & Results</h2>
             <span class="section-divider fade-in"></span>
             <p class="section-content fade-in" style="color: rgba(255,255,255,0.9);">Measurable improvements in user engagement and satisfaction</p>
@@ -1752,7 +2054,7 @@ As the first food delivery service in Thailand to implement this feature, we fac
                         <i class="fas fa-clock"></i>
                     </div>
                     <h3 class="outcome-title">
-                        <span class="counter" data-target="8">0</span><span style="font-size: 0.8em;">times</span>
+                        <span class="counter" data-target="8">0</span><span style="font-size: 0.8em;"> times</span>
                     </h3>
                     <p class="outcome-text">
                         Average status checks with Live Activities (vs 5 without)
@@ -1764,7 +2066,7 @@ As the first food delivery service in Thailand to implement this feature, we fac
                         <i class="fas fa-hourglass-half"></i>
                     </div>
                     <h3 class="outcome-title">
-                        -<span class="counter" data-target="5">0</span><span style="font-size: 0.8em;">min</span>
+                        -<span class="counter" data-target="5">0</span><span style="font-size: 0.8em;"> min</span>
                     </h3>
                     <p class="outcome-text">
                         Reduction in time spent checking order status in the main app
@@ -1868,7 +2170,7 @@ As the first food delivery service in Thailand to implement this feature, we fac
 
     <section class="more-projects">
         <div class="container">
-            <span class="section-number fade-in">04/</span>
+            <span class="section-number fade-in">07/</span>
             <h2 class="section-title fade-in">More Case Studies</h2>
             <span class="section-divider fade-in"></span>
             <p class="section-content fade-in">Other projects in my portfolio</p>
@@ -2018,6 +2320,47 @@ As the first food delivery service in Thailand to implement this feature, we fac
                 }
             });
         }
+
+        // Add timeline animation script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced intersection observer for timeline animations
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const item = entry.target;
+                        // Add delay based on item index
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, Array.from(item.parentNode.children).indexOf(item) * 200);
+                        
+                        timelineObserver.unobserve(item);
+                    }
+                });
+            }, {
+                threshold: 0.2,
+                rootMargin: '50px'
+            });
+
+            // Observe all timeline items
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                timelineObserver.observe(item);
+            });
+
+            // Add hover effect for touch devices
+            if ('ontouchstart' in window) {
+                document.querySelectorAll('.timeline-content').forEach(content => {
+                    content.addEventListener('touchstart', () => {
+                        content.style.transform = 'translateY(-5px)';
+                    });
+                    
+                    content.addEventListener('touchend', () => {
+                        setTimeout(() => {
+                            content.style.transform = '';
+                        }, 300);
+                    });
+                });
+            }
+        });
     </script>
 </body>
 </html>
