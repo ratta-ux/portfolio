@@ -1573,17 +1573,144 @@
             padding: 8rem 0;
             position: relative;
             background: linear-gradient(135deg, 
-                rgba(230, 220, 255, 0.95) 0%,
-                rgba(214, 207, 255, 0.95) 35%,
-                rgba(198, 219, 255, 0.95) 100%
+                rgba(255, 230, 250, 0.95) 0%,
+                rgba(255, 200, 230, 0.95) 35%,
+                rgba(255, 180, 215, 0.95) 100%
             );
             overflow: hidden;
         }
 
+        /* Grid pattern overlay for added texture */
+        .interactive-about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Moving blobs for dynamic background */
+        .moving-blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, 
+                rgba(255, 180, 215, 0.4) 0%,
+                rgba(255, 150, 200, 0.4) 50%,
+                rgba(255, 120, 190, 0.4) 100%
+            );
+            border-radius: 43% 57% 70% 30% / 30% 43% 57% 70%;
+            filter: blur(40px);
+            opacity: 0.6;
+            top: -100px;
+            left: -200px;
+            z-index: 0;
+            animation: blob-movement 25s ease-in-out infinite alternate;
+        }
+
+        .moving-blob-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, 
+                rgba(255, 150, 200, 0.4) 0%,
+                rgba(255, 120, 190, 0.4) 50%,
+                rgba(255, 100, 180, 0.4) 100%
+            );
+            border-radius: 57% 43% 30% 70% / 70% 57% 43% 30%;
+            filter: blur(40px);
+            opacity: 0.5;
+            bottom: -100px;
+            right: -200px;
+            z-index: 0;
+            animation: blob-movement-reverse 20s ease-in-out infinite alternate;
+        }
+
+        /* Subtle floating particles */
+        .interactive-about-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 1;
+            opacity: 0.3;
+            pointer-events: none;
+            animation: particle-float 60s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 30px 30px;
+            }
+        }
+
+        @keyframes blob-movement {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                border-radius: 43% 57% 70% 30% / 30% 43% 57% 70%;
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg) scale(1.1);
+                border-radius: 57% 43% 30% 70% / 70% 57% 43% 30%;
+            }
+            50% {
+                transform: translate(100px, 20px) rotate(10deg) scale(1);
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+            75% {
+                transform: translate(50px, 80px) rotate(5deg) scale(0.9);
+                border-radius: 70% 30% 50% 50% / 40% 60% 40% 60%;
+            }
+            100% {
+                transform: translate(0, 100px) rotate(0deg) scale(1);
+                border-radius: 43% 57% 70% 30% / 30% 43% 57% 70%;
+            }
+        }
+
+        @keyframes blob-movement-reverse {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                border-radius: 57% 43% 30% 70% / 70% 57% 43% 30%;
+            }
+            25% {
+                transform: translate(-50px, -50px) rotate(-5deg) scale(1.1);
+                border-radius: 43% 57% 70% 30% / 30% 43% 57% 70%;
+            }
+            50% {
+                transform: translate(-100px, -20px) rotate(-10deg) scale(1);
+                border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+            }
+            75% {
+                transform: translate(-50px, -80px) rotate(-5deg) scale(0.9);
+                border-radius: 30% 70% 50% 50% / 60% 40% 60% 40%;
+            }
+            100% {
+                transform: translate(0, -100px) rotate(0deg) scale(1);
+                border-radius: 57% 43% 30% 70% / 70% 57% 43% 30%;
+            }
+        }
+
+        /* Enhanced text contrast for better readability */
         .interactive-about .section-title h2,
         .interactive-about .about-text p,
         .interactive-about .section-title p {
-            color: var(--dark);
+            color: #1e293b;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
         }
 
         .about-heading h3 {
@@ -1593,17 +1720,21 @@
             z-index: 2;
             color: #1e293b;
             font-weight: 800;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
         }
 
         .about-heading h3 a {
             color: inherit;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             display: inline-block;
+            position: relative;
+            padding-bottom: 5px;
         }
 
         .about-heading h3 a:hover {
-            color: var(--secondary);
+            color: #0f172a;
+            transform: translateY(-2px);
         }
 
         .about-heading h3::after {
@@ -1613,22 +1744,74 @@
             left: 0;
             width: 100px;
             height: 12px;
-            background-color: #fcd34d;
+            background-color: rgba(252, 211, 77, 0.7);
             z-index: -1;
             border-radius: 2px;
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .about-heading h3:hover::after {
             width: 140px;
+            background-color: rgba(252, 211, 77, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .interactive-about .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        .interactive-about .about-text p strong {
+            position: relative;
+            font-weight: 600;
+            color: #0f172a;
+            z-index: 1;
+        }
+
+        .interactive-about .about-text p strong::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background-color: rgba(255, 150, 200, 0.3);
+            z-index: -1;
+            border-radius: 2px;
+            transition: height 0.3s ease;
+        }
+
+        .interactive-about .about-text p strong:hover::after {
+            height: 50%;
         }
 
         .location-indicator {
-            color: var(--primary) !important;
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #1e293b;
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .location-indicator:hover {
+            transform: translateY(-3px);
         }
 
         .location-indicator i {
-            color: var(--primary) !important;
+            margin-right: 0.5rem;
+            color: #1e293b;
+            transition: transform 0.3s ease;
+        }
+
+        .location-indicator:hover i {
+            transform: scale(1.2);
         }
 
         .interactive-about-container {
@@ -1740,6 +1923,56 @@
             .fun-fact:hover .dog-image {
                 transform: translateY(-50%) rotate(-10deg);
             }
+
+            /* Optimize blobs for mobile */
+            .moving-blob {
+                width: 300px;
+                height: 300px;
+                top: -50px;
+                left: -100px;
+                opacity: 0.4;
+                filter: blur(30px);
+            }
+
+            .moving-blob-2 {
+                width: 250px;
+                height: 250px;
+                bottom: -50px;
+                right: -100px;
+                opacity: 0.3;
+                filter: blur(30px);
+            }
+
+            /* Reduce animation complexity on mobile for better performance */
+            @keyframes blob-movement {
+                0% {
+                    transform: translate(0, 0) scale(1);
+                }
+                50% {
+                    transform: translate(30px, 30px) scale(1.1);
+                }
+                100% {
+                    transform: translate(0, 50px) scale(1);
+                }
+            }
+
+            @keyframes blob-movement-reverse {
+                0% {
+                    transform: translate(0, 0) scale(1);
+                }
+                50% {
+                    transform: translate(-30px, -30px) scale(1.1);
+                }
+                100% {
+                    transform: translate(0, -50px) scale(1);
+                }
+            }
+
+            /* Optimize particle effect for mobile */
+            .interactive-about-container::before {
+                background-size: 20px 20px;
+                opacity: 0.2;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1768,6 +2001,33 @@
                 width: 45px;
                 height: 45px;
                 border-width: 2px;
+            }
+
+            /* Further optimize blobs for small mobile */
+            .moving-blob, .moving-blob-2 {
+                width: 200px;
+                height: 200px;
+                filter: blur(20px);
+            }
+
+            .about-heading h3 {
+                font-size: 2rem;
+            }
+
+            .interactive-about .about-text p {
+                font-size: 1rem;
+            }
+
+            /* Disable some animations on small mobile for better performance */
+            .interactive-about::before {
+                opacity: 0.4;
+                background-size: 15px 15px;
+            }
+
+            .interactive-about-container::before {
+                animation: none;
+                opacity: 0.15;
+                background-size: 15px 15px;
             }
         }
 
