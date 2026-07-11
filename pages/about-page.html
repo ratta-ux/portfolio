@@ -1142,7 +1142,7 @@
             } else {
                 const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
                 Promise.race([fontsReady, new Promise(r => setTimeout(r, 600))])
-                    .then(() => requestAnimationFrame(() => docEl.classList.add('is-loaded')));
+                    .then(() => setTimeout(() => docEl.classList.add('is-loaded'), 50));
             }
 
             /* ---------- Reveal on scroll ---------- */
