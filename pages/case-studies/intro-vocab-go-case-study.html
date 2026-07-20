@@ -652,6 +652,643 @@
     </div>
 
     <main id="main">
+        <!-- ════════════════════════════════════════════════════════════
+             SHOWCASE — Learn a little, win a lot (self-contained)
+             Scroll-driven intro for Vocab Go. Distinct from the Makro
+             and AIA showcases: scale/zoom scene transitions, a 3D
+             flashcard that flips with scroll, a self-answering quiz,
+             fanned app screens, ring-gauge stats and a game-style
+             progress bar.
+        ════════════════════════════════════════════════════════════ -->
+        <section class="showcase-vg" id="showcaseVg" aria-label="Vocab Go — from grind to game">
+            <style>
+                html.no-js .showcase-vg { display: none; }
+
+                .vg-track { height: 640vh; position: relative; }
+                .vg-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+
+                .vg-glow { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
+                .vg-glow-a {
+                    top: -20%; right: -10%; width: 56vw; height: 56vw;
+                    max-width: 780px; max-height: 780px;
+                    background: radial-gradient(circle, rgba(215, 249, 92, 0.07) 0%, transparent 62%);
+                }
+                .vg-glow-b {
+                    bottom: -26%; left: -14%; width: 60vw; height: 60vw;
+                    max-width: 840px; max-height: 840px;
+                    background: radial-gradient(circle, rgba(124, 92, 255, 0.09) 0%, transparent 62%);
+                }
+
+                /* Persistent chrome */
+                .vg-top {
+                    position: absolute; top: 5.4rem; left: 0; right: 0; z-index: 30;
+                    display: flex; align-items: center; justify-content: space-between;
+                    gap: 1rem; max-width: 1280px; margin: 0 auto; padding: 0 var(--pad);
+                }
+                .vg-kicker {
+                    display: flex; align-items: center; gap: 0.8rem;
+                    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+                    text-transform: uppercase; color: var(--muted);
+                }
+                .vg-kicker::before { content: ""; width: 34px; height: 1px; background: var(--accent); }
+                .vg-skip {
+                    font-size: 0.8rem; font-weight: 600; color: var(--muted);
+                    border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 1.05rem;
+                    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+                }
+                .vg-skip:hover { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+
+                /* Scenes — zoom transitions */
+                .vg-scenes { position: absolute; inset: 0; }
+                .vg-scene {
+                    position: absolute; inset: 0;
+                    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+                    align-items: center; gap: clamp(1.5rem, 4vw, 4rem);
+                    max-width: 1280px; margin: 0 auto;
+                    padding: 6.5rem var(--pad) 6rem;
+                    opacity: 0; transform: scale(0.94) translateY(18px);
+                    transition: opacity 0.65s var(--ease-out), transform 0.8s var(--ease-expo);
+                    pointer-events: none;
+                }
+                .vg-scene.is-active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+                .vg-scene.is-past { opacity: 0; transform: scale(1.05) translateY(-14px); }
+                .vg-num {
+                    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+                    color: var(--accent); margin-bottom: 1rem;
+                }
+                .vg-scene h2 {
+                    font-family: var(--serif); font-weight: 390;
+                    font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+                    line-height: 1.07; letter-spacing: -0.01em;
+                    max-width: 15ch; margin-bottom: 1.1rem;
+                }
+                .vg-scene h2 em { font-style: italic; color: var(--accent); }
+                .vg-scene .vg-sub { color: var(--muted); max-width: 42ch; font-size: clamp(0.95rem, 1.2vw, 1.08rem); }
+                .vg-scene .vg-sub strong { color: var(--ink); font-weight: 500; }
+                .vg-visual { position: relative; min-height: 220px; }
+
+                /* Scene 1 — floating words */
+                .vg-words { position: relative; height: clamp(250px, 42vh, 400px); }
+                .vg-word {
+                    position: absolute;
+                    font-family: var(--serif); font-style: italic;
+                    font-size: clamp(1rem, 1.8vw, 1.5rem); color: var(--muted);
+                    border: 1px solid var(--line); border-radius: 999px;
+                    padding: 0.5rem 1.2rem; background: var(--card);
+                    animation: vgDrift 8s ease-in-out infinite;
+                    transition: color 0.3s ease, border-color 0.3s ease;
+                }
+                .vg-word:hover { color: var(--ink); border-color: var(--muted); }
+                .vg-word-1 { top: 2%; left: 6%; animation-delay: 0s; }
+                .vg-word-2 { top: 16%; right: 4%; animation-delay: -2.2s; }
+                .vg-word-3 { top: 44%; left: 0%; animation-delay: -4.4s; }
+                .vg-word-4 { top: 58%; right: 12%; animation-delay: -1.4s; }
+                .vg-word-5 { bottom: 4%; left: 22%; animation-delay: -5.8s; }
+                @keyframes vgDrift {
+                    0%, 100% { margin-top: 0; }
+                    50% { margin-top: -14px; }
+                }
+                .vg-quit {
+                    position: absolute; bottom: 18%; right: 0;
+                    background: var(--card); border: 1px solid var(--line);
+                    border-radius: 16px; padding: 1rem 1.3rem;
+                    font-size: 0.9rem; color: var(--ink); font-weight: 500;
+                    transform: rotate(2.5deg);
+                    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+                }
+                .vg-quit b { color: var(--accent); }
+
+                /* Scene 2 — contrast cards */
+                .vg-contrast { display: grid; gap: clamp(0.9rem, 1.8vw, 1.3rem); }
+                .vg-way {
+                    border-radius: var(--radius); padding: clamp(1.2rem, 2.2vw, 1.6rem);
+                    display: flex; align-items: center; gap: 1rem;
+                    opacity: 0; transform: translateY(24px);
+                    transition: opacity 0.6s var(--ease-out), transform 0.7s var(--ease-expo), border-color 0.3s ease;
+                }
+                .vg-scene.is-active .vg-way { opacity: 1; transform: translateY(0); }
+                .vg-way--old {
+                    border: 1.5px dashed var(--line); color: var(--faint);
+                    text-decoration: line-through; text-decoration-color: rgba(160, 155, 144, 0.5);
+                }
+                .vg-way--new {
+                    background: var(--accent); color: var(--accent-ink);
+                    border: 1.5px solid var(--accent);
+                    font-weight: 600; transition-delay: 0.15s;
+                    box-shadow: 0 18px 50px rgba(215, 249, 92, 0.18);
+                }
+                .vg-way .mark {
+                    flex: none; width: 34px; height: 34px; border-radius: 50%;
+                    display: grid; place-items: center; font-weight: 700;
+                }
+                .vg-way--old .mark { border: 1.5px dashed var(--line); }
+                .vg-way--new .mark { background: rgba(20, 21, 7, 0.14); }
+                .vg-way small { display: block; font-weight: 400; opacity: 0.75; font-size: 0.82rem; }
+
+                /* Scene 3 — flashcard flip */
+                .vg-flip-zone { perspective: 1400px; display: grid; place-items: center; }
+                .vg-flip-box { width: min(340px, 100%); }
+                .vg-flip {
+                    position: relative; width: 100%; aspect-ratio: 8 / 5;
+                    transform-style: preserve-3d; will-change: transform;
+                }
+                .vg-face {
+                    position: absolute; inset: 0;
+                    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+                    border-radius: 22px; display: flex; flex-direction: column;
+                    align-items: center; justify-content: center; gap: 0.4rem;
+                    padding: 6% 8%; text-align: center; overflow: hidden;
+                }
+                .vg-face .lang {
+                    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em;
+                    text-transform: uppercase; opacity: 0.6;
+                }
+                .vg-face .word { font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.3rem); font-weight: 450; line-height: 1.15; }
+                .vg-face .hintline { font-size: 0.82rem; opacity: 0.65; }
+                .vg-face--front { background: var(--accent); color: var(--accent-ink); }
+                .vg-face--back {
+                    background: var(--card); color: var(--ink);
+                    border: 1.5px solid var(--accent);
+                    transform: rotateY(180deg);
+                }
+                .vg-face--back .word { color: var(--accent); }
+                .vg-flip-hint {
+                    margin-top: 1.2rem; text-align: center;
+                    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em;
+                    text-transform: uppercase; color: var(--faint);
+                }
+
+                /* Scene 4 — quiz */
+                .vg-quiz {
+                    position: relative;
+                    background: var(--card); border: 1px solid var(--line-soft);
+                    border-radius: var(--radius); padding: clamp(1.4rem, 2.6vw, 2rem);
+                    max-width: 400px; margin: 0 auto;
+                }
+                .vg-quiz-q { font-family: var(--serif); font-size: clamp(1.15rem, 2vw, 1.5rem); margin-bottom: 1.2rem; }
+                .vg-quiz-q em { color: var(--accent); font-style: italic; }
+                .vg-opts { display: grid; gap: 0.6rem; }
+                .vg-opt {
+                    display: flex; align-items: center; justify-content: space-between;
+                    border: 1px solid var(--line); border-radius: 12px;
+                    padding: 0.75rem 1rem; color: var(--muted); font-size: 0.95rem;
+                    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .vg-opt .tick { opacity: 0; font-weight: 700; transition: opacity 0.3s ease; }
+                .vg-opt.is-picked {
+                    background: var(--accent); border-color: var(--accent);
+                    color: var(--accent-ink); font-weight: 600;
+                    transform: scale(1.03);
+                }
+                .vg-opt.is-picked .tick { opacity: 1; }
+                .vg-xp {
+                    position: absolute; top: -16px; right: 1.4rem;
+                    background: var(--accent); color: var(--accent-ink);
+                    font-size: 0.78rem; font-weight: 700;
+                    border-radius: 999px; padding: 0.4rem 0.9rem;
+                    opacity: 0; transform: translateY(10px) scale(0.8);
+                    transition: opacity 0.4s ease, transform 0.5s var(--ease-expo);
+                }
+                .vg-quiz.is-correct .vg-xp { opacity: 1; transform: translateY(0) scale(1); }
+
+                /* Scene 5 — fanned app screens */
+                .vg-fan { position: relative; height: clamp(280px, 46vh, 440px); }
+                .vg-shot {
+                    position: absolute; top: 0; left: 50%;
+                    width: clamp(120px, 34%, 170px);
+                    border-radius: 20px; padding: 6px;
+                    background: #1c1c18; border: 1px solid var(--line);
+                    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
+                    opacity: 0;
+                    transition: opacity 0.6s var(--ease-out), transform 0.8s var(--ease-expo);
+                }
+                .vg-shot img { width: 100%; border-radius: 15px; display: block; }
+                .vg-shot-1 { transform: translateX(-50%) translateY(40px); }
+                .vg-shot-2 { transform: translateX(-50%) translateY(40px); transition-delay: 0.12s; }
+                .vg-shot-3 { transform: translateX(-50%) translateY(40px); transition-delay: 0.24s; }
+                .vg-scene.is-active .vg-shot-1 { opacity: 1; transform: translateX(-118%) translateY(6%) rotate(-9deg); }
+                .vg-scene.is-active .vg-shot-2 { opacity: 1; transform: translateX(-50%) translateY(0) rotate(0deg); z-index: 2; }
+                .vg-scene.is-active .vg-shot-3 { opacity: 1; transform: translateX(18%) translateY(6%) rotate(9deg); }
+                .vg-shot:hover { z-index: 5; }
+
+                /* Scene 6 — ring stats */
+                .vg-scene--impact { grid-template-columns: 1fr; text-align: center; align-content: center; justify-items: center; }
+                .vg-scene--impact h2 { max-width: 22ch; margin-left: auto; margin-right: auto; }
+                .vg-scene--impact .vg-sub { margin: 0 auto 2.4rem; }
+                .vg-rings {
+                    display: flex; gap: clamp(1.4rem, 4vw, 3.2rem);
+                    justify-content: center; flex-wrap: wrap; margin-bottom: 2.6rem;
+                }
+                .vg-ring { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; }
+                .vg-ring svg { width: clamp(96px, 12vw, 130px); height: auto; transform: rotate(-90deg); }
+                .vg-ring circle { fill: none; stroke-width: 7; }
+                .vg-ring .trk { stroke: var(--line-soft); }
+                .vg-ring .fil { stroke: var(--accent); stroke-linecap: round; }
+                .vg-ring .num {
+                    position: absolute;
+                    font-family: var(--serif); font-weight: 450;
+                    font-size: clamp(1.3rem, 2.2vw, 1.8rem); color: var(--accent);
+                }
+                .vg-ring .face { position: relative; display: grid; place-items: center; }
+                .vg-ring .lbl { font-size: 0.82rem; color: var(--muted); max-width: 15ch; }
+
+                /* Game-style progress bar (bottom centre) */
+                .vg-rail {
+                    position: absolute; bottom: 1.6rem; left: 50%; z-index: 30;
+                    transform: translateX(-50%);
+                    display: flex; align-items: center; gap: 0.9rem;
+                    background: rgba(19, 19, 17, 0.8);
+                    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+                    border: 1px solid var(--line-soft); border-radius: 999px;
+                    padding: 0.55rem 1.1rem;
+                }
+                .vg-rail-pips { display: flex; gap: 0.55rem; }
+                .vg-rail-pips button { padding: 0.3rem 0.15rem; }
+                .vg-rail-pips i {
+                    display: block; width: 9px; height: 9px;
+                    background: var(--line); transform: rotate(45deg);
+                    transition: background-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .vg-rail-pips button.is-on i { background: var(--accent); }
+                .vg-rail-pips button.is-now i { transform: rotate(45deg) scale(1.45); }
+                .vg-rail-label {
+                    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
+                    text-transform: uppercase; color: var(--muted);
+                    min-width: 8ch; text-align: left;
+                }
+
+                .vg-hint {
+                    position: absolute; bottom: 4.6rem; left: 50%; z-index: 30;
+                    transform: translateX(-50%);
+                    color: var(--faint); font-size: 0.68rem;
+                    letter-spacing: 0.22em; text-transform: uppercase;
+                    opacity: 0; transition: opacity 0.5s ease;
+                }
+                .vg-stage[data-scene="1"] .vg-hint { opacity: 1; animation: vgPulseHint 2.4s ease-in-out infinite; }
+                @keyframes vgPulseHint {
+                    0%, 100% { opacity: 0.45; }
+                    50% { opacity: 1; }
+                }
+
+                /* Responsive */
+                @media (max-width: 860px) {
+                    .vg-scene {
+                        grid-template-columns: 1fr;
+                        align-content: start; gap: 1.6rem;
+                        padding-top: 9.5rem; text-align: center;
+                    }
+                    .vg-scene h2, .vg-scene .vg-sub { margin-left: auto; margin-right: auto; }
+                    .vg-words { height: clamp(200px, 30vh, 280px); }
+                    .vg-quit { bottom: 4%; right: 4%; font-size: 0.82rem; }
+                    .vg-way { text-align: left; }
+                    .vg-flip-box { width: min(300px, 84vw); }
+                    .vg-quiz { max-width: min(400px, 88vw); }
+                    .vg-fan { height: clamp(220px, 30svh, 300px); }
+                    .vg-shot { width: clamp(96px, 30%, 130px); }
+                    .vg-rail-label { display: none; }
+                    .vg-rail { gap: 0; padding: 0.5rem 0.9rem; }
+                    .vg-hint { display: none; }
+                    .vg-top { top: 4.6rem; }
+                }
+
+                /* Reduced motion: static storyboard */
+                @media (prefers-reduced-motion: reduce) {
+                    .vg-track { height: auto; }
+                    .vg-stage { position: static; height: auto; overflow: visible; padding: 6.5rem 0 2rem; }
+                    .vg-scenes { position: static; }
+                    .vg-scene {
+                        position: static; opacity: 1; transform: none; pointer-events: auto;
+                        padding: 2.5rem var(--pad); min-height: 0;
+                    }
+                    .vg-scene.is-past { opacity: 1; transform: none; }
+                    .vg-way, .vg-shot { opacity: 1; }
+                    .vg-shot { position: static; transform: none !important; display: inline-block; margin: 0 0.4rem; }
+                    .vg-fan { height: auto; text-align: center; }
+                    .vg-rail, .vg-hint, .vg-skip, .vg-glow { display: none; }
+                    .vg-top { position: static; margin-bottom: 1rem; }
+                }
+            </style>
+
+            <div class="vg-track" id="vgTrack">
+                <div class="vg-stage" id="vgStage" data-scene="1">
+                    <div class="vg-glow vg-glow-a" id="vgGlowA" aria-hidden="true"></div>
+                    <div class="vg-glow vg-glow-b" id="vgGlowB" aria-hidden="true"></div>
+
+                    <div class="vg-top">
+                        <p class="vg-kicker">The making of Vocab Go</p>
+                        <button class="vg-skip" id="vgSkip" type="button">Skip intro ↓</button>
+                    </div>
+
+                    <div class="vg-scenes">
+                        <!-- 01 · The grind -->
+                        <div class="vg-scene is-active" data-vg="1">
+                            <div>
+                                <p class="vg-num">01 / 06 — The grind</p>
+                                <h2>Learning a language shouldn't feel like <em>homework.</em></h2>
+                                <p class="vg-sub">Vocabulary is the wall most learners hit — <strong>hard to retain, easy to forget</strong>, and motivation fades fast.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-words" aria-hidden="true">
+                                    <span class="vg-word vg-word-1">Hola</span>
+                                    <span class="vg-word vg-word-2">你好</span>
+                                    <span class="vg-word vg-word-3">Bonjour</span>
+                                    <span class="vg-word vg-word-4">こんにちは</span>
+                                    <span class="vg-word vg-word-5">Ciao</span>
+                                    <div class="vg-quit">😵‍💫 Most learners quit by <b>week two</b></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 02 · The insight -->
+                        <div class="vg-scene" data-vg="2">
+                            <div>
+                                <p class="vg-num">02 / 06 — The insight</p>
+                                <h2>Little and often beats <em>long and rare.</em></h2>
+                                <p class="vg-sub">Research pointed one way: <strong>bite-sized, gamified practice</strong> — quick wins that keep momentum alive.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-contrast">
+                                    <div class="vg-way vg-way--old">
+                                        <span class="mark">✗</span>
+                                        <span>Marathon grammar drills<small>2 hours, once a week</small></span>
+                                    </div>
+                                    <div class="vg-way vg-way--new">
+                                        <span class="mark">✓</span>
+                                        <span>Bite-sized vocabulary bursts<small>2 minutes, every day</small></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 03 · Flashcards -->
+                        <div class="vg-scene" data-vg="3">
+                            <div>
+                                <p class="vg-num">03 / 06 — Flashcards</p>
+                                <h2>Flip it till you <em>know it.</em></h2>
+                                <p class="vg-sub"><strong>Keep scrolling to flip the card</strong> — learners build their own decks in seconds and drill them anywhere.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-flip-zone">
+                                    <div class="vg-flip-box">
+                                        <div class="vg-flip" id="vgFlip" aria-hidden="true">
+                                            <div class="vg-face vg-face--front">
+                                                <span class="lang">English</span>
+                                                <span class="word">Apple 🍎</span>
+                                                <span class="hintline">Tap to reveal</span>
+                                            </div>
+                                            <div class="vg-face vg-face--back">
+                                                <span class="lang">Japanese</span>
+                                                <span class="word">りんご</span>
+                                                <span class="hintline">rin-go</span>
+                                            </div>
+                                        </div>
+                                        <p class="vg-flip-hint" id="vgFlipHint">Scroll to flip</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 04 · Practice -->
+                        <div class="vg-scene" data-vg="4">
+                            <div>
+                                <p class="vg-num">04 / 06 — Practice</p>
+                                <h2>Quizzes that ask at the <em>perfect moment.</em></h2>
+                                <p class="vg-sub">Multiple-choice drills powered by <strong>spaced repetition</strong> — keep scrolling and watch the right answer land.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-quiz" id="vgQuiz">
+                                    <span class="vg-xp">+10 XP ✦</span>
+                                    <p class="vg-quiz-q">How do you say <em>"water"</em> in Japanese?</p>
+                                    <div class="vg-opts" id="vgOpts">
+                                        <div class="vg-opt"><span>ひ · hi</span><span class="tick">—</span></div>
+                                        <div class="vg-opt" data-correct><span>みず · mizu</span><span class="tick">✓</span></div>
+                                        <div class="vg-opt"><span>つち · tsuchi</span><span class="tick">—</span></div>
+                                        <div class="vg-opt"><span>かぜ · kaze</span><span class="tick">—</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 05 · The app -->
+                        <div class="vg-scene" data-vg="5">
+                            <div>
+                                <p class="vg-num">05 / 06 — The app</p>
+                                <h2>Meet <em>Vocab Go.</em></h2>
+                                <p class="vg-sub">Dashboard, flashcards and progress tracking — <strong>an MVP built for daily momentum.</strong></p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-fan">
+                                    <div class="vg-shot vg-shot-1"><img src="../../assets/images/vocab-go-solution-02.png" alt="Vocab Go flashcard creation screen" loading="lazy"></div>
+                                    <div class="vg-shot vg-shot-2"><img src="../../assets/images/vocab-go-solution-01.png" alt="Vocab Go learning dashboard" loading="lazy"></div>
+                                    <div class="vg-shot vg-shot-3"><img src="../../assets/images/vocab-go-solution-05.png" alt="Vocab Go progress tracking screen" loading="lazy"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 06 · Impact -->
+                        <div class="vg-scene vg-scene--impact" data-vg="6">
+                            <div>
+                                <p class="vg-num">06 / 06 — Impact</p>
+                                <h2>Small habits, <em>big numbers.</em></h2>
+                                <p class="vg-sub">What bite-sized learning delivered for users.</p>
+                                <div class="vg-rings">
+                                    <div class="vg-ring">
+                                        <div class="face">
+                                            <svg viewBox="0 0 120 120" aria-hidden="true">
+                                                <circle class="trk" cx="60" cy="60" r="48"/>
+                                                <circle class="fil" cx="60" cy="60" r="48" data-frac="0.3"/>
+                                            </svg>
+                                            <span class="num"><span data-vg-count="30">0</span>%</span>
+                                        </div>
+                                        <span class="lbl">More vocabulary retained</span>
+                                    </div>
+                                    <div class="vg-ring">
+                                        <div class="face">
+                                            <svg viewBox="0 0 120 120" aria-hidden="true">
+                                                <circle class="trk" cx="60" cy="60" r="48"/>
+                                                <circle class="fil" cx="60" cy="60" r="48" data-frac="0.4"/>
+                                            </svg>
+                                            <span class="num"><span data-vg-count="40">0</span>%</span>
+                                        </div>
+                                        <span class="lbl">Longer learning sessions</span>
+                                    </div>
+                                    <div class="vg-ring">
+                                        <div class="face">
+                                            <svg viewBox="0 0 120 120" aria-hidden="true">
+                                                <circle class="trk" cx="60" cy="60" r="48"/>
+                                                <circle class="fil" cx="60" cy="60" r="48" data-frac="1"/>
+                                            </svg>
+                                            <span class="num"><span data-vg-count="2">0</span>x</span>
+                                        </div>
+                                        <span class="lbl">Faster word acquisition</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-solid" id="vgEnter" type="button" data-magnetic>
+                                    Read the full case study
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(90deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="vg-rail" aria-label="Showcase chapters">
+                        <div class="vg-rail-pips">
+                            <button type="button" class="is-on is-now" data-i="1" aria-label="The grind"><i></i></button>
+                            <button type="button" data-i="2" aria-label="The insight"><i></i></button>
+                            <button type="button" data-i="3" aria-label="Flashcards"><i></i></button>
+                            <button type="button" data-i="4" aria-label="Practice"><i></i></button>
+                            <button type="button" data-i="5" aria-label="The app"><i></i></button>
+                            <button type="button" data-i="6" aria-label="Impact"><i></i></button>
+                        </div>
+                        <span class="vg-rail-label" id="vgRailLabel">The grind</span>
+                    </nav>
+
+                    <div class="vg-hint" aria-hidden="true">Scroll to play</div>
+                </div>
+            </div>
+
+            <script>
+                (function () {
+                    'use strict';
+                    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    const track = document.getElementById('vgTrack');
+                    const stage = document.getElementById('vgStage');
+                    const sceneEls = Array.from(stage.querySelectorAll('.vg-scene'));
+                    const railBtns = Array.from(stage.querySelectorAll('.vg-rail-pips button'));
+                    const railLabel = document.getElementById('vgRailLabel');
+                    const labels = ['The grind', 'The insight', 'Flashcards', 'Practice', 'The app', 'Impact'];
+                    const glowA = document.getElementById('vgGlowA');
+                    const glowB = document.getElementById('vgGlowB');
+                    const flip = document.getElementById('vgFlip');
+                    const flipHint = document.getElementById('vgFlipHint');
+                    const quiz = document.getElementById('vgQuiz');
+                    const opts = Array.from(stage.querySelectorAll('.vg-opt'));
+                    const correctOpt = stage.querySelector('.vg-opt[data-correct]');
+                    const rings = Array.from(stage.querySelectorAll('.vg-ring .fil'));
+                    const CIRC = 2 * Math.PI * 48;
+                    const SCENES = 6;
+                    const ease = (t) => 1 - Math.pow(1 - t, 3);
+                    let counted = false;
+
+                    rings.forEach(r => {
+                        r.style.strokeDasharray = String(CIRC);
+                        r.style.strokeDashoffset = String(CIRC);
+                    });
+
+                    function fillRings(instant) {
+                        rings.forEach(r => {
+                            const frac = parseFloat(r.dataset.frac);
+                            if (instant) { r.style.strokeDashoffset = String(CIRC * (1 - frac)); return; }
+                            const dur = 1300;
+                            const t0 = performance.now();
+                            const step = (t) => {
+                                const p = Math.min((t - t0) / dur, 1);
+                                r.style.strokeDashoffset = String(CIRC * (1 - frac * ease(p)));
+                                if (p < 1) requestAnimationFrame(step);
+                            };
+                            requestAnimationFrame(step);
+                            setTimeout(() => { r.style.strokeDashoffset = String(CIRC * (1 - frac)); }, dur + 250);
+                        });
+                        stage.querySelectorAll('[data-vg-count]').forEach(el => {
+                            const target = parseFloat(el.dataset.vgCount);
+                            if (instant) { el.textContent = String(target); return; }
+                            const dur = 1300;
+                            const t0 = performance.now();
+                            const step = (t) => {
+                                const p = Math.min((t - t0) / dur, 1);
+                                el.textContent = String(Math.round(target * ease(p)));
+                                if (p < 1) requestAnimationFrame(step);
+                            };
+                            requestAnimationFrame(step);
+                            setTimeout(() => { el.textContent = String(target); }, dur + 250);
+                        });
+                    }
+
+                    if (reduceMotion) {
+                        sceneEls.forEach(el => el.classList.add('is-active'));
+                        correctOpt.classList.add('is-picked');
+                        quiz.classList.add('is-correct');
+                        fillRings(true);
+                        return;
+                    }
+
+                    let cur = 0;
+
+                    function update() {
+                        const r = track.getBoundingClientRect();
+                        const total = r.height - window.innerHeight;
+                        if (total <= 0) return;
+                        const p = Math.min(Math.max(-r.top / total, 0), 1);
+                        const f = p * SCENES;
+                        const idx = Math.max(1, Math.min(Math.floor(f) + 1, SCENES));
+                        const sp = Math.min(Math.max(f - (idx - 1), 0), 1);
+
+                        if (idx !== cur) {
+                            cur = idx;
+                            stage.dataset.scene = String(idx);
+                            sceneEls.forEach((el, i) => {
+                                el.classList.toggle('is-active', i + 1 === idx);
+                                el.classList.toggle('is-past', i + 1 < idx);
+                            });
+                            railBtns.forEach((b, i) => {
+                                b.classList.toggle('is-on', i + 1 <= idx);
+                                b.classList.toggle('is-now', i + 1 === idx);
+                            });
+                            railLabel.textContent = labels[idx - 1];
+                            if (idx === 6 && !counted) { counted = true; fillRings(false); }
+                        }
+
+                        // Flashcard flip driven by scroll inside scene 3
+                        if (idx < 3) {
+                            flip.style.transform = 'rotateY(0deg)';
+                        } else if (idx === 3) {
+                            const d = Math.min(sp * 1.25, 1);
+                            flip.style.transform = 'rotateY(' + (d * 180) + 'deg)';
+                            flipHint.textContent = d > 0.5 ? 'りんご — nailed it ✦' : 'Scroll to flip';
+                        } else {
+                            flip.style.transform = 'rotateY(180deg)';
+                        }
+
+                        // Quiz answers itself inside scene 4
+                        if (idx === 4) {
+                            correctOpt.classList.toggle('is-picked', sp > 0.45);
+                            quiz.classList.toggle('is-correct', sp > 0.7);
+                        } else if (idx > 4) {
+                            correctOpt.classList.add('is-picked');
+                            quiz.classList.add('is-correct');
+                        } else {
+                            correctOpt.classList.remove('is-picked');
+                            quiz.classList.remove('is-correct');
+                        }
+
+                        // Glow parallax
+                        glowA.style.transform = 'translateY(' + (p * -120) + 'px)';
+                        glowB.style.transform = 'translateY(' + (p * 95) + 'px)';
+                    }
+
+                    window.addEventListener('scroll', update, { passive: true });
+                    window.addEventListener('resize', update);
+                    update();
+
+                    function jumpTo(i) {
+                        const r = track.getBoundingClientRect();
+                        const top = window.scrollY + r.top;
+                        const total = r.height - window.innerHeight;
+                        window.scrollTo({ top: top + total * ((i - 0.5) / SCENES), behavior: 'smooth' });
+                    }
+                    railBtns.forEach((b) => {
+                        b.addEventListener('click', () => jumpTo(parseInt(b.dataset.i, 10)));
+                    });
+                    function exitShowcase() {
+                        const r = track.getBoundingClientRect();
+                        window.scrollTo({ top: window.scrollY + r.bottom - 70, behavior: 'smooth' });
+                    }
+                    document.getElementById('vgSkip').addEventListener('click', exitShowcase);
+                    document.getElementById('vgEnter').addEventListener('click', exitShowcase);
+                })();
+            </script>
+        </section>
+
         <section class="case-hero" aria-label="Vocab Go case study">
             <div class="hero-glow" aria-hidden="true"></div>
             <div class="container">

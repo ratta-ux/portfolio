@@ -652,6 +652,725 @@
     </div>
 
     <main id="main">
+        <!-- ════════════════════════════════════════════════════════════
+             SHOWCASE — A library for everyone (self-contained component)
+             Scroll-driven intro for LearnBig. Distinct from the Makro,
+             AIA and Vocab Go showcases: page-turn scene transitions, a
+             bookshelf that fills itself with scroll, a language
+             switcher, a bookmark-ribbon progress rail and a growing
+             bar chart.
+        ════════════════════════════════════════════════════════════ -->
+        <section class="showcase-lb" id="showcaseLb" aria-label="LearnBig — a library for everyone">
+            <style>
+                html.no-js .showcase-lb { display: none; }
+
+                .lb-track { height: 640vh; position: relative; }
+                .lb-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+
+                .lb-glow { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
+                .lb-glow-a {
+                    top: -20%; right: -12%; width: 56vw; height: 56vw;
+                    max-width: 780px; max-height: 780px;
+                    background: radial-gradient(circle, rgba(215, 249, 92, 0.07) 0%, transparent 62%);
+                }
+                .lb-glow-b {
+                    bottom: -26%; left: -14%; width: 60vw; height: 60vw;
+                    max-width: 840px; max-height: 840px;
+                    background: radial-gradient(circle, rgba(46, 196, 134, 0.08) 0%, transparent 62%);
+                }
+
+                /* Persistent chrome */
+                .lb-top {
+                    position: absolute; top: 5.4rem; left: 0; right: 0; z-index: 30;
+                    display: flex; align-items: center; justify-content: space-between;
+                    gap: 1rem; max-width: 1280px; margin: 0 auto; padding: 0 var(--pad);
+                }
+                .lb-kicker {
+                    display: flex; align-items: center; gap: 0.8rem;
+                    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+                    text-transform: uppercase; color: var(--muted);
+                }
+                .lb-kicker::before { content: ""; width: 34px; height: 1px; background: var(--accent); }
+                .lb-skip {
+                    font-size: 0.8rem; font-weight: 600; color: var(--muted);
+                    border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 1.05rem;
+                    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+                }
+                .lb-skip:hover { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+
+                /* Scenes — page-turn transitions */
+                .lb-scenes { position: absolute; inset: 0; }
+                .lb-scene {
+                    position: absolute; inset: 0;
+                    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+                    align-items: center; gap: clamp(1.5rem, 4vw, 4rem);
+                    max-width: 1280px; margin: 0 auto;
+                    padding: 6.5rem var(--pad) 5rem;
+                    padding-left: calc(var(--pad) + 2.6rem);
+                    opacity: 0; transform: rotate(1.4deg) translateY(36px);
+                    transform-origin: 12% 100%;
+                    transition: opacity 0.65s var(--ease-out), transform 0.8s var(--ease-expo);
+                    pointer-events: none;
+                }
+                .lb-scene.is-active { opacity: 1; transform: rotate(0deg) translateY(0); pointer-events: auto; }
+                .lb-scene.is-past { opacity: 0; transform: rotate(-1.4deg) translateY(-32px); }
+                .lb-num {
+                    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+                    color: var(--accent); margin-bottom: 1rem;
+                }
+                .lb-scene h2 {
+                    font-family: var(--serif); font-weight: 390;
+                    font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+                    line-height: 1.07; letter-spacing: -0.01em;
+                    max-width: 15ch; margin-bottom: 1.1rem;
+                }
+                .lb-scene h2 em { font-style: italic; color: var(--accent); }
+                .lb-scene .lb-sub { color: var(--muted); max-width: 42ch; font-size: clamp(0.95rem, 1.2vw, 1.08rem); }
+                .lb-scene .lb-sub strong { color: var(--ink); font-weight: 500; }
+                .lb-visual { position: relative; min-height: 220px; }
+
+                /* Scene 1 — the gap: nearly-empty shelf + one shared textbook */
+                .lb-lone { max-width: 430px; margin: 0 auto; }
+                .lb-shelfrow {
+                    display: flex; align-items: flex-end;
+                    gap: 8px; height: clamp(130px, 20vh, 180px);
+                    padding: 0 6%;
+                }
+                .lb-gbook {
+                    width: clamp(22px, 3vw, 30px);
+                    border-radius: 4px 4px 0 0;
+                    position: relative;
+                }
+                .lb-gbook::before,
+                .lb-gbook::after {
+                    content: ""; position: absolute; left: 18%; right: 18%;
+                    height: 3px; border-radius: 2px;
+                    background: rgba(14, 14, 12, 0.35);
+                }
+                .lb-gbook::before { top: 10%; }
+                .lb-gbook::after { top: 20%; }
+                .lb-gbook--faded { opacity: 0.4; }
+                .lb-gbook--lean {
+                    transform: rotate(-12deg);
+                    transform-origin: bottom left;
+                    opacity: 0.4;
+                }
+                .lb-gap-space { flex: 1; }
+                .lb-hero-wrap {
+                    position: relative; align-self: stretch;
+                    display: flex; align-items: flex-end;
+                }
+                .lb-gbook--hero {
+                    height: 82%; width: clamp(26px, 3.4vw, 34px);
+                    background: var(--accent);
+                    animation: lbWobble 5s ease-in-out infinite;
+                }
+                .lb-gbook--hero::before,
+                .lb-gbook--hero::after { background: rgba(20, 21, 7, 0.3); }
+                @keyframes lbWobble {
+                    0%, 100% { transform: rotate(0deg); }
+                    50% { transform: rotate(-3deg); }
+                }
+                .lb-onlycopy {
+                    position: absolute; bottom: calc(82% + 10px); left: 50%;
+                    transform: translateX(-50%);
+                    white-space: nowrap;
+                    background: var(--accent); color: var(--accent-ink);
+                    font-size: 0.74rem; font-weight: 700;
+                    padding: 0.42rem 0.85rem; border-radius: 999px;
+                }
+                .lb-onlycopy::after {
+                    content: ""; position: absolute; top: 100%; left: 50%;
+                    transform: translateX(-50%);
+                    border-left: 6px solid transparent; border-right: 6px solid transparent;
+                    border-top: 7px solid var(--accent);
+                }
+                .lb-plank {
+                    height: 11px; border-radius: 6px;
+                    background: #26261f; border: 1px solid var(--line);
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+                }
+                .lb-class {
+                    display: flex; align-items: center; justify-content: center;
+                    gap: 0.9rem; flex-wrap: wrap; margin-top: 1.3rem;
+                }
+                .lb-dots {
+                    display: grid; grid-template-columns: repeat(16, 8px);
+                    gap: 5px;
+                }
+                .lb-dots span {
+                    width: 8px; height: 8px; border-radius: 50%;
+                    background: var(--faint);
+                }
+                .lb-class-cap { font-size: 0.86rem; color: var(--muted); }
+                .lb-class-cap b { color: var(--ink); font-weight: 600; }
+
+                /* Scene 2 — the idea chips */
+                .lb-idea { position: relative; height: clamp(230px, 38vh, 360px); }
+                .lb-idea-chip {
+                    position: absolute; border-radius: 16px; padding: 0.9rem 1.2rem;
+                    font-size: 0.88rem; font-weight: 500;
+                    border: 1px solid var(--line); background: var(--card); color: var(--muted);
+                    animation: lbFloat 7s ease-in-out infinite;
+                    transition: border-color 0.3s ease;
+                }
+                .lb-idea-chip:hover { border-color: var(--muted); }
+                .lb-idea-1 { top: 4%; left: 2%; animation-delay: 0s; }
+                .lb-idea-2 { top: 24%; right: 0%; animation-delay: -2.4s; }
+                .lb-idea-3 { bottom: 30%; left: 8%; animation-delay: -4.6s; }
+                .lb-idea-main {
+                    position: absolute; bottom: 2%; right: 10%;
+                    background: var(--accent); color: var(--accent-ink);
+                    border: none; font-weight: 600; font-size: 0.98rem;
+                    padding: 1.1rem 1.4rem; border-radius: 18px;
+                    box-shadow: 0 18px 50px rgba(215, 249, 92, 0.2);
+                    animation-delay: -1.2s;
+                }
+                @keyframes lbFloat {
+                    0%, 100% { margin-top: 0; }
+                    50% { margin-top: -12px; }
+                }
+
+                /* Scene 3 — the shelf */
+                .lb-shelf-wrap { text-align: center; }
+                .lb-count {
+                    font-family: var(--serif); font-weight: 450;
+                    font-size: clamp(2rem, 4vw, 3rem); color: var(--accent);
+                    margin-bottom: 1.2rem; line-height: 1;
+                }
+                .lb-count small { font-size: 0.4em; color: var(--muted); font-family: var(--sans); font-weight: 500; letter-spacing: 0.08em; }
+                .lb-shelf {
+                    display: flex; align-items: flex-end; justify-content: center;
+                    gap: 7px; height: clamp(150px, 24vh, 220px);
+                    border-bottom: 2px solid var(--line);
+                    padding: 0 4%;
+                }
+                .lb-book {
+                    width: clamp(16px, 2.4vw, 26px);
+                    height: calc(var(--h) * 1%);
+                    border-radius: 4px 4px 0 0;
+                    background: var(--c);
+                    opacity: 0; transform: translateY(26px);
+                    transition: opacity 0.45s var(--ease-out), transform 0.55s var(--ease-expo);
+                }
+                .lb-book.is-in { opacity: 1; transform: translateY(0); }
+                .lb-book:hover { filter: brightness(1.15); }
+
+                /* Scene 4 — languages */
+                .lb-langs { max-width: 400px; margin: 0 auto; }
+                .lb-tabs {
+                    display: flex; gap: 0.5rem; flex-wrap: wrap;
+                    margin-bottom: 1.2rem; justify-content: center;
+                }
+                .lb-tab {
+                    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+                    border: 1px solid var(--line); border-radius: 999px;
+                    padding: 0.45rem 1.05rem; color: var(--faint);
+                    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .lb-tab.is-lit {
+                    background: var(--accent); border-color: var(--accent);
+                    color: var(--accent-ink); transform: scale(1.06);
+                }
+                .lb-bookcard {
+                    background: var(--card); border: 1px solid var(--line-soft);
+                    border-radius: var(--radius); padding: 1.5rem;
+                    display: flex; gap: 1.2rem; align-items: center; text-align: left;
+                }
+                .lb-cover {
+                    flex: none; width: 74px; height: 100px;
+                    border-radius: 8px 12px 12px 8px;
+                    background: var(--bg-soft); border: 1px solid var(--line);
+                    position: relative; overflow: hidden;
+                    transition: border-color 0.4s ease;
+                }
+                .lb-cover::before {
+                    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 9px;
+                    background: var(--lang-c, var(--accent));
+                    transition: background-color 0.4s ease;
+                }
+                .lb-cover::after {
+                    content: "\1F4D6"; position: absolute; inset: 0;
+                    display: grid; place-items: center; font-size: 1.5rem;
+                }
+                .lb-bookcard .t { font-family: var(--serif); font-size: 1.15rem; margin-bottom: 0.3rem; }
+                .lb-bookcard .d { font-size: 0.85rem; color: var(--muted); }
+                .lb-bookcard .d b { color: var(--accent); font-weight: 600; }
+
+                /* Scene 5 — app screens row */
+                .lb-row { display: flex; justify-content: center; gap: clamp(0.7rem, 1.6vw, 1.2rem); position: relative; }
+                .lb-screen {
+                    width: clamp(96px, 26%, 150px);
+                    border-radius: 18px; padding: 5px;
+                    background: #1c1c18; border: 1px solid var(--line);
+                    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
+                    opacity: 0; transform: translateY(46px);
+                    transition: opacity 0.6s var(--ease-out), transform 0.75s var(--ease-expo);
+                }
+                .lb-screen img { width: 100%; border-radius: 14px; display: block; }
+                .lb-screen:nth-child(2) { transition-delay: 0.12s; }
+                .lb-screen:nth-child(3) { transition-delay: 0.24s; }
+                .lb-scene.is-active .lb-screen { opacity: 1; transform: translateY(0); }
+                .lb-screen:hover { transform: translateY(-6px); }
+                .lb-row-chip {
+                    position: absolute; z-index: 5;
+                    font-size: 0.78rem; font-weight: 600;
+                    background: var(--bg-soft); border: 1px solid var(--line);
+                    color: var(--ink); border-radius: 999px; padding: 0.5rem 1rem;
+                    animation: lbFloat 6s ease-in-out infinite;
+                    opacity: 0; transition: opacity 0.5s ease 0.35s;
+                }
+                .lb-scene.is-active .lb-row-chip { opacity: 1; }
+                .lb-row-chip .dot {
+                    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+                    background: var(--accent); margin-right: 0.4rem; vertical-align: 1px;
+                }
+                .lb-rc-1 { top: -18px; left: 8%; animation-delay: -1s; }
+                .lb-rc-2 { bottom: -16px; right: 6%; animation-delay: -3.4s; }
+
+                /* Scene 6 — bar chart impact */
+                .lb-scene--impact {
+                    grid-template-columns: 1fr; text-align: center;
+                    align-content: center; justify-items: center;
+                    padding-right: calc(var(--pad) + 2.6rem);
+                }
+                .lb-scene--impact h2 { max-width: 22ch; margin-left: auto; margin-right: auto; }
+                .lb-scene--impact .lb-sub { margin: 0 auto 2.4rem; }
+                .lb-bars {
+                    display: flex; align-items: flex-end; justify-content: center;
+                    gap: clamp(1.6rem, 4.5vw, 3.6rem);
+                    height: clamp(160px, 24vh, 230px);
+                    margin-bottom: 2.6rem;
+                }
+                .lb-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+                .lb-bar .v {
+                    font-family: var(--serif); font-weight: 450;
+                    font-size: clamp(1.4rem, 2.6vw, 2rem); color: var(--accent);
+                    margin-bottom: 0.5rem; line-height: 1;
+                }
+                .lb-bar .v .sfx { font-size: 0.6em; }
+                .lb-bar .col {
+                    width: clamp(52px, 7vw, 84px);
+                    height: 0%;
+                    border-radius: 10px 10px 0 0;
+                    background: linear-gradient(to top, rgba(215, 249, 92, 0.25), var(--accent));
+                    transition: height 1s var(--ease-expo);
+                }
+                .lb-bar:nth-child(2) .col { transition-delay: 0.15s; }
+                .lb-bar:nth-child(3) .col { transition-delay: 0.3s; }
+                .lb-bar .l {
+                    font-size: 0.78rem; color: var(--muted);
+                    margin-top: 0.7rem; max-width: 13ch;
+                    border-top: 2px solid var(--line); padding-top: 0.6rem;
+                }
+
+                /* Bookmark ribbon rail (left) */
+                .lb-rail {
+                    position: absolute; left: calc(var(--pad) - 0.2rem); top: 18%; bottom: 18%; z-index: 30;
+                    width: 26px;
+                }
+                .lb-rail-track {
+                    position: absolute; left: 11px; top: 0; bottom: 0; width: 3px;
+                    background: var(--line-soft); border-radius: 3px;
+                }
+                .lb-rail-fill {
+                    position: absolute; left: 11px; top: 0; width: 3px; height: 0%;
+                    background: var(--accent); border-radius: 3px;
+                }
+                .lb-rail-fill::after {
+                    content: ""; position: absolute; bottom: -7px; left: -4.5px;
+                    border-left: 6px solid transparent; border-right: 6px solid transparent;
+                    border-top: 8px solid var(--accent);
+                }
+                .lb-rail-notches { position: absolute; inset: 0; }
+                .lb-rail-notches button {
+                    position: absolute; left: 0; width: 26px; height: 26px;
+                    transform: translateY(-50%);
+                    display: grid; place-items: center;
+                }
+                .lb-rail-notches button i {
+                    width: 9px; height: 9px; border-radius: 50%;
+                    background: var(--line); border: 2px solid var(--bg);
+                    transition: background-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .lb-rail-notches button.is-on i { background: var(--accent); }
+                .lb-rail-notches button.is-now i { transform: scale(1.4); }
+                .lb-rail-notches button span {
+                    position: absolute; left: 30px; top: 50%;
+                    transform: translateY(-50%) translateX(-6px);
+                    font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em;
+                    text-transform: uppercase; color: var(--faint); white-space: nowrap;
+                    opacity: 0;
+                    transition: opacity 0.3s ease, transform 0.3s var(--ease-out), color 0.3s ease;
+                }
+                .lb-rail-notches button:hover span,
+                .lb-rail-notches button.is-now span {
+                    opacity: 1; transform: translateY(-50%) translateX(0); color: var(--ink);
+                }
+
+                .lb-hint {
+                    position: absolute; bottom: 2rem; left: 50%; z-index: 30;
+                    transform: translateX(-50%);
+                    color: var(--faint); font-size: 0.68rem;
+                    letter-spacing: 0.22em; text-transform: uppercase;
+                    opacity: 0; transition: opacity 0.5s ease;
+                }
+                .lb-stage[data-scene="1"] .lb-hint { opacity: 1; animation: lbHintPulse 2.4s ease-in-out infinite; }
+                @keyframes lbHintPulse {
+                    0%, 100% { opacity: 0.45; }
+                    50% { opacity: 1; }
+                }
+
+                /* Responsive */
+                @media (max-width: 860px) {
+                    .lb-scene {
+                        grid-template-columns: 1fr;
+                        align-content: start; gap: 1.6rem;
+                        padding-top: 9.5rem; text-align: center;
+                        padding-left: calc(var(--pad) + 1.4rem);
+                    }
+                    .lb-scene h2, .lb-scene .lb-sub { margin-left: auto; margin-right: auto; }
+                    .lb-idea { height: clamp(200px, 30vh, 280px); }
+                    .lb-idea-main { right: 2%; }
+                    .lb-shelf, .lb-shelfrow { height: clamp(110px, 16svh, 150px); }
+                    .lb-dots { grid-template-columns: repeat(8, 8px); }
+                    .lb-bars { height: clamp(130px, 19svh, 180px); gap: 1.2rem; }
+                    .lb-rail { left: 0.35rem; top: 22%; bottom: 22%; }
+                    .lb-rail-notches button span { display: none; }
+                    .lb-bookcard { padding: 1.1rem; }
+                    .lb-cover { width: 60px; height: 82px; }
+                    .lb-hint { display: none; }
+                    .lb-top { top: 4.6rem; }
+                }
+
+                /* Reduced motion: static storyboard */
+                @media (prefers-reduced-motion: reduce) {
+                    .lb-track { height: auto; }
+                    .lb-stage { position: static; height: auto; overflow: visible; padding: 6.5rem 0 2rem; }
+                    .lb-scenes { position: static; }
+                    .lb-scene {
+                        position: static; opacity: 1; transform: none; pointer-events: auto;
+                        padding: 2.5rem var(--pad); min-height: 0;
+                    }
+                    .lb-scene.is-past { opacity: 1; transform: none; }
+                    .lb-book, .lb-screen, .lb-row-chip { opacity: 1; transform: none; }
+                    .lb-rail, .lb-hint, .lb-skip, .lb-glow { display: none; }
+                    .lb-top { position: static; margin-bottom: 1rem; }
+                }
+            </style>
+
+            <div class="lb-track" id="lbTrack">
+                <div class="lb-stage" id="lbStage" data-scene="1">
+                    <div class="lb-glow lb-glow-a" id="lbGlowA" aria-hidden="true"></div>
+                    <div class="lb-glow lb-glow-b" id="lbGlowB" aria-hidden="true"></div>
+
+                    <div class="lb-top">
+                        <p class="lb-kicker">The making of LearnBig</p>
+                        <button class="lb-skip" id="lbSkip" type="button">Skip intro ↓</button>
+                    </div>
+
+                    <div class="lb-scenes">
+                        <!-- 01 · The gap -->
+                        <div class="lb-scene is-active" data-lb="1">
+                            <div>
+                                <p class="lb-num">01 / 06 — The gap</p>
+                                <h2>Not every child gets a <em>library.</em></h2>
+                                <p class="lb-sub">In many underserved communities, quality learning materials are <strong>scarce, scattered and expensive.</strong></p>
+                            </div>
+                            <div class="lb-visual">
+                                <div class="lb-lone" aria-hidden="true">
+                                    <div class="lb-shelfrow">
+                                        <div class="lb-gbook lb-gbook--faded" style="height:56%; background:#3a5a50;"></div>
+                                        <div class="lb-gbook lb-gbook--faded" style="height:68%; background:#665f52;"></div>
+                                        <div class="lb-gbook lb-gbook--lean" style="height:60%; background:#4a6d42;"></div>
+                                        <div class="lb-gap-space"></div>
+                                        <div class="lb-hero-wrap">
+                                            <span class="lb-onlycopy">The only copy</span>
+                                            <div class="lb-gbook lb-gbook--hero"></div>
+                                        </div>
+                                        <div class="lb-gap-space"></div>
+                                    </div>
+                                    <div class="lb-plank"></div>
+                                    <div class="lb-class">
+                                        <div class="lb-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                                        <span class="lb-class-cap">&hellip;shared by <b>32 students</b></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 02 · The idea -->
+                        <div class="lb-scene" data-lb="2">
+                            <div>
+                                <p class="lb-num">02 / 06 — The idea</p>
+                                <h2>What if the library <em>came to them?</em></h2>
+                                <p class="lb-sub">LearnBig set out to put <strong>free, open e-books</strong> on any device a family already owns.</p>
+                            </div>
+                            <div class="lb-visual">
+                                <div class="lb-idea">
+                                    <div class="lb-idea-chip lb-idea-1">Free &amp; open access</div>
+                                    <div class="lb-idea-chip lb-idea-2">Works on any device</div>
+                                    <div class="lb-idea-chip lb-idea-3">Download for offline</div>
+                                    <div class="lb-idea-chip lb-idea-main">📚 A library in every pocket</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 03 · The shelf -->
+                        <div class="lb-scene" data-lb="3">
+                            <div>
+                                <p class="lb-num">03 / 06 — The shelf</p>
+                                <h2>A shelf that never <em>runs out.</em></h2>
+                                <p class="lb-sub"><strong>Keep scrolling to stock the shelf</strong> — books, comics, government textbooks and teacher guides.</p>
+                            </div>
+                            <div class="lb-visual">
+                                <div class="lb-shelf-wrap">
+                                    <div class="lb-count"><span id="lbCount">0</span> <small>RESOURCES</small></div>
+                                    <div class="lb-shelf" id="lbShelf" aria-hidden="true">
+                                        <div class="lb-book" style="--h:62; --c:#3a5a50;"></div>
+                                        <div class="lb-book" style="--h:80; --c:#d7f95c;"></div>
+                                        <div class="lb-book" style="--h:55; --c:#665f52;"></div>
+                                        <div class="lb-book" style="--h:72; --c:#2ec486;"></div>
+                                        <div class="lb-book" style="--h:48; --c:#a09b90;"></div>
+                                        <div class="lb-book" style="--h:85; --c:#26433a;"></div>
+                                        <div class="lb-book" style="--h:60; --c:#7cc4ff;"></div>
+                                        <div class="lb-book" style="--h:75; --c:#d7f95c;"></div>
+                                        <div class="lb-book" style="--h:52; --c:#4a6d42;"></div>
+                                        <div class="lb-book" style="--h:68; --c:#ffb26b;"></div>
+                                        <div class="lb-book" style="--h:58; --c:#665f52;"></div>
+                                        <div class="lb-book" style="--h:78; --c:#2ec486;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 04 · Languages -->
+                        <div class="lb-scene" data-lb="4">
+                            <div>
+                                <p class="lb-num">04 / 06 — Languages</p>
+                                <h2>Four languages, <em>one library.</em></h2>
+                                <p class="lb-sub">Thai, Myanmar, Malay and English — <strong>every reader finds their words.</strong> Keep scrolling to switch.</p>
+                            </div>
+                            <div class="lb-visual">
+                                <div class="lb-langs">
+                                    <div class="lb-tabs" id="lbTabs" aria-hidden="true">
+                                        <span class="lb-tab is-lit">English</span>
+                                        <span class="lb-tab">Thai</span>
+                                        <span class="lb-tab">Malay</span>
+                                        <span class="lb-tab">Myanmar</span>
+                                    </div>
+                                    <div class="lb-bookcard" id="lbBookcard">
+                                        <div class="lb-cover"></div>
+                                        <div>
+                                            <p class="t">Same story, every reader</p>
+                                            <p class="d">One tap switches the whole library — currently reading in <b id="lbLangName">English</b>.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 05 · The app -->
+                        <div class="lb-scene" data-lb="5">
+                            <div>
+                                <p class="lb-num">05 / 06 — The app</p>
+                                <h2>Reading made <em>effortless.</em></h2>
+                                <p class="lb-sub">Categorised, searchable and <strong>download-friendly for offline reading</strong> — wherever the reader is.</p>
+                            </div>
+                            <div class="lb-visual">
+                                <div class="lb-row">
+                                    <div class="lb-screen"><img src="../../assets/images/learnbig-solution-01.png" alt="LearnBig multi-language library screen" loading="lazy"></div>
+                                    <div class="lb-screen"><img src="../../assets/images/learnbig-solution-02.png" alt="LearnBig interactive reading screen" loading="lazy"></div>
+                                    <div class="lb-screen"><img src="../../assets/images/learnbig-solution-03.png" alt="LearnBig resource library screen" loading="lazy"></div>
+                                    <span class="lb-row-chip lb-rc-1"><span class="dot"></span>1,000+ resources</span>
+                                    <span class="lb-row-chip lb-rc-2"><span class="dot"></span>Offline downloads</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 06 · Impact -->
+                        <div class="lb-scene lb-scene--impact" data-lb="6">
+                            <div>
+                                <p class="lb-num">06 / 06 — Impact</p>
+                                <h2>Access you can <em>measure.</em></h2>
+                                <p class="lb-sub">What a free library delivered for learners and educators.</p>
+                                <div class="lb-bars" aria-hidden="false">
+                                    <div class="lb-bar">
+                                        <div class="v"><span data-lb-count="25">0</span><span class="sfx">K</span></div>
+                                        <div class="col" data-h="88"></div>
+                                        <div class="l">Children reached</div>
+                                    </div>
+                                    <div class="lb-bar">
+                                        <div class="v"><span data-lb-count="60">0</span><span class="sfx">%</span></div>
+                                        <div class="col" data-h="66"></div>
+                                        <div class="l">More downloads</div>
+                                    </div>
+                                    <div class="lb-bar">
+                                        <div class="v"><span data-lb-count="40">0</span><span class="sfx">%</span></div>
+                                        <div class="col" data-h="48"></div>
+                                        <div class="l">Faster discovery</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-solid" id="lbEnter" type="button" data-magnetic>
+                                    Read the full case study
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(90deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="lb-rail" aria-label="Showcase chapters">
+                        <div class="lb-rail-track"></div>
+                        <div class="lb-rail-fill" id="lbRailFill"></div>
+                        <div class="lb-rail-notches">
+                            <button type="button" class="is-on is-now" data-i="1" style="top: 8.33%;"><i></i><span>The gap</span></button>
+                            <button type="button" data-i="2" style="top: 25%;"><i></i><span>The idea</span></button>
+                            <button type="button" data-i="3" style="top: 41.66%;"><i></i><span>The shelf</span></button>
+                            <button type="button" data-i="4" style="top: 58.33%;"><i></i><span>Languages</span></button>
+                            <button type="button" data-i="5" style="top: 75%;"><i></i><span>The app</span></button>
+                            <button type="button" data-i="6" style="top: 91.66%;"><i></i><span>Impact</span></button>
+                        </div>
+                    </nav>
+
+                    <div class="lb-hint" aria-hidden="true">Scroll to open</div>
+                </div>
+            </div>
+
+            <script>
+                (function () {
+                    'use strict';
+                    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    const track = document.getElementById('lbTrack');
+                    const stage = document.getElementById('lbStage');
+                    const sceneEls = Array.from(stage.querySelectorAll('.lb-scene'));
+                    const railBtns = Array.from(stage.querySelectorAll('.lb-rail-notches button'));
+                    const railFill = document.getElementById('lbRailFill');
+                    const glowA = document.getElementById('lbGlowA');
+                    const glowB = document.getElementById('lbGlowB');
+                    const books = Array.from(stage.querySelectorAll('.lb-book'));
+                    const countEl = document.getElementById('lbCount');
+                    const tabs = Array.from(stage.querySelectorAll('.lb-tab'));
+                    const langName = document.getElementById('lbLangName');
+                    const cover = stage.querySelector('.lb-cover');
+                    const langColors = ['#d7f95c', '#7cc4ff', '#ffb26b', '#ff8fa3'];
+                    const langNames = ['English', 'Thai', 'Malay', 'Myanmar'];
+                    const cols = Array.from(stage.querySelectorAll('.lb-bar .col'));
+                    const SCENES = 6;
+                    const ease = (t) => 1 - Math.pow(1 - t, 3);
+                    let counted = false;
+
+                    function fmt(n) { return n.toLocaleString('en-US'); }
+
+                    function runImpact(instant) {
+                        cols.forEach(c => { c.style.height = c.dataset.h + '%'; });
+                        stage.querySelectorAll('[data-lb-count]').forEach(el => {
+                            const target = parseFloat(el.dataset.lbCount);
+                            if (instant || reduceMotion) { el.textContent = String(target); return; }
+                            const dur = 1200;
+                            const t0 = performance.now();
+                            const step = (t) => {
+                                const p = Math.min((t - t0) / dur, 1);
+                                el.textContent = String(Math.round(target * ease(p)));
+                                if (p < 1) requestAnimationFrame(step);
+                            };
+                            requestAnimationFrame(step);
+                            setTimeout(() => { el.textContent = String(target); }, dur + 250);
+                        });
+                    }
+
+                    function setLang(i) {
+                        tabs.forEach((t, ti) => t.classList.toggle('is-lit', ti === i));
+                        langName.textContent = langNames[i];
+                        cover.style.setProperty('--lang-c', langColors[i]);
+                    }
+
+                    if (reduceMotion) {
+                        sceneEls.forEach(el => el.classList.add('is-active'));
+                        books.forEach(b => b.classList.add('is-in'));
+                        countEl.textContent = '1,000+';
+                        runImpact(true);
+                        return;
+                    }
+
+                    let cur = 0;
+
+                    function update() {
+                        const r = track.getBoundingClientRect();
+                        const total = r.height - window.innerHeight;
+                        if (total <= 0) return;
+                        const p = Math.min(Math.max(-r.top / total, 0), 1);
+                        const f = p * SCENES;
+                        const idx = Math.max(1, Math.min(Math.floor(f) + 1, SCENES));
+                        const sp = Math.min(Math.max(f - (idx - 1), 0), 1);
+
+                        if (idx !== cur) {
+                            cur = idx;
+                            stage.dataset.scene = String(idx);
+                            sceneEls.forEach((el, i) => {
+                                el.classList.toggle('is-active', i + 1 === idx);
+                                el.classList.toggle('is-past', i + 1 < idx);
+                            });
+                            railBtns.forEach((b, i) => {
+                                b.classList.toggle('is-on', i + 1 <= idx);
+                                b.classList.toggle('is-now', i + 1 === idx);
+                            });
+                            if (idx === 6 && !counted) { counted = true; runImpact(false); }
+                        }
+
+                        // Bookmark ribbon fill = overall progress
+                        railFill.style.height = (p * 100) + '%';
+
+                        // Shelf stocking inside scene 3
+                        if (idx < 3) {
+                            books.forEach(b => b.classList.remove('is-in'));
+                            countEl.textContent = '0';
+                        } else if (idx === 3) {
+                            const d = Math.min(sp * 1.2, 1);
+                            const n = Math.floor(d * books.length);
+                            books.forEach((b, i) => b.classList.toggle('is-in', i < n));
+                            countEl.textContent = d >= 1 ? '1,000+' : fmt(Math.round(d * 1000 / 50) * 50);
+                        } else {
+                            books.forEach(b => b.classList.add('is-in'));
+                            countEl.textContent = '1,000+';
+                        }
+
+                        // Language switching inside scene 4
+                        if (idx === 4) {
+                            setLang(Math.min(Math.floor(sp * 1.25 * 4), 3));
+                        } else if (idx > 4) {
+                            setLang(3);
+                        } else {
+                            setLang(0);
+                        }
+
+                        // Glow parallax
+                        glowA.style.transform = 'translateY(' + (p * -115) + 'px)';
+                        glowB.style.transform = 'translateY(' + (p * 92) + 'px)';
+                    }
+
+                    window.addEventListener('scroll', update, { passive: true });
+                    window.addEventListener('resize', update);
+                    update();
+
+                    function jumpTo(i) {
+                        const r = track.getBoundingClientRect();
+                        const top = window.scrollY + r.top;
+                        const total = r.height - window.innerHeight;
+                        window.scrollTo({ top: top + total * ((i - 0.5) / SCENES), behavior: 'smooth' });
+                    }
+                    railBtns.forEach((b) => {
+                        b.addEventListener('click', () => jumpTo(parseInt(b.dataset.i, 10)));
+                    });
+                    function exitShowcase() {
+                        const r = track.getBoundingClientRect();
+                        window.scrollTo({ top: window.scrollY + r.bottom - 70, behavior: 'smooth' });
+                    }
+                    document.getElementById('lbSkip').addEventListener('click', exitShowcase);
+                    document.getElementById('lbEnter').addEventListener('click', exitShowcase);
+                })();
+            </script>
+        </section>
+
         <section class="case-hero" aria-label="LearnBig case study">
             <div class="hero-glow" aria-hidden="true"></div>
             <div class="container">

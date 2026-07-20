@@ -652,6 +652,617 @@
     </div>
 
     <main id="main">
+        <!-- ════════════════════════════════════════════════════════════
+             SHOWCASE — From paperwork to pixels (self-contained component)
+             Scroll-driven intro for AIA: briefcase of paper → digital
+             sales tool. Distinct from the Makro showcase: horizontal
+             scene transitions, papers-into-tablet morph, step tracker,
+             vertical dot rail.
+        ════════════════════════════════════════════════════════════ -->
+        <section class="showcase-aia" id="showcaseAia" aria-label="AIA — from paperwork to pixels">
+            <style>
+                html.no-js .showcase-aia { display: none; }
+
+                .sa-track { height: 640vh; position: relative; }
+                .sa-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+
+                .sa-glow { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
+                .sa-glow-a {
+                    top: -22%; left: -12%; width: 58vw; height: 58vw;
+                    max-width: 800px; max-height: 800px;
+                    background: radial-gradient(circle, rgba(215, 249, 92, 0.07) 0%, transparent 62%);
+                }
+                .sa-glow-b {
+                    bottom: -28%; right: -14%; width: 62vw; height: 62vw;
+                    max-width: 860px; max-height: 860px;
+                    background: radial-gradient(circle, rgba(211, 17, 69, 0.09) 0%, transparent 62%);
+                }
+
+                /* Persistent chrome */
+                .sa-top {
+                    position: absolute; top: 5.4rem; left: 0; right: 0; z-index: 30;
+                    display: flex; align-items: center; justify-content: space-between;
+                    gap: 1rem; max-width: 1280px; margin: 0 auto; padding: 0 var(--pad);
+                }
+                .sa-kicker {
+                    display: flex; align-items: center; gap: 0.8rem;
+                    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+                    text-transform: uppercase; color: var(--muted);
+                }
+                .sa-kicker::before { content: ""; width: 34px; height: 1px; background: var(--accent); }
+                .sa-skip {
+                    font-size: 0.8rem; font-weight: 600; color: var(--muted);
+                    border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 1.05rem;
+                    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+                }
+                .sa-skip:hover { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+
+                /* Scenes — horizontal transitions */
+                .sa-scenes { position: absolute; inset: 0; }
+                .sa-scene {
+                    position: absolute; inset: 0;
+                    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+                    align-items: center; gap: clamp(1.5rem, 4vw, 4rem);
+                    max-width: 1280px; margin: 0 auto;
+                    padding: 6.5rem var(--pad) 5rem;
+                    opacity: 0; transform: translateX(70px);
+                    transition: opacity 0.65s var(--ease-out), transform 0.75s var(--ease-expo);
+                    pointer-events: none;
+                }
+                .sa-scene.is-active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+                .sa-scene.is-past { opacity: 0; transform: translateX(-70px); }
+                .sa-num {
+                    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+                    color: var(--accent); margin-bottom: 1rem;
+                }
+                .sa-scene h2 {
+                    font-family: var(--serif); font-weight: 390;
+                    font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+                    line-height: 1.07; letter-spacing: -0.01em;
+                    max-width: 15ch; margin-bottom: 1.1rem;
+                }
+                .sa-scene h2 em { font-style: italic; color: var(--accent); }
+                .sa-scene .sa-sub { color: var(--muted); max-width: 42ch; font-size: clamp(0.95rem, 1.2vw, 1.08rem); }
+                .sa-scene .sa-sub strong { color: var(--ink); font-weight: 500; }
+                .sa-visual { position: relative; min-height: 200px; }
+
+                /* Desk: papers + tablet (persistent, scenes 1–2) */
+                .sa-desk {
+                    position: absolute; top: 56%; left: 70%; z-index: 10;
+                    width: min(430px, 38vw);
+                    transform: translate(-50%, -50%);
+                    opacity: 0; pointer-events: none;
+                    transition: opacity 0.6s ease;
+                }
+                .sa-stage[data-scene="1"] .sa-desk,
+                .sa-stage[data-scene="2"] .sa-desk { opacity: 1; }
+                .sa-desk-inner { position: relative; width: 100%; aspect-ratio: 16 / 11.5; }
+                .sa-tablet {
+                    position: absolute; inset: 6% 4%;
+                    border-radius: 22px; padding: 10px;
+                    background: #1c1c18; border: 1px solid var(--line);
+                    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
+                    opacity: 0; will-change: transform, opacity;
+                }
+                .sa-tablet-screen {
+                    width: 100%; height: 100%; border-radius: 14px; overflow: hidden;
+                    background: #f4f2ec;
+                }
+                .sa-tablet-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+                .sa-paper {
+                    position: absolute; top: 12%; left: 28%;
+                    width: 44%; aspect-ratio: 3 / 4;
+                    background: #f6f4ee; border-radius: 8px;
+                    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+                    padding: 9% 8%;
+                    will-change: transform, opacity;
+                }
+                .sa-paper::before {
+                    content: "AIA"; display: block;
+                    font-size: clamp(0.55rem, 0.9vw, 0.75rem); font-weight: 800;
+                    letter-spacing: 0.1em; color: #d31145; margin-bottom: 10%;
+                }
+                .sa-paper::after {
+                    content: ""; display: block; height: 62%;
+                    background: repeating-linear-gradient(
+                        to bottom, #d8d4c6 0, #d8d4c6 2px, transparent 2px, transparent 12px
+                    );
+                }
+                .sa-paper .sig {
+                    position: absolute; bottom: 8%; right: 10%;
+                    font-family: var(--serif); font-style: italic;
+                    font-size: clamp(0.7rem, 1.1vw, 0.95rem); color: #8a8578;
+                }
+
+                /* Scene 3 — two audiences */
+                .sa-duo { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.9rem, 1.8vw, 1.4rem); }
+                .sa-duo-card {
+                    background: var(--card); border: 1px solid var(--line-soft);
+                    border-radius: var(--radius); padding: clamp(1.2rem, 2.2vw, 1.7rem);
+                    opacity: 0; transition: opacity 0.6s var(--ease-out), transform 0.7s var(--ease-expo), border-color 0.3s ease;
+                }
+                .sa-duo-card:first-child { transform: translateX(-46px); }
+                .sa-duo-card:last-child { transform: translateX(46px); transition-delay: 0.12s; }
+                .sa-scene.is-active .sa-duo-card { opacity: 1; transform: translateX(0); }
+                .sa-duo-card:hover { border-color: var(--muted); }
+                .sa-duo-card .who {
+                    display: inline-block; font-size: 0.7rem; font-weight: 700;
+                    letter-spacing: 0.14em; text-transform: uppercase;
+                    color: var(--accent-ink); background: var(--accent);
+                    border-radius: 999px; padding: 0.28rem 0.75rem; margin-bottom: 1rem;
+                }
+                .sa-duo-card:last-child .who { background: #d31145; color: #fff; }
+                .sa-duo-card ul { list-style: none; display: grid; gap: 0.55rem; }
+                .sa-duo-card li {
+                    color: var(--muted); font-size: 0.9rem;
+                    display: flex; align-items: baseline; gap: 0.55rem;
+                }
+                .sa-duo-card li::before { content: "\2726"; font-size: 0.55rem; color: var(--accent); flex: none; }
+                .sa-duo-card:last-child li::before { color: #d31145; }
+
+                /* Scene 4 — step tracker */
+                .sa-steps { position: relative; padding: 2.4rem 0 0.6rem; }
+                .sa-steps-track {
+                    position: absolute; top: calc(2.4rem + 17px); left: 5%; right: 5%;
+                    height: 2px; background: var(--line-soft); border-radius: 2px;
+                }
+                .sa-steps-fill {
+                    height: 100%; width: 0%;
+                    background: var(--accent); border-radius: 2px;
+                }
+                .sa-steps-row { position: relative; display: flex; justify-content: space-between; padding: 0 2%; }
+                .sa-step { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; width: 25%; }
+                .sa-step .pip {
+                    width: 36px; height: 36px; border-radius: 50%;
+                    background: var(--bg); border: 2px solid var(--faint);
+                    display: grid; place-items: center;
+                    font-size: 0.85rem; font-weight: 700; color: transparent;
+                    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .sa-step.is-done .pip {
+                    background: var(--accent); border-color: var(--accent);
+                    color: var(--accent-ink); transform: scale(1.08);
+                }
+                .sa-step .pip::before { content: "\2713"; }
+                .sa-step span {
+                    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+                    text-transform: uppercase; color: var(--faint); text-align: center;
+                    transition: color 0.35s ease;
+                }
+                .sa-step.is-done span { color: var(--ink); }
+
+                /* Scene 5 — the app */
+                .sa-app { position: relative; }
+                .sa-app-frame {
+                    border-radius: 20px; padding: 10px;
+                    background: #1c1c18; border: 1px solid var(--line);
+                    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+                }
+                .sa-app-frame .scr { border-radius: 12px; overflow: hidden; background: #fff; }
+                .sa-app-frame img { width: 100%; display: block; }
+                .sa-chip {
+                    position: absolute; z-index: 5;
+                    font-size: 0.78rem; font-weight: 600;
+                    background: var(--bg-soft); border: 1px solid var(--line);
+                    color: var(--ink); border-radius: 999px; padding: 0.5rem 1rem;
+                    animation: saFloat 6s ease-in-out infinite;
+                    opacity: 0; transition: opacity 0.5s ease 0.3s;
+                }
+                .sa-scene.is-active .sa-chip { opacity: 1; }
+                .sa-chip .dot {
+                    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+                    background: var(--accent); margin-right: 0.4rem; vertical-align: 1px;
+                }
+                .sa-chip-1 { top: -16px; left: 4%; animation-delay: -1s; }
+                .sa-chip-2 { top: 38%; right: -16px; animation-delay: -3s; }
+                .sa-chip-3 { bottom: -14px; left: 18%; animation-delay: -5s; }
+                @keyframes saFloat {
+                    0%, 100% { margin-top: 0; }
+                    50% { margin-top: -12px; }
+                }
+
+                /* Scene 6 — impact */
+                .sa-scene--impact { grid-template-columns: 1fr; text-align: center; align-content: center; justify-items: center; }
+                .sa-scene--impact h2 { max-width: 22ch; margin-left: auto; margin-right: auto; }
+                .sa-scene--impact .sa-sub { margin: 0 auto 2.2rem; }
+                .sa-stats {
+                    display: flex; gap: clamp(1rem, 2.2vw, 1.6rem);
+                    justify-content: center; flex-wrap: wrap; margin-bottom: 2.4rem;
+                }
+                .sa-stat {
+                    background: var(--card); border: 1px solid var(--line-soft);
+                    border-radius: var(--radius);
+                    padding: 1.3rem 1.6rem; min-width: 150px;
+                    transition: border-color 0.3s ease, transform 0.4s var(--ease-out);
+                }
+                .sa-stat:hover { border-color: var(--line); transform: translateY(-4px); }
+                .sa-stat .val {
+                    font-family: var(--serif); font-weight: 450;
+                    font-size: clamp(1.9rem, 4vw, 2.9rem); line-height: 1;
+                    color: var(--accent); display: flex; align-items: baseline; justify-content: center;
+                }
+                .sa-stat .val .sfx { font-size: 0.55em; margin-left: 0.08em; }
+                .sa-stat .lbl { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; }
+
+                /* Vertical dot rail (right) */
+                .sa-rail {
+                    position: absolute; right: calc(var(--pad) - 0.4rem); top: 50%; z-index: 30;
+                    transform: translateY(-50%);
+                    display: flex; flex-direction: column; gap: 0.4rem;
+                }
+                .sa-rail button {
+                    display: flex; align-items: center; justify-content: flex-end; gap: 0.6rem;
+                    padding: 0.35rem 0.4rem;
+                }
+                .sa-rail button span {
+                    font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em;
+                    text-transform: uppercase; color: var(--faint);
+                    opacity: 0; transform: translateX(6px);
+                    transition: opacity 0.3s ease, transform 0.3s var(--ease-out), color 0.3s ease;
+                }
+                .sa-rail button:hover span { opacity: 1; transform: translateX(0); color: var(--ink); }
+                .sa-rail button.is-on span { color: var(--muted); }
+                .sa-rail button i {
+                    width: 8px; height: 8px; border-radius: 50%; flex: none;
+                    background: var(--line);
+                    transition: background-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .sa-rail button.is-on i { background: var(--accent); }
+                .sa-rail button.is-now i { transform: scale(1.5); }
+                .sa-rail button.is-now span { opacity: 1; transform: translateX(0); color: var(--ink); }
+
+                .sa-hint {
+                    position: absolute; bottom: 2rem; left: 50%; z-index: 30;
+                    transform: translateX(-50%);
+                    display: flex; align-items: center; gap: 0.6rem;
+                    color: var(--faint); font-size: 0.68rem;
+                    letter-spacing: 0.22em; text-transform: uppercase;
+                    opacity: 0; transition: opacity 0.5s ease;
+                }
+                .sa-stage[data-scene="1"] .sa-hint { opacity: 1; }
+                .sa-hint::after {
+                    content: ""; width: 40px; height: 1px;
+                    background: linear-gradient(90deg, var(--faint), transparent);
+                    animation: saCue 2s var(--ease-out) infinite;
+                }
+                @keyframes saCue {
+                    0% { transform: scaleX(0); transform-origin: left; }
+                    45% { transform: scaleX(1); transform-origin: left; }
+                    55% { transform: scaleX(1); transform-origin: right; }
+                    100% { transform: scaleX(0); transform-origin: right; }
+                }
+
+                /* Responsive */
+                @media (max-width: 860px) {
+                    .sa-scene {
+                        grid-template-columns: 1fr;
+                        align-content: start; gap: 1.6rem;
+                        padding-top: 9.5rem; text-align: center;
+                    }
+                    .sa-scene h2, .sa-scene .sa-sub { margin-left: auto; margin-right: auto; }
+                    .sa-desk {
+                        top: auto; bottom: 2.2rem; left: 50%;
+                        transform: translate(-50%, 0);
+                        width: min(330px, 86vw, 44svh);
+                    }
+                    .sa-duo { grid-template-columns: 1fr; text-align: left; }
+                    .sa-step span { font-size: 0.62rem; }
+                    .sa-step .pip { width: 28px; height: 28px; font-size: 0.7rem; }
+                    .sa-steps-track { top: calc(2.4rem + 13px); }
+                    .sa-rail { right: 0.4rem; }
+                    .sa-rail button span { display: none; }
+                    .sa-hint { display: none; }
+                    .sa-top { top: 4.6rem; }
+                }
+
+                /* Reduced motion: static storyboard */
+                @media (prefers-reduced-motion: reduce) {
+                    .sa-track { height: auto; }
+                    .sa-stage { position: static; height: auto; overflow: visible; padding: 6.5rem 0 2rem; }
+                    .sa-scenes { position: static; }
+                    .sa-scene {
+                        position: static; opacity: 1; transform: none; pointer-events: auto;
+                        padding: 2.5rem var(--pad); min-height: 0;
+                    }
+                    .sa-scene.is-past { opacity: 1; transform: none; }
+                    .sa-duo-card, .sa-chip { opacity: 1; transform: none; }
+                    .sa-steps-fill { width: 100% !important; }
+                    .sa-desk, .sa-rail, .sa-hint, .sa-skip, .sa-glow { display: none; }
+                    .sa-top { position: static; margin-bottom: 1rem; }
+                }
+            </style>
+
+            <div class="sa-track" id="saTrack">
+                <div class="sa-stage" id="saStage" data-scene="1">
+                    <div class="sa-glow sa-glow-a" id="saGlowA" aria-hidden="true"></div>
+                    <div class="sa-glow sa-glow-b" id="saGlowB" aria-hidden="true"></div>
+
+                    <div class="sa-top">
+                        <p class="sa-kicker">From paperwork to pixels</p>
+                        <button class="sa-skip" id="saSkip" type="button">Skip intro ↓</button>
+                    </div>
+
+                    <div class="sa-scenes">
+                        <!-- 01 · The old way -->
+                        <div class="sa-scene is-active" data-sa="1">
+                            <div>
+                                <p class="sa-num">01 / 06 — The old way</p>
+                                <h2>Insurance used to weigh a <em>briefcase.</em></h2>
+                                <p class="sa-sub">Agents arrived with stacks of forms. Clients signed page after page, made copies — then <strong>waited days for approval.</strong></p>
+                            </div>
+                            <div class="sa-visual" aria-hidden="true"></div>
+                        </div>
+
+                        <!-- 02 · The turning point -->
+                        <div class="sa-scene" data-sa="2">
+                            <div>
+                                <p class="sa-num">02 / 06 — The turning point</p>
+                                <h2>One tablet replaces <em>the paperwork.</em></h2>
+                                <p class="sa-sub">Keep scrolling — watch the forms disappear into a single digital tool <strong>agents can carry anywhere.</strong></p>
+                            </div>
+                            <div class="sa-visual" aria-hidden="true"></div>
+                        </div>
+
+                        <!-- 03 · Two audiences -->
+                        <div class="sa-scene" data-sa="3">
+                            <div>
+                                <p class="sa-num">03 / 06 — Two audiences</p>
+                                <h2>One tool, <em>two audiences.</em></h2>
+                                <p class="sa-sub">Every screen had to work in a live sales conversation — <strong>for the agent driving it and the client watching.</strong></p>
+                            </div>
+                            <div class="sa-visual">
+                                <div class="sa-duo">
+                                    <div class="sa-duo-card">
+                                        <span class="who">For agents</span>
+                                        <ul>
+                                            <li>Instant, personalised quotes</li>
+                                            <li>Application tracking</li>
+                                            <li>More clients per day</li>
+                                        </ul>
+                                    </div>
+                                    <div class="sa-duo-card">
+                                        <span class="who">For clients</span>
+                                        <ul>
+                                            <li>Compare plans side by side</li>
+                                            <li>Sign on screen in seconds</li>
+                                            <li>No more waiting for approval</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 04 · The flow -->
+                        <div class="sa-scene" data-sa="4">
+                            <div>
+                                <p class="sa-num">04 / 06 — The flow</p>
+                                <h2>Four taps from quote to <em>cover.</em></h2>
+                                <p class="sa-sub">The redesigned journey compresses a multi-day paper process into <strong>one guided conversation.</strong></p>
+                            </div>
+                            <div class="sa-visual">
+                                <div class="sa-steps" aria-hidden="true">
+                                    <div class="sa-steps-track"><div class="sa-steps-fill" id="saStepsFill"></div></div>
+                                    <div class="sa-steps-row">
+                                        <div class="sa-step"><span class="pip"></span><span>Quote</span></div>
+                                        <div class="sa-step"><span class="pip"></span><span>Personalise</span></div>
+                                        <div class="sa-step"><span class="pip"></span><span>e-Sign</span></div>
+                                        <div class="sa-step"><span class="pip"></span><span>Track</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 05 · The app -->
+                        <div class="sa-scene" data-sa="5">
+                            <div>
+                                <p class="sa-num">05 / 06 — The app</p>
+                                <h2>Meet the AIA <em>sales app.</em></h2>
+                                <p class="sa-sub">Personalised plans, side-by-side comparison and e-signature — <strong>built for iPad, used in the field.</strong></p>
+                            </div>
+                            <div class="sa-visual">
+                                <div class="sa-app">
+                                    <div class="sa-app-frame">
+                                        <div class="scr"><img src="../../assets/images/AIA-solution-01-web.jpg" alt="AIA sales app on tablet" loading="lazy"></div>
+                                    </div>
+                                    <span class="sa-chip sa-chip-1"><span class="dot"></span>Personalised quotes</span>
+                                    <span class="sa-chip sa-chip-2"><span class="dot"></span>In-app e-signature</span>
+                                    <span class="sa-chip sa-chip-3"><span class="dot"></span>Real-time tracking</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 06 · Impact -->
+                        <div class="sa-scene sa-scene--impact" data-sa="6">
+                            <div>
+                                <p class="sa-num">06 / 06 — Impact</p>
+                                <h2>Paper out. <em>Results in.</em></h2>
+                                <p class="sa-sub">The numbers agents and clients felt immediately.</p>
+                                <div class="sa-stats">
+                                    <div class="sa-stat">
+                                        <div class="val"><span data-sa-count="25">0</span><span class="sfx">%</span></div>
+                                        <div class="lbl">Higher conversion</div>
+                                    </div>
+                                    <div class="sa-stat">
+                                        <div class="val"><span data-sa-count="40">0</span><span class="sfx">%</span></div>
+                                        <div class="lbl">Faster sales cycle</div>
+                                    </div>
+                                    <div class="sa-stat">
+                                        <div class="val"><span data-sa-count="30">0</span><span class="sfx">%</span></div>
+                                        <div class="lbl">More agent throughput</div>
+                                    </div>
+                                    <div class="sa-stat">
+                                        <div class="val"><span>Instant</span></div>
+                                        <div class="lbl">Policy signing</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-solid" id="saEnter" type="button" data-magnetic>
+                                    Read the full case study
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(90deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persistent desk: papers + tablet (scenes 1–2) -->
+                    <div class="sa-desk" id="saDesk" aria-hidden="true">
+                        <div class="sa-desk-inner">
+                            <div class="sa-tablet" id="saTablet">
+                                <div class="sa-tablet-screen">
+                                    <img src="../../assets/images/AIA-solution-02-web.jpg" alt="" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="sa-paper" data-fly='{"x":-105,"y":-38,"r":-14}'><span class="sig">sign here ✕</span></div>
+                            <div class="sa-paper" data-fly='{"x":92,"y":-52,"r":11}'><span class="sig">sign here ✕</span></div>
+                            <div class="sa-paper" data-fly='{"x":-58,"y":48,"r":7}'><span class="sig">sign here ✕</span></div>
+                            <div class="sa-paper" data-fly='{"x":74,"y":40,"r":-6}'><span class="sig">sign here ✕</span></div>
+                            <div class="sa-paper" data-fly='{"x":0,"y":-6,"r":2}'><span class="sig">sign here ✕</span></div>
+                        </div>
+                    </div>
+
+                    <nav class="sa-rail" aria-label="Showcase chapters">
+                        <button type="button" class="is-on is-now" data-i="1"><span>Old way</span><i></i></button>
+                        <button type="button" data-i="2"><span>Turning point</span><i></i></button>
+                        <button type="button" data-i="3"><span>Two audiences</span><i></i></button>
+                        <button type="button" data-i="4"><span>The flow</span><i></i></button>
+                        <button type="button" data-i="5"><span>The app</span><i></i></button>
+                        <button type="button" data-i="6"><span>Impact</span><i></i></button>
+                    </nav>
+
+                    <div class="sa-hint" aria-hidden="true">Scroll to begin</div>
+                </div>
+            </div>
+
+            <script>
+                (function () {
+                    'use strict';
+                    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    const track = document.getElementById('saTrack');
+                    const stage = document.getElementById('saStage');
+                    const sceneEls = Array.from(stage.querySelectorAll('.sa-scene'));
+                    const railBtns = Array.from(stage.querySelectorAll('.sa-rail button'));
+                    const glowA = document.getElementById('saGlowA');
+                    const glowB = document.getElementById('saGlowB');
+                    const tablet = document.getElementById('saTablet');
+                    const papers = Array.from(stage.querySelectorAll('.sa-paper'));
+                    const stepsFill = document.getElementById('saStepsFill');
+                    const steps = Array.from(stage.querySelectorAll('.sa-step'));
+                    const stepFr = [0.12, 0.4, 0.68, 0.94];
+                    const SCENES = 6;
+                    const ease = (t) => 1 - Math.pow(1 - t, 3);
+                    let counted = false;
+
+                    const flyData = papers.map(p => JSON.parse(p.dataset.fly));
+
+                    function setMorph(m) {
+                        // m: 0 = paper pile, 1 = papers gone / tablet in
+                        papers.forEach((p, i) => {
+                            const local = Math.min(Math.max((m * 1.35 - i * 0.09) / 0.62, 0), 1);
+                            const e = ease(local);
+                            const f = flyData[i];
+                            const inv = 1 - e;
+                            p.style.transform =
+                                'translate(' + (f.x * inv) + '%,' + (f.y * inv) + '%) ' +
+                                'rotate(' + (f.r * inv) + 'deg) ' +
+                                'scale(' + (1 - 0.75 * e) + ')';
+                            p.style.opacity = String(1 - e);
+                        });
+                        const te = ease(Math.min(Math.max((m - 0.3) / 0.6, 0), 1));
+                        tablet.style.opacity = String(te);
+                        tablet.style.transform = 'scale(' + (0.84 + 0.16 * te) + ')';
+                    }
+
+                    function runCounters() {
+                        stage.querySelectorAll('[data-sa-count]').forEach(el => {
+                            const target = parseFloat(el.dataset.saCount);
+                            if (reduceMotion) { el.textContent = String(target); return; }
+                            const dur = 1200;
+                            const t0 = performance.now();
+                            const step = (t) => {
+                                const p = Math.min((t - t0) / dur, 1);
+                                el.textContent = String(Math.round(target * ease(p)));
+                                if (p < 1) requestAnimationFrame(step);
+                            };
+                            requestAnimationFrame(step);
+                            setTimeout(() => { el.textContent = String(target); }, dur + 250);
+                        });
+                    }
+
+                    if (reduceMotion) {
+                        sceneEls.forEach(el => el.classList.add('is-active'));
+                        steps.forEach(s => s.classList.add('is-done'));
+                        runCounters();
+                        return;
+                    }
+
+                    setMorph(0);
+                    let cur = 0;
+
+                    function update() {
+                        const r = track.getBoundingClientRect();
+                        const total = r.height - window.innerHeight;
+                        if (total <= 0) return;
+                        const p = Math.min(Math.max(-r.top / total, 0), 1);
+                        const f = p * SCENES;
+                        const idx = Math.max(1, Math.min(Math.floor(f) + 1, SCENES));
+                        const sp = Math.min(Math.max(f - (idx - 1), 0), 1);
+
+                        if (idx !== cur) {
+                            cur = idx;
+                            stage.dataset.scene = String(idx);
+                            sceneEls.forEach((el, i) => {
+                                el.classList.toggle('is-active', i + 1 === idx);
+                                el.classList.toggle('is-past', i + 1 < idx);
+                            });
+                            railBtns.forEach((b, i) => {
+                                b.classList.toggle('is-on', i + 1 <= idx);
+                                b.classList.toggle('is-now', i + 1 === idx);
+                            });
+                            if (idx === 6 && !counted) { counted = true; runCounters(); }
+                        }
+
+                        // Papers → tablet morph, driven by scroll inside scene 2
+                        if (idx === 1) setMorph(0);
+                        else if (idx === 2) setMorph(sp);
+                        else setMorph(1);
+
+                        // Step tracker fill inside scene 4
+                        if (idx === 4) {
+                            const d = Math.min(sp * 1.15, 1);
+                            stepsFill.style.width = (d * 100) + '%';
+                            steps.forEach((s, i) => s.classList.toggle('is-done', d >= stepFr[i]));
+                        } else if (idx > 4) {
+                            stepsFill.style.width = '100%';
+                            steps.forEach(s => s.classList.add('is-done'));
+                        }
+
+                        // Glow parallax
+                        glowA.style.transform = 'translateY(' + (p * -110) + 'px)';
+                        glowB.style.transform = 'translateY(' + (p * 90) + 'px)';
+                    }
+
+                    window.addEventListener('scroll', update, { passive: true });
+                    window.addEventListener('resize', update);
+                    update();
+
+                    function jumpTo(i) {
+                        const r = track.getBoundingClientRect();
+                        const top = window.scrollY + r.top;
+                        const total = r.height - window.innerHeight;
+                        window.scrollTo({ top: top + total * ((i - 0.5) / SCENES), behavior: 'smooth' });
+                    }
+                    railBtns.forEach((b) => {
+                        b.addEventListener('click', () => jumpTo(parseInt(b.dataset.i, 10)));
+                    });
+                    function exitShowcase() {
+                        const r = track.getBoundingClientRect();
+                        window.scrollTo({ top: window.scrollY + r.bottom - 70, behavior: 'smooth' });
+                    }
+                    document.getElementById('saSkip').addEventListener('click', exitShowcase);
+                    document.getElementById('saEnter').addEventListener('click', exitShowcase);
+                })();
+            </script>
+        </section>
+
         <section class="case-hero" aria-label="AIA Health case study">
             <div class="hero-glow" aria-hidden="true"></div>
             <div class="container">
