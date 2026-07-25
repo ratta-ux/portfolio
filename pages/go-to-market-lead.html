@@ -114,7 +114,7 @@ img, video, canvas, svg {
         page-break-after: always;
     }
     .slide:last-child { break-after: auto; page-break-after: auto; }
-    .deck-controls, .progress-rail, .page-count, .edit-hotzone, .edit-toggle { display: none !important; }
+    .deck-controls, .progress-rail, .page-count, .nav-hint, .nav-btn { display: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -598,28 +598,43 @@ img, video, canvas, svg {
     color: var(--ink-faint); letter-spacing: 0.08em;
 }
 .nav-hint {
-    position: fixed; left: 26px; bottom: 20px; z-index: 1000;
-    font-family: var(--font); font-size: 13px; color: var(--ink-faint);
+    position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000;
+    font-family: var(--font); font-size: 17px; font-weight: 500; color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    padding: 11px 22px; border-radius: 999px;
+    background: rgba(255,255,255,0.92); border: 1px solid var(--line);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     opacity: 1; transition: opacity 1s ease;
 }
 .nav-hint.fade { opacity: 0; }
 
-/* ===========================================
-   INLINE EDITING (hover top-left corner or press E)
-   =========================================== */
-.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
-.edit-toggle {
-    position: fixed; top: 18px; left: 18px; z-index: 10001;
-    width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid var(--line); background: #fff;
-    font-size: 18px; cursor: pointer;
+/* Clickable prev / next arrows — hidden by default, revealed on mouse
+   movement (see setupNavAutoHide), so they never sit on top of the slides. */
+.nav-btn {
+    position: fixed; top: 50%; transform: translateY(-50%); z-index: 1000;
+    width: 66px; height: 66px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.92);
+    color: var(--ink); cursor: pointer;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.12);
     opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: background 0.2s ease, color 0.2s ease, opacity 0.35s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
 }
-.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
-.edit-toggle.active { background: var(--red); border-color: var(--red); }
-body.editing [contenteditable="true"] { outline: 1.5px dashed rgba(212,25,53,0.5); outline-offset: 4px; border-radius: 2px; }
+.nav-btn svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.nav-btn:hover { background: var(--ink); color: #fff; }
+.nav-btn:active { transform: translateY(-50%) scale(0.93); }
+.nav-btn.prev { left: 28px; }
+.nav-btn.next { right: 28px; }
+.nav-btn[disabled] { box-shadow: none; }
+/* Visible only while the user is actively moving the cursor */
+body.show-nav .nav-btn { opacity: 1; pointer-events: auto; }
+body.show-nav .nav-btn[disabled] { opacity: 0.28; pointer-events: none; }
+@media (max-width: 640px) {
+    .nav-btn { width: 52px; height: 52px; }
+    .nav-btn.prev { left: 14px; } .nav-btn.next { right: 14px; }
+    .nav-hint { font-size: 14px; padding: 9px 16px; }
+}
 </style>
 
 <script type="text/javascript">
@@ -1336,12 +1351,14 @@ body.editing [contenteditable="true"] { outline: 1.5px dashed rgba(212,25,53,0.5
 </div>
 
 <!-- Deck chrome -->
+<button class="nav-btn prev" id="navPrev" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg>
+</button>
+<button class="nav-btn next" id="navNext" aria-label="Next slide">
+    <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg>
+</button>
 <div class="page-count" id="pageCount">1 / 20</div>
-<div class="nav-hint" id="navHint">← → to navigate</div>
-
-<!-- Inline editing -->
-<div class="edit-hotzone" id="editHotzone" title="Edit mode"></div>
-<button class="edit-toggle" id="editToggle" title="Edit mode (E)" aria-label="Toggle edit mode">✏️</button>
+<div class="nav-hint" id="navHint">Click the arrows, use ← →, or swipe</div>
 
 <script>
 /* ===========================================
@@ -1356,12 +1373,16 @@ class SlidePresentation {
         this.stage = document.getElementById('deckStage');
         this.bar = document.getElementById('progressBar');
         this.count = document.getElementById('pageCount');
+        this.prevBtn = document.getElementById('navPrev');
+        this.nextBtn = document.getElementById('navNext');
         this.wheelLock = false;
 
         this.setupStageScale();
         this.setupKeyboardNav();
         this.setupTouchNav();
         this.setupWheelNav();
+        this.setupButtonNav();
+        this.setupNavAutoHide();
         this.showSlide(0);
 
         // Fade the nav hint after a few seconds
@@ -1416,6 +1437,31 @@ class SlidePresentation {
         }, { passive: true });
     }
 
+    setupButtonNav() {
+        this.prevBtn.addEventListener('click', () => this.prev());
+        this.nextBtn.addEventListener('click', () => this.next());
+    }
+
+    /* Reveal the arrows only while the cursor is moving, then fade them out
+       after a short idle delay so they never obstruct the slides. */
+    setupNavAutoHide() {
+        let hideTimer = null;
+        const reveal = () => {
+            document.body.classList.add('show-nav');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => document.body.classList.remove('show-nav'), 2200);
+        };
+        window.addEventListener('mousemove', reveal);
+        window.addEventListener('touchstart', reveal, { passive: true });
+        // Keep them up while the pointer rests on a button
+        [this.prevBtn, this.nextBtn].forEach(btn => {
+            btn.addEventListener('mouseenter', () => { document.body.classList.add('show-nav'); clearTimeout(hideTimer); });
+            btn.addEventListener('mouseleave', reveal);
+        });
+        // Brief peek on load so the controls are discoverable
+        reveal();
+    }
+
     next() { this.showSlide(this.current + 1); }
     prev() { this.showSlide(this.current - 1); }
 
@@ -1427,87 +1473,13 @@ class SlidePresentation {
         });
         this.bar.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
         this.count.textContent = `${this.current + 1} / ${this.slides.length}`;
-    }
-}
-
-/* ===========================================
-   INLINE TEXT EDITOR
-   Hover top-left corner or press E → click text to edit.
-   Ctrl/Cmd+S saves edits to localStorage.
-   =========================================== */
-class InlineEditor {
-    constructor() {
-        this.isActive = false;
-        this.storageKey = 'gtm-deck-edits-v2';   /* v2: 20-slide layout — old v1 edits don't apply */
-        this.editables = 'h1, h2, h3, p, li, .chip, .kicker, .co, .role, .stat, .stat-caption, .stat-note, .month, .big, .big-caption, .cap, .ex-label, .heard-label, .phase, .tag, .need, .proof, .num, .name, .roles, .item, .txt, .brand, .slide-no, .plus';
-        this.restore();
-    }
-
-    toggleEditMode() {
-        this.isActive = !this.isActive;
-        document.body.classList.toggle('editing', this.isActive);
-        document.getElementById('editToggle').classList.toggle('active', this.isActive);
-        document.querySelectorAll(this.editables).forEach(el => {
-            if (this.isActive) el.setAttribute('contenteditable', 'true');
-            else el.removeAttribute('contenteditable');
-        });
-        if (!this.isActive) this.save();
-    }
-
-    save() {
-        const edits = {};
-        let n = 0;
-        document.querySelectorAll(this.editables).forEach(el => {
-            const id = 'e' + (n++);
-            el.dataset.editId = id;
-            edits[id] = el.innerHTML;
-        });
-        localStorage.setItem(this.storageKey, JSON.stringify(edits));
-    }
-
-    restore() {
-        const raw = localStorage.getItem(this.storageKey);
-        if (!raw) return;
-        try {
-            const edits = JSON.parse(raw);
-            let n = 0;
-            document.querySelectorAll(this.editables).forEach(el => {
-                const id = 'e' + (n++);
-                if (edits[id] !== undefined) { el.dataset.editId = id; el.innerHTML = edits[id]; }
-            });
-        } catch (e) { /* corrupted store — ignore */ }
+        // Dim the arrows at the ends of the deck
+        this.prevBtn.disabled = this.current === 0;
+        this.nextBtn.disabled = this.current === this.slides.length - 1;
     }
 }
 
 const deck = new SlidePresentation();
-const editor = new InlineEditor();
-
-/* Edit-toggle interactions: click, hotzone hover w/ 400ms grace, E key */
-const hotzone = document.getElementById('editHotzone');
-const editToggle = document.getElementById('editToggle');
-let hideTimeout = null;
-
-editToggle.addEventListener('click', () => editor.toggleEditMode());
-hotzone.addEventListener('click', () => editor.toggleEditMode());
-
-hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
-hotzone.addEventListener('mouseleave', () => {
-    hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400);
-});
-editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-editToggle.addEventListener('mouseleave', () => {
-    hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400);
-});
-
-document.addEventListener('keydown', (e) => {
-    if ((e.key === 'e' || e.key === 'E') && !(e.target.getAttribute && e.target.getAttribute('contenteditable'))) {
-        editor.toggleEditMode();
-    }
-    if ((e.metaKey || e.ctrlKey) && e.key === 's' && editor.isActive) {
-        e.preventDefault();
-        editor.save();
-    }
-});
 </script>
 </body>
 </html>
