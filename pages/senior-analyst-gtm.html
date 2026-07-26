@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ratta Kidakarn — GTM Evolution</title>
+
+<!-- Typography: General Sans (Fontshare) — close cousin of lululemon's Calibre -->
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap">
+
+<style>
+/* ===========================================
+   THEME — lululemon-inspired minimal system
+   80% white · 15% black/gray · 5% red
+   =========================================== */
+:root {
+    --bg: #ffffff;
+    --ink: #111111;
+    --ink-soft: #666666;
+    --ink-faint: #9a9a9a;
+    --line: #eaeaea;
+    --panel: #f5f5f5;
+    --red: #d41935;
+
+    --font: 'General Sans', 'Helvetica Neue', Helvetica, sans-serif;
+
+    --stage-bg: #f5f5f5;   /* letterbox color */
+    --slide-bg: #ffffff;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Slides authored at 1920×1080, scaled as a whole.
+   =========================================== */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+img, video, canvas, svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+@media print {
+    html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+    .deck-viewport { position: static; overflow: visible; background: #fff; }
+    .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+    .slide:last-child { break-after: auto; page-break-after: auto; }
+    .deck-controls, .progress-rail, .page-count, .edit-hotzone, .edit-toggle { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* ===========================================
+   SLIDE TRANSITION + REVEAL ANIMATIONS
+   Calm, fast fades — nothing decorative.
+   =========================================== */
+.slide { transition: opacity 0.45s ease; }
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+
+/* Stagger — apply .d1…d8 for sequential reveals */
+.slide.visible .d1 { transition-delay: 0.05s; }
+.slide.visible .d2 { transition-delay: 0.15s; }
+.slide.visible .d3 { transition-delay: 0.25s; }
+.slide.visible .d4 { transition-delay: 0.35s; }
+.slide.visible .d5 { transition-delay: 0.45s; }
+.slide.visible .d6 { transition-delay: 0.55s; }
+.slide.visible .d7 { transition-delay: 0.65s; }
+.slide.visible .d8 { transition-delay: 0.75s; }
+
+/* ===========================================
+   SHARED TYPE SYSTEM
+   Authored at 1920×1080 — fixed px sizes.
+   =========================================== */
+.slide { font-family: var(--font); color: var(--ink); }
+
+/* Small red uppercase label above titles */
+.kicker {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 28px;
+}
+
+/* Standard content-slide heading */
+.h2 {
+    font-size: 76px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+}
+
+/* One quiet supporting sentence under headings */
+.lede {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-top: 22px;
+    line-height: 1.5;
+}
+
+/* Bottom takeaway statement — one line, black, one red phrase max */
+.takeaway {
+    font-size: 34px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+}
+.takeaway .red { color: var(--red); }
+
+/* Standard slide frame */
+.pad { position: absolute; inset: 0; padding: 100px 120px; display: flex; flex-direction: column; }
+
+/* Slide-number chip, top right of each content slide */
+.slide-no {
+    position: absolute;
+    top: 100px;
+    right: 120px;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    z-index: 2;
+}
+
+/* Thin divider */
+.rule { height: 1px; background: var(--line); border: 0; }
+
+/* Line icons — thin stroke, never filled */
+.icon { width: 44px; height: 44px; stroke: var(--ink); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.icon.red { stroke: var(--red); }
+
+/* Small pill chip */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 28px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    background: #fff;
+    white-space: nowrap;
+}
+
+/* Thin arrow between flow chips */
+.flow-arrow { font-size: 24px; color: var(--ink-faint); font-weight: 400; }
+
+/* Bottom takeaway band shared by many slides */
+.bottom-band { margin-top: auto; padding-top: 40px; border-top: 1px solid var(--line); }
+
+/* Standard dash bullets */
+.dash-list { list-style: none; }
+.dash-list li {
+    font-size: 25px; color: var(--ink); line-height: 1.5;
+    padding: 10px 0 10px 30px; position: relative;
+}
+.dash-list li::before {
+    content: ""; position: absolute; left: 0; top: 24px;
+    width: 12px; height: 1.5px; background: var(--red);
+}
+.dash-list li strong { font-weight: 600; }
+
+/* ===========================================
+   SLIDE 1 — TITLE
+   Split layout: statement left, photo right.
+   =========================================== */
+.s-title { display: flex; }
+.s-title .left {
+    width: 1070px;
+    height: 100%;
+    padding: 100px 100px 90px 120px;
+    display: flex;
+    flex-direction: column;
+}
+.s-title .brand {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.s-title .brand .dot { color: var(--red); }
+.s-title .titleblock { margin-top: auto; margin-bottom: auto; }
+.s-title h1 {
+    font-size: 104px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+}
+.s-title h1 .red { color: var(--red); }
+.s-title .subtitle {
+    margin-top: 40px;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 780px;
+}
+.s-title .meta { display: flex; align-items: center; gap: 28px; padding-top: 40px; border-top: 1px solid var(--line); }
+.s-title .meta .name { font-size: 28px; font-weight: 600; white-space: nowrap; }
+.s-title .meta .roles { font-size: 22px; color: var(--ink-soft); font-weight: 400; }
+.s-title .meta .sep { width: 1px; height: 30px; background: var(--line); }
+.s-title .right { position: relative; width: 850px; height: 100%; overflow: hidden; }
+.s-title .right img {
+    width: 100%; height: 100%; max-height: none;
+    object-fit: cover; object-position: center;
+}
+
+/* ===========================================
+   SLIDE 2 — AGENDA (what this deck covers)
+   =========================================== */
+.agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 44px 60px; margin-top: 80px; }
+.agenda-item { border-top: 2px solid var(--ink); padding-top: 34px; display: flex; gap: 34px; }
+.agenda-item:last-child { border-top-color: var(--red); }
+.agenda-item .num { font-size: 30px; font-weight: 600; color: var(--red); }
+.agenda-item h3 { font-size: 36px; font-weight: 600; letter-spacing: -0.01em; }
+.agenda-item p { font-size: 24px; color: var(--ink-soft); line-height: 1.5; margin-top: 12px; }
+
+/* ===========================================
+   SLIDE 3 — WHY THIS ROLE FITS ME (pillars)
+   =========================================== */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 70px; }
+.pillar {
+    border-top: 2px solid var(--ink);
+    padding-top: 40px;
+}
+.pillar.accent { border-top-color: var(--red); }
+.pillar .icon { margin-bottom: 30px; }
+.pillar h3 { font-size: 36px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
+.pillar p { margin-top: 18px; font-size: 25px; color: var(--ink-soft); line-height: 1.55; }
+
+/* Interview-language chips row */
+.heard { margin-top: auto; }
+.heard .heard-label {
+    font-size: 20px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 22px;
+}
+.heard .chips { display: flex; gap: 20px; flex-wrap: wrap; }
+.after-heard { margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--line); }
+
+/* ===========================================
+   SLIDE 4 — CAREER JOURNEY (timeline)
+   =========================================== */
+.timeline { position: relative; margin-top: 54px; }
+.timeline .track {
+    position: absolute; top: 7px; left: 8px; right: 8px;
+    height: 1px; background: var(--line);
+}
+.tl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 44px; position: relative; }
+.tl-item .node {
+    width: 15px; height: 15px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--ink);
+    margin-bottom: 22px;
+}
+.tl-item.dest .node { background: var(--red); border-color: var(--red); }
+.tl-photo {
+    width: 100%;
+    height: 132px;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 16px;
+    display: block;
+    margin-bottom: 20px;
+    filter: saturate(.92);
+}
+.tl-item:first-child .tl-photo { object-position: center 35%; }
+.tl-item:nth-child(2) .tl-photo { object-position: center 38%; }
+.tl-item:nth-child(3) .tl-photo { object-position: center 42%; }
+.tl-item.dest .tl-photo { object-position: center 38%; }
+.tl-item .co { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.tl-item .role { font-size: 21px; color: var(--red); font-weight: 500; margin-top: 8px; }
+.tl-item ul { list-style: none; margin-top: 18px; }
+.tl-item li {
+    font-size: 20px; color: var(--ink-soft); line-height: 1.4;
+    padding: 6px 0 6px 22px; position: relative;
+}
+.tl-item li::before {
+    content: ""; position: absolute; left: 0; top: 19px;
+    width: 10px; height: 1.5px; background: var(--ink-faint);
+}
+
+/* ===========================================
+   CHAPTER SLIDES (5–7, 9, 17) — split photo layout
+   =========================================== */
+.split { display: flex; }
+.split .content {
+    flex: 1;
+    height: 100%;
+    padding: 100px 90px 90px 120px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.split .photo { position: relative; width: 740px; height: 100%; overflow: hidden; flex-shrink: 0; }
+.split .photo img { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: center; }
+
+/* Sub-image inset — a framed second photo over the main image's lower-left
+   corner. The main photo underneath is left completely untouched. */
+.photo-inset {
+    position: absolute;
+    left: 36px;
+    bottom: 36px;
+    width: 340px;
+    padding: 8px 8px 0;
+    background: #fff;
+    z-index: 2;
+    box-shadow: 0 16px 44px rgba(0,0,0,0.30);
+}
+.split .photo .photo-inset img {
+    width: 100%;
+    height: 200px;
+    max-height: none;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+.photo-inset figcaption {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+    padding: 11px 2px 9px;
+}
+.split .slide-no { right: auto; left: 120px; }          /* photo sits right — number moves left of it */
+.split.photo-right .slide-no { left: auto; right: 860px; }
+.chapter-role { font-size: 24px; font-weight: 500; color: var(--ink-soft); margin-top: 20px; }
+.chapter-role strong { color: var(--ink); font-weight: 600; }
+.split .dash-list { margin-top: 48px; }
+.split .impact {
+    margin-top: auto; padding-top: 36px; border-top: 1px solid var(--line);
+    font-size: 27px; font-weight: 500; line-height: 1.5;
+}
+.split .impact .red { color: var(--red); }
+.client-chips { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+.client-chips .chip { font-size: 21px; padding: 12px 24px; }
+
+/* Slide 17 — four-idea grid (Research / Visualize / Facilitate / Communicate) */
+.edge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 48px; margin-top: 48px; }
+.edge-item { border-top: 2px solid var(--ink); padding-top: 26px; }
+.edge-item:last-child { border-top-color: var(--red); }
+.edge-item .edge-label { font-size: 20px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; }
+.edge-item p { font-size: 23px; color: var(--ink-soft); line-height: 1.5; }
+
+/* Slide 7 — five-function hub row */
+.hub-row { display: flex; align-items: center; gap: 18px; margin-top: 44px; flex-wrap: wrap; }
+.hub-row .chip.core { background: var(--ink); color: #fff; border-color: var(--ink); }
+.hub-row .plus { color: var(--ink-faint); font-size: 22px; }
+
+/* ===========================================
+   SLIDE 8 — HOW I WORK (four cards)
+   =========================================== */
+.work-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; margin-top: 70px; }
+.work-card {
+    background: var(--panel);
+    border-radius: 20px;
+    padding: 44px 40px 48px;
+}
+.work-card .num { font-size: 20px; font-weight: 600; color: var(--red); letter-spacing: 0.1em; }
+.work-card .icon { margin-top: 30px; }
+.work-card h3 { font-size: 33px; font-weight: 600; margin-top: 26px; letter-spacing: -0.01em; }
+.work-card p { font-size: 23px; color: var(--ink-soft); line-height: 1.5; margin-top: 14px; }
+
+/* ===========================================
+   SLIDE 9 — HOW I THINK (photo + flow)
+   =========================================== */
+.think-steps { display: flex; align-items: center; gap: 18px; margin-top: 44px; flex-wrap: wrap; }
+.think-steps .chip { border-color: var(--ink); }
+.think-steps .chip.last { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ===========================================
+   SLIDES 10–12 — EXAMPLES (shared two-column)
+   =========================================== */
+.ex-body { display: grid; grid-template-columns: 1fr 620px; gap: 90px; margin-top: 64px; flex: 1; min-height: 0; }
+.ex-section { margin-bottom: 40px; }
+.ex-label {
+    font-size: 20px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 16px;
+}
+.ex-section p { font-size: 26px; line-height: 1.55; color: var(--ink); max-width: 900px; }
+.ex-section .dash-list li { font-size: 25px; }
+
+/* Big-number stat panel (lululemon "big numbers, not tables") */
+.stat-panel {
+    background: var(--panel);
+    border-radius: 24px;
+    padding: 70px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    align-self: stretch;
+}
+.stat-panel .stat { font-size: 150px; font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+.stat-panel .stat .red { color: var(--red); }
+.stat-panel .stat-caption { font-size: 27px; color: var(--ink-soft); margin-top: 28px; line-height: 1.5; }
+.stat-panel .stat-note { font-size: 21px; color: var(--ink-faint); margin-top: 46px; padding-top: 30px; border-top: 1px solid var(--line); line-height: 1.5; }
+
+/* Slide 11 — vertical approach flow */
+.approach-steps { display: flex; flex-direction: column; }
+.approach-steps .step { display: flex; align-items: center; gap: 24px; padding: 13px 0; }
+.approach-steps .step .idx {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center;
+    font-size: 19px; font-weight: 600; flex-shrink: 0;
+}
+.approach-steps .step.final .idx { background: var(--red); border-color: var(--red); color: #fff; }
+.approach-steps .step .txt { font-size: 26px; font-weight: 500; }
+.approach-steps .joint { width: 1px; height: 18px; background: var(--line); margin-left: 22px; }
+
+/* Slide 12 — trust principle visual */
+.trust-flow { display: flex; align-items: center; gap: 28px; margin: 56px 0 10px; }
+.trust-flow .chip { font-size: 26px; padding: 20px 40px; border-color: var(--ink); }
+.trust-flow .chip.lulu { background: var(--ink); color: #fff; }
+.trust-principle { font-size: 30px; font-weight: 500; margin-top: 36px; }
+.trust-principle .red { color: var(--red); }
+
+/* ===========================================
+   SLIDE 13 — IMPACT AT A GLANCE (stat tiles)
+   =========================================== */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; margin-top: 80px; }
+.stat-tile { background: var(--panel); border-radius: 20px; padding: 48px 40px 52px; }
+.stat-tile.dark { background: var(--ink); color: #fff; }
+.stat-tile .big { font-size: 86px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.stat-tile .big .red { color: var(--red); }
+.stat-tile .cap { font-size: 23px; color: var(--ink-soft); line-height: 1.45; margin-top: 22px; }
+.stat-tile.dark .cap { color: rgba(255,255,255,0.75); }
+
+/* ===========================================
+   SLIDE 14 — WHAT EXCITES ME ABOUT GTM (columns)
+   =========================================== */
+.gtm-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 64px; }
+.gtm-col { border-top: 2px solid var(--ink); padding-top: 36px; }
+.gtm-col:last-child { border-top-color: var(--red); }
+.gtm-col h3 { font-size: 33px; font-weight: 600; letter-spacing: -0.01em; }
+.gtm-col .big { font-size: 78px; font-weight: 600; letter-spacing: -0.03em; margin-top: 22px; line-height: 1; }
+.gtm-col .big .red { color: var(--red); }
+.gtm-col .big-caption { font-size: 21px; color: var(--ink-faint); margin-top: 8px; }
+.gtm-col ul { list-style: none; margin-top: 24px; }
+.gtm-col li {
+    font-size: 24px; color: var(--ink-soft); line-height: 1.45;
+    padding: 8px 0 8px 26px; position: relative;
+}
+.gtm-col li::before {
+    content: ""; position: absolute; left: 0; top: 21px;
+    width: 11px; height: 1.5px; background: var(--ink-faint);
+}
+
+/* ===========================================
+   SLIDE 15 — GTM LIFECYCLE (full slide)
+   =========================================== */
+.lc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-top: 90px; }
+.lc-stage { position: relative; border-top: 2px solid var(--ink); padding-top: 36px; }
+.lc-stage:last-child { border-top-color: var(--red); }
+.lc-stage .phase { font-size: 20px; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.12em; }
+.lc-stage h3 { font-size: 34px; font-weight: 600; margin-top: 14px; letter-spacing: -0.01em; line-height: 1.15; }
+.lc-stage:last-child h3 { color: var(--red); }
+.lc-stage p { font-size: 23px; color: var(--ink-soft); line-height: 1.5; margin-top: 16px; }
+.lc-stage .arrow {
+    position: absolute; top: 44px; right: -32px;
+    font-size: 26px; color: var(--ink-faint);
+}
+
+/* ===========================================
+   SLIDE 16 — WHY I FIT (need → evidence mapping)
+   =========================================== */
+.map-rows { margin-top: 64px; }
+.map-row {
+    display: grid; grid-template-columns: 560px 80px 1fr;
+    align-items: center;
+    padding: 27px 0;
+    border-bottom: 1px solid var(--line);
+}
+.map-row:first-child { border-top: 1px solid var(--line); }
+.map-row .need { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.map-row .map-arrow { font-size: 26px; color: var(--red); text-align: center; }
+.map-row .proof { font-size: 25px; color: var(--ink-soft); line-height: 1.45; }
+
+/* Compact variant — fits eight need→bring rows on one slide */
+.map-rows.compact { margin-top: 44px; }
+.map-rows.compact .map-row { grid-template-columns: 640px 70px 1fr; padding: 16px 0; }
+.map-rows.compact .need { font-size: 25px; }
+.map-rows.compact .proof { font-size: 22px; }
+
+/* ===========================================
+   SLIDE 19 — BEYOND 90 DAYS
+   =========================================== */
+.beyond-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 80px; }
+.beyond-col { border-top: 2px solid var(--ink); padding-top: 36px; }
+.beyond-col:last-child { border-top-color: var(--red); }
+.beyond-col .tag { font-size: 20px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
+.beyond-col h3 { font-size: 44px; font-weight: 600; margin-top: 14px; letter-spacing: -0.02em; }
+.beyond-col p { font-size: 25px; color: var(--ink-soft); line-height: 1.55; margin-top: 20px; }
+
+/* ===========================================
+   SLIDE 18 — FIRST 90 DAYS
+   =========================================== */
+.days-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 70px; }
+.day-card { background: var(--panel); border-radius: 20px; padding: 48px 44px; }
+.day-card.lead { background: var(--ink); color: #fff; }
+.day-card .month { font-size: 20px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
+.day-card.lead .month { color: rgba(255,255,255,0.55); }
+.day-card h3 { font-size: 46px; font-weight: 600; margin-top: 16px; letter-spacing: -0.02em; }
+.day-card.lead h3 { color: #fff; }
+.day-card.lead h3 .reddot { color: var(--red); }
+.day-card ul { list-style: none; margin-top: 30px; }
+.day-card li {
+    font-size: 24px; line-height: 1.45; color: var(--ink-soft);
+    padding: 9px 0 9px 26px; position: relative;
+}
+.day-card.lead li { color: rgba(255,255,255,0.85); }
+.day-card li::before {
+    content: ""; position: absolute; left: 0; top: 22px;
+    width: 11px; height: 1.5px; background: var(--ink-faint);
+}
+.day-card.lead li::before { background: var(--red); }
+
+/* ===========================================
+   SLIDE 20 — THANK YOU
+   =========================================== */
+.s-thanks .pad { justify-content: center; align-items: flex-start; width: 1180px; padding-right: 90px; }
+.s-thanks .mark { width: 18px; height: 18px; border-radius: 50%; background: var(--red); margin-bottom: 56px; }
+.s-thanks h2 { font-size: 130px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.s-thanks .close-line { font-size: 32px; color: var(--ink-soft); line-height: 1.6; margin-top: 48px; max-width: 940px; }
+.s-thanks .close-line .red { color: var(--red); font-weight: 500; }
+.s-thanks .contact { display: flex; align-items: center; gap: 28px; margin-top: 100px; padding-top: 40px; border-top: 1px solid var(--line); width: 100%; }
+/* Portrait on the right — bookends the title slide's photo */
+.thanks-photo { position: absolute; top: 0; right: 0; width: 740px; height: 100%; overflow: hidden; }
+.thanks-photo img { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: 42% center; }
+.s-thanks .contact .name { font-size: 27px; font-weight: 600; }
+.s-thanks .contact .sep { width: 1px; height: 28px; background: var(--line); }
+.s-thanks .contact .item { font-size: 23px; color: var(--ink-soft); }
+
+/* ===========================================
+   DECK CHROME — outside the slide design system
+   =========================================== */
+.progress-rail {
+    position: fixed; top: 0; left: 0; right: 0; height: 4px;
+    background: transparent; z-index: 1001;
+}
+.progress-rail .bar {
+    height: 100%; width: 0; background: var(--red);
+    transition: width 0.4s var(--ease);
+}
+.page-count {
+    position: fixed; right: 26px; bottom: 20px; z-index: 1000;
+    font-family: var(--font); font-size: 14px; font-weight: 500;
+    color: var(--ink-faint); letter-spacing: 0.08em;
+}
+.nav-hint {
+    position: fixed; left: 26px; bottom: 20px; z-index: 1000;
+    font-family: var(--font); font-size: 13px; color: var(--ink-faint);
+    opacity: 1; transition: opacity 1s ease;
+}
+.nav-hint.fade { opacity: 0; }
+
+/* ===========================================
+   INLINE EDITING (hover top-left corner or press E)
+   =========================================== */
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle {
+    position: fixed; top: 18px; left: 18px; z-index: 10001;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--line); background: #fff;
+    font-size: 18px; cursor: pointer;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { background: var(--red); border-color: var(--red); }
+body.editing [contenteditable="true"] { outline: 1.5px dashed rgba(212,25,53,0.5); outline-offset: 4px; border-radius: 2px; }
+
+</style>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "xppe6rh6sq");
+</script>
+</head>
+<body>
+
+<!-- Red progress bar along the top -->
+<div class="progress-rail" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
+
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage" aria-label="Presentation slides">
+
+    <!-- ============================================================
+         SLIDE 1 · TITLE — Turning complexity into clarity
+         ============================================================ -->
+    <section class="slide s-title active" aria-label="Title">
+        <div class="left">
+            <div class="brand reveal d1">ratta kidakarn<span class="dot">.</span></div>
+            <div class="titleblock">
+                <div class="kicker reveal d2">lululemon · GTM Evolution</div>
+                <h1 class="reveal d3">Turning complexity into clarity<span class="red">.</span></h1>
+                <p class="subtitle reveal d4">Bringing consulting, operational experience and human-centred problem solving together to help evolve how lululemon goes to market.</p>
+            </div>
+            <div class="meta reveal d5">
+                <span class="name">Ratta Kidakarn</span>
+                <span class="sep"></span>
+                <span class="roles">Sample Operations Support&ensp;·&ensp;Former Consultant&ensp;·&ensp;UX &amp; Product Designer</span>
+            </div>
+        </div>
+        <div class="right reveal d2">
+            <img src="../assets/images/profile.png" alt="Ratta at a lululemon retail store">
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 2 · WHAT THIS DECK COVERS
+         ============================================================ -->
+    <section class="slide exclude" aria-label="What this deck covers">
+        <div class="pad">
+            <span class="slide-no">02 / 20</span>
+            <div class="kicker reveal d1">In the next five minutes</div>
+            <h2 class="h2 reveal d2">What this deck covers</h2>
+            <div class="agenda-grid">
+                <div class="agenda-item reveal d3">
+                    <span class="num">01</span>
+                    <div>
+                        <h3>Who I am</h3>
+                        <p>An unusual path — airline, consulting, retail — built entirely on operations.</p>
+                    </div>
+                </div>
+                <div class="agenda-item reveal d4">
+                    <span class="num">02</span>
+                    <div>
+                        <h3>How I work</h3>
+                        <p>Principles carried across three industries, and how I think through problems.</p>
+                    </div>
+                </div>
+                <div class="agenda-item reveal d5">
+                    <span class="num">03</span>
+                    <div>
+                        <h3>What I've delivered</h3>
+                        <p>Three examples of process improvement, alignment and change that stuck.</p>
+                    </div>
+                </div>
+                <div class="agenda-item reveal d6">
+                    <span class="num">04</span>
+                    <div>
+                        <h3>Why GTM Evolution — and how I'd start</h3>
+                        <p>The role's needs mapped to my experience, plus my first 90 days.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-band reveal d7">
+                <p class="takeaway">Not a résumé — a picture of <span class="red">how I think and work</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 3 · WHY THIS ROLE FITS ME — three pillars
+         ============================================================ -->
+    <section class="slide exclude" aria-label="Why this role fits me">
+        <div class="pad">
+            <span class="slide-no">03 / 20</span>
+            <div class="kicker reveal d1">What energizes me</div>
+            <h2 class="h2 reveal d2">Why this role fits me</h2>
+            <div class="pillars">
+                <div class="pillar reveal d3">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.3"/><polyline points="21 3 21 7.5 16.5 7.5"/><circle cx="12" cy="12" r="2.5"/></svg>
+                    <h3>Process transformation</h3>
+                    <p>Finding friction, understanding root causes and designing better ways of working.</p>
+                </div>
+                <div class="pillar reveal d4">
+                    <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <h3>Structured problem solving</h3>
+                    <p>Turning ambiguity into clear questions, options and actionable recommendations.</p>
+                </div>
+                <div class="pillar accent reveal d5">
+                    <svg class="icon red" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5"/><path d="M16.5 14.2c2.7.3 4.5 2 4.5 4.3"/></svg>
+                    <h3>Stakeholder alignment</h3>
+                    <p>Facilitating conversations that surface tradeoffs, build confidence and move teams toward decisions.</p>
+                </div>
+            </div>
+            <div class="heard reveal d6">
+                <div class="heard-label">What I heard matters most in this role</div>
+                <div class="chips">
+                    <span class="chip">“Transformation”</span>
+                    <span class="chip">“Structured problem solving”</span>
+                    <span class="chip">“Bringing stakeholders along”</span>
+                    <span class="chip">“Understanding tradeoffs &amp; dependencies”</span>
+                </div>
+            </div>
+            <div class="after-heard reveal d7">
+                <p class="takeaway">I don't just enjoy making a process run — I'm curious about <span class="red">why it works the way it does and how it could work better</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 4 · MY CAREER JOURNEY — timeline overview
+         ============================================================ -->
+    <section class="slide" aria-label="My career journey">
+        <div class="pad">
+            <span class="slide-no">02 / 12</span>
+            <div class="kicker reveal d1">My journey</div>
+            <h2 class="h2 reveal d2">Three careers built the same capability</h2>
+            <div class="timeline">
+                <div class="track"></div>
+                <div class="tl-grid">
+                    <div class="tl-item reveal d3">
+                        <div class="node"></div>
+                        <img class="tl-photo" src="../assets/images/Ratta_as_flight_attendant.png" alt="Ratta during her Qatar Airways cabin crew career">
+                        <div class="co">Qatar Airways</div>
+                        <div class="role">Cabin Crew</div>
+                        <ul>
+                            <li>New team every flight</li>
+                            <li>Build trust quickly</li>
+                            <li>Handle ambiguity</li>
+                            <li>Deliver under pressure</li>
+                        </ul>
+                    </div>
+                    <div class="tl-item reveal d4">
+                        <div class="node"></div>
+                        <img class="tl-photo" src="../assets/images/Ratta-on-conference-stage.jpeg" alt="Ratta presenting during her Thoughtworks consulting career">
+                        <div class="co">Thoughtworks</div>
+                        <div class="role">Consultant</div>
+                        <ul>
+                            <li>UNESCO · Costco · McKinsey · Manulife</li>
+                            <li>Process improvement</li>
+                            <li>Stakeholder alignment</li>
+                            <li>Change management</li>
+                        </ul>
+                    </div>
+                    <div class="tl-item reveal d5">
+                        <div class="node"></div>
+                        <img class="tl-photo" src="../assets/images/lululemon_event.jpg" alt="Ratta with teammates during her lululemon career">
+                        <div class="co">lululemon</div>
+                        <div class="role">Sample Operations</div>
+                        <ul>
+                            <li>Product · Brand · PR · Ecommerce · Operations</li>
+                            <li>End-to-end operational support</li>
+                        </ul>
+                    </div>
+                    <div class="tl-item dest reveal d6">
+                        <div class="node"></div>
+                        <img class="tl-photo" src="../assets/images/Ratta_facilitating_design_workshop_03.jpg" alt="Ratta facilitating a workshop, representing her GTM Evolution destination">
+                        <div class="co">GTM Evolution</div>
+                        <div class="role">Senior Analyst</div>
+                        <ul>
+                            <li>Consulting</li>
+                            <li>+ operational knowledge</li>
+                            <li>+ human-centred problem solving</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-band reveal d7">
+                <p class="takeaway">GTM Evolution is where those three parts of my experience <span class="red">come together</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 5 · CHAPTER 01 — QATAR AIRWAYS
+         ============================================================ -->
+    <section class="slide split photo-right exclude" aria-label="Chapter one, Qatar Airways">
+        <div class="content">
+            <span class="slide-no">05 / 20</span>
+            <div class="kicker reveal d1">Chapter 01 · Qatar Airways</div>
+            <h2 class="h2 reveal d2">Trust, built at 40,000 feet</h2>
+            <p class="chapter-role reveal d3"><strong>Cabin Crew</strong> — five-star airline</p>
+            <ul class="dash-list reveal d4">
+                <li><strong>A new team every flight</strong> — introduce first, align fast, perform together immediately.</li>
+                <li><strong>Five-star standards</strong> — attention to detail practiced until it became a habit.</li>
+                <li><strong>Long-haul ambiguity</strong> — stay calm, adapt, and deliver under real pressure.</li>
+            </ul>
+            <p class="impact reveal d5">Years of building trust with strangers, fast — <span class="red">the same muscle</span> cross-functional workstreams run on.</p>
+        </div>
+        <div class="photo reveal d2">
+            <img src="../assets/images/Ratta_as_flight_attendant.png" alt="Ratta in uniform beside a Qatar Airways aircraft">
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 6 · CHAPTER 02 — THOUGHTWORKS
+         ============================================================ -->
+    <section class="slide split photo-right exclude" aria-label="Chapter two, Thoughtworks">
+        <div class="content">
+            <span class="slide-no">06 / 20</span>
+            <div class="kicker reveal d1">Chapter 02 · Thoughtworks</div>
+            <h2 class="h2 reveal d2">Consulting taught me change</h2>
+            <p class="chapter-role reveal d3"><strong>Consultant</strong> — enterprise clients worldwide</p>
+            <div class="client-chips reveal d4">
+                <span class="chip">UNESCO</span>
+                <span class="chip">Costco</span>
+                <span class="chip">McKinsey</span>
+                <span class="chip">Manulife</span>
+            </div>
+            <ul class="dash-list reveal d5" style="margin-top:40px;">
+                <li><strong>Process improvement</strong> across large enterprise teams.</li>
+                <li><strong>Stakeholder alignment</strong> up to executive level.</li>
+                <li><strong>Change management</strong> that people actually adopt.</li>
+            </ul>
+            <p class="impact reveal d6">Four global clients, one lesson: <span class="red">change sticks when people feel heard</span>.</p>
+        </div>
+        <div class="photo reveal d2">
+            <img src="../assets/images/Ratta-on-conference-stage.jpeg" alt="Ratta hosting on stage at Thoughtworks XConf">
+            <figure class="photo-inset reveal d4">
+                <img src="../assets/images/speaker_big_room.JPG" alt="Ratta hosting the Thoughtworks XConf conference with the full audience on stage">
+                <figcaption>Hosting XConf · Thoughtworks</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 7 · CHAPTER 03 — LULULEMON TODAY
+         ============================================================ -->
+    <section class="slide split photo-right" aria-label="Chapter three, lululemon today">
+        <div class="content">
+            <span class="slide-no">03 / 12</span>
+            <div class="kicker reveal d1">Chapter 03 · lululemon</div>
+            <h2 class="h2 reveal d2">I already work inside the GTM system</h2>
+            <p class="chapter-role reveal d3"><strong>Sample Operations Support</strong> — the operational hub between five functions</p>
+            <div class="hub-row reveal d4">
+                <span class="chip core">Sample Operations</span>
+                <span class="plus">supports</span>
+                <span class="chip">Product</span>
+                <span class="chip">Brand</span>
+                <span class="chip">PR</span>
+                <span class="chip">Ecommerce</span>
+                <span class="chip">Operations</span>
+            </div>
+            <ul class="dash-list reveal d5" style="margin-top:44px;">
+                <li><strong>10,000+ sample movements and requests annually</strong> across seasonal milestones.</li>
+                <li><strong>Daily tradeoff decisions</strong> across Product, Brand, PR, Ecommerce and Operations.</li>
+                <li><strong>Completed lululemon's GTM e-learning</strong> — familiar with the milestones, language, inputs, outputs and cross-functional handoffs.</li>
+            </ul>
+            <p class="impact reveal d6">I understand how cross-functional work actually happens inside lululemon — <span class="red">between teams</span>.</p>
+        </div>
+        <div class="photo reveal d2">
+            <img src="../assets/images/lululemon_event.jpg" alt="Ratta with lululemon teammates in colourful costumes at a branded team event">
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 8 · HOW I WORK — operating principles
+         ============================================================ -->
+    <section class="slide exclude" aria-label="How I work">
+        <div class="pad">
+            <span class="slide-no">08 / 20</span>
+            <div class="kicker reveal d1">My operating principles</div>
+            <h2 class="h2 reveal d2">How I work</h2>
+            <div class="work-cards">
+                <div class="work-card reveal d3">
+                    <div class="num">01</div>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2.5" y="13" width="4" height="7" rx="2"/><rect x="17.5" y="13" width="4" height="7" rx="2"/></svg>
+                    <h3>Listen first</h3>
+                    <p>Understand concerns before proposing solutions.</p>
+                </div>
+                <div class="work-card reveal d4">
+                    <div class="num">02</div>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.3-9A5.2 5.2 0 0 1 12 7.2 5.2 5.2 0 0 1 21.3 12c-1.8 4.4-9.3 9-9.3 9z"/></svg>
+                    <h3>Build trust</h3>
+                    <p>Communicate early and often.</p>
+                </div>
+                <div class="work-card reveal d5">
+                    <div class="num">03</div>
+                    <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="8" x2="20" y2="8"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+                    <h3>Simplify</h3>
+                    <p>Remove unnecessary complexity.</p>
+                </div>
+                <div class="work-card reveal d6">
+                    <div class="num">04</div>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5z"/></svg>
+                    <h3>Enable teams</h3>
+                    <p>Success means everyone can move faster together.</p>
+                </div>
+            </div>
+            <div class="bottom-band reveal d7">
+                <p class="takeaway">Four habits, <span class="red">one goal</span>: help everyone move faster together.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 9 · HOW I THINK — facilitation photo + flow
+         ============================================================ -->
+    <section class="slide split photo-right exclude" aria-label="How I think">
+        <div class="content">
+            <span class="slide-no">09 / 20</span>
+            <div class="kicker reveal d1">Principles in action</div>
+            <h2 class="h2 reveal d2">How I think</h2>
+            <div class="think-steps reveal d3">
+                <span class="chip">Listen</span><span class="flow-arrow">→</span>
+                <span class="chip">Understand</span><span class="flow-arrow">→</span>
+                <span class="chip">Align</span><span class="flow-arrow">→</span>
+                <span class="chip">Execute</span><span class="flow-arrow">→</span>
+                <span class="chip last">Improve</span>
+            </div>
+            <ul class="dash-list reveal d4" style="margin-top:48px;">
+                <li><strong>Facilitated workshops</strong> and research sessions with mixed stakeholder groups.</li>
+                <li><strong>Turned sticky-note chaos into decisions</strong> — structure emerges from listening.</li>
+                <li><strong>Left every room with owners and next steps</strong> — alignment that survives the meeting.</li>
+            </ul>
+            <p class="impact reveal d5">Bring people into a room. <span class="red">Leave with decisions.</span></p>
+        </div>
+        <div class="photo reveal d2">
+            <img src="../assets/images/Ratta_facilitating_design_workshop_03.jpg" alt="Ratta facilitating a workshop wall of sticky notes">
+            <figure class="photo-inset reveal d4">
+                <img src="../assets/images/speaker_google.jpeg" alt="Ratta presenting to a full room at Google I/O, Vancouver">
+                <figcaption>Google I/O · Vancouver</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 10 · EXAMPLE 1 — process optimization, big number
+         ============================================================ -->
+    <section class="slide" aria-label="Example one, shipping consolidation">
+        <div class="pad">
+            <span class="slide-no">04 / 12</span>
+            <div class="kicker reveal d1">Proof 01 · Process optimization</div>
+            <h2 class="h2 reveal d2">I turn frontline friction into business value</h2>
+            <div class="ex-body">
+                <div>
+                    <div class="ex-section reveal d3">
+                        <div class="ex-label">Situation</div>
+                        <p>Multiple packages shipped separately to the same destination — higher costs, extra handling, operational inefficiency.</p>
+                    </div>
+                    <div class="ex-section reveal d4">
+                        <div class="ex-label">My contribution</div>
+                        <ul class="dash-list">
+                            <li>Identified the pattern in day-to-day operations</li>
+                            <li>Raised the opportunity with the team</li>
+                            <li>Partnered with the vendor team on a solution</li>
+                            <li>Continued monitoring the rollout</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stat-panel reveal d5">
+                    <div class="stat">60<span class="red">–</span>80<span class="red">%</span></div>
+                    <div class="stat-caption">expected reduction in shipping costs</div>
+                    <div class="stat-note">Small observations, raised early, can become meaningful operational savings.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 11 · EXAMPLE 2 — stakeholder alignment flow
+         ============================================================ -->
+    <section class="slide" aria-label="Example two, stakeholder alignment">
+        <div class="pad">
+            <span class="slide-no">05 / 12</span>
+            <div class="kicker reveal d1">Proof 02 · Difficult stakeholder situations</div>
+            <h2 class="h2 reveal d2">Alignment starts before the solution</h2>
+            <div class="ex-body">
+                <div>
+                    <div class="ex-section reveal d3">
+                        <div class="ex-label">Problem</div>
+                        <p>At Thoughtworks, business and compliance teams disagreed on an onboarding redesign: conversion versus regulatory risk.</p>
+                    </div>
+                    <div class="ex-section reveal d4">
+                        <div class="ex-label">Outcome</div>
+                        <ul class="dash-list">
+                            <li>Aligned on shared success criteria</li>
+                            <li>Simplified the experience while maintaining controls</li>
+                            <li>Moved forward with stronger cross-team trust</li>
+                        </ul>
+                    </div>
+                    <div class="ex-section reveal d5" style="margin-top:56px;">
+                        <p class="takeaway">I moved the conversation from defending positions to <span class="red">evaluating tradeoffs together</span>.</p>
+                    </div>
+                </div>
+                <div class="reveal d4">
+                    <div class="ex-label" style="margin-bottom:24px;">Approach</div>
+                    <div class="approach-steps">
+                        <div class="step"><span class="idx">1</span><span class="txt">Pause the solution debate</span></div>
+                        <div class="joint"></div>
+                        <div class="step"><span class="idx">2</span><span class="txt">Surface underlying goals</span></div>
+                        <div class="joint"></div>
+                        <div class="step"><span class="idx">3</span><span class="txt">Map risks and constraints</span></div>
+                        <div class="joint"></div>
+                        <div class="step"><span class="idx">4</span><span class="txt">Review evidence together</span></div>
+                        <div class="joint"></div>
+                        <div class="step"><span class="idx">5</span><span class="txt">Co-create alternatives</span></div>
+                        <div class="joint"></div>
+                        <div class="step final"><span class="idx">6</span><span class="txt">Agree and move</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 12 · EXAMPLE 3 — communication builds trust
+         ============================================================ -->
+    <section class="slide exclude" aria-label="Example three, communication builds trust">
+        <div class="pad">
+            <span class="slide-no">12 / 20</span>
+            <div class="kicker reveal d1">Example 03 · Communication</div>
+            <h2 class="h2 reveal d2">Communication builds trust</h2>
+            <div class="trust-flow reveal d3">
+                <span class="chip">Qatar Airways</span><span class="flow-arrow">→</span>
+                <span class="chip">Thoughtworks</span><span class="flow-arrow">→</span>
+                <span class="chip lulu">lululemon</span>
+            </div>
+            <p class="trust-principle reveal d4">Different industries — <span class="red">same principle</span>: build trust quickly.</p>
+            <div class="ex-section reveal d5" style="margin-top:64px;">
+                <div class="ex-label">How I do it</div>
+                <ul class="dash-list" style="columns:2; column-gap:90px; max-width:1400px;">
+                    <li>Introduce myself first</li>
+                    <li>Understand preferred communication styles</li>
+                    <li>Clarify expectations up front</li>
+                    <li>Provide proactive updates</li>
+                    <li>Never let stakeholders wonder</li>
+                </ul>
+            </div>
+            <div class="bottom-band reveal d6">
+                <p class="takeaway">When people always know where things stand, <span class="red">alignment gets easier</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 13 · IMPACT AT A GLANCE — stat tiles
+         ============================================================ -->
+    <section class="slide" aria-label="Impact at a glance">
+        <div class="pad">
+            <span class="slide-no">06 / 12</span>
+            <div class="kicker reveal d1">Impact</div>
+            <h2 class="h2 reveal d2">The numbers behind the stories</h2>
+            <div class="stat-tiles">
+                <div class="stat-tile dark reveal d3">
+                    <div class="big">60<span class="red">–</span>80<span class="red">%</span></div>
+                    <div class="cap">expected shipping cost reduction from the consolidation initiative</div>
+                </div>
+                <div class="stat-tile reveal d4">
+                    <div class="big">10K<span class="red">+</span></div>
+                    <div class="cap">sample movements and requests coordinated annually</div>
+                </div>
+                <div class="stat-tile reveal d5">
+                    <div class="big">50<span class="red">+</span></div>
+                    <div class="cap">workshops and leadership alignment sessions facilitated</div>
+                </div>
+                <div class="stat-tile reveal d6">
+                    <div class="big">5</div>
+                    <div class="cap">lululemon functions supported across the product lifecycle</div>
+                </div>
+            </div>
+            <div class="bottom-band reveal d7">
+                <p class="takeaway">Different contexts, one pattern: <span class="red">find friction, align people, deliver</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 14 · WHY GTM EVOLUTION — three columns
+         ============================================================ -->
+    <section class="slide" aria-label="Why GTM Evolution">
+        <div class="pad">
+            <span class="slide-no">07 / 12</span>
+            <div class="kicker reveal d1">Why this team</div>
+            <h2 class="h2 reveal d2">This team sits at the intersection I know best</h2>
+            <div class="gtm-cols">
+                <div class="gtm-col reveal d3">
+                    <div class="big-caption" style="margin-top:0;font-weight:600;color:var(--red);letter-spacing:0.1em;">01</div>
+                    <h3 style="margin-top:14px;">Understand the current state</h3>
+                    <ul style="margin-top:26px;">
+                        <li>Look across people, process, tools, decisions and dependencies</li>
+                        <li>Understand how work actually happens</li>
+                    </ul>
+                </div>
+                <div class="gtm-col reveal d4">
+                    <div class="big-caption" style="margin-top:0;font-weight:600;color:var(--red);letter-spacing:0.1em;">02</div>
+                    <h3 style="margin-top:14px;">Identify the opportunity</h3>
+                    <ul style="margin-top:26px;">
+                        <li>Frame problems and uncover friction</li>
+                        <li>Evaluate where change can create the greatest value</li>
+                    </ul>
+                </div>
+                <div class="gtm-col reveal d5">
+                    <div class="big-caption" style="margin-top:0;font-weight:600;color:var(--red);letter-spacing:0.1em;">03</div>
+                    <h3 style="margin-top:14px;">Design the future state</h3>
+                    <ul style="margin-top:26px;">
+                        <li>Bring stakeholders together to explore options</li>
+                        <li>Understand tradeoffs and build practical solutions</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bottom-band reveal d6">
+                <p class="takeaway">What excites me isn't change for the sake of change — it's helping teams find a <span class="red">better way of working together</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 15 · HOW I APPROACH TRANSFORMATION — 5-step flow
+         ============================================================ -->
+    <section class="slide split photo-right" aria-label="How I approach transformation">
+        <div class="content">
+            <span class="slide-no">08 / 12</span>
+            <div class="kicker reveal d1">Transformation through facilitation</div>
+            <h2 class="h2 reveal d2">I help teams see the problem together</h2>
+            <p class="chapter-role reveal d3"><strong>50+ workshops and leadership sessions facilitated</strong> across complex enterprise work.</p>
+            <div class="edge-grid reveal d4">
+                <div class="edge-item">
+                    <div class="edge-label">Frame</div>
+                    <p>Clarify the strategic question and define what success means.</p>
+                </div>
+                <div class="edge-item">
+                    <div class="edge-label">Map</div>
+                    <p>Make the current state, dependencies, constraints and friction visible.</p>
+                </div>
+                <div class="edge-item">
+                    <div class="edge-label">Facilitate</div>
+                    <p>Surface different perspectives and evaluate tradeoffs without losing trust.</p>
+                </div>
+                <div class="edge-item">
+                    <div class="edge-label">Mobilize</div>
+                    <p>Turn alignment into clear decisions, owners, actions and measures.</p>
+                </div>
+            </div>
+            <p class="impact reveal d5">A successful workshop does not end with sticky notes. It ends with <span class="red">shared clarity and forward movement</span>.</p>
+        </div>
+        <div class="photo reveal d2">
+            <img src="../assets/images/Ratta_facilitating_design_workshop_03.jpg" alt="Ratta facilitating a workshop in front of a wall of mapped ideas">
+            <figure class="photo-inset reveal d4">
+                <img src="../assets/images/speaker_google.jpeg" alt="Ratta presenting to an audience at Google I/O in Vancouver">
+                <figcaption>Facilitating alignment · Presenting decisions</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 16 · WHY I FIT — need → evidence mapping
+         ============================================================ -->
+    <section class="slide" aria-label="Why I fit this role">
+        <div class="pad">
+            <span class="slide-no">09 / 12</span>
+            <div class="kicker reveal d1">The case in one slide</div>
+            <h2 class="h2 reveal d2">What the role needs — what I bring</h2>
+            <div class="map-rows compact">
+                <div class="map-row reveal d3">
+                    <span class="need">Process optimization &amp; transformation</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">Consulting + operational improvement experience</span>
+                </div>
+                <div class="map-row reveal d3">
+                    <span class="need">Problem / opportunity identification</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">Human-centred research + structured problem solving</span>
+                </div>
+                <div class="map-row reveal d4">
+                    <span class="need">Process mapping &amp; options analysis</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">UX / service design + consulting methods</span>
+                </div>
+                <div class="map-row reveal d4">
+                    <span class="need">Cross-functional workstreams</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">lululemon + enterprise consulting experience</span>
+                </div>
+                <div class="map-row reveal d5">
+                    <span class="need">Workshops &amp; leadership alignment</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">Facilitation across diverse stakeholder groups</span>
+                </div>
+                <div class="map-row reveal d5">
+                    <span class="need">Change &amp; implementation</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">Experience helping teams adopt new processes</span>
+                </div>
+                <div class="map-row reveal d6">
+                    <span class="need">Trusted advisor relationships</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">Qatar Airways → Thoughtworks → lululemon</span>
+                </div>
+                <div class="map-row reveal d6">
+                    <span class="need">Deck building &amp; storytelling</span>
+                    <span class="map-arrow">→</span>
+                    <span class="proof">UX / design + consulting presentation craft</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 17 · THE DESIGNER'S EDGE — communication craft
+         ============================================================ -->
+    <section class="slide split photo-right" aria-label="The designer's edge">
+        <div class="content">
+            <span class="slide-no">10 / 12</span>
+            <div class="kicker reveal d1">One more strength</div>
+            <h2 class="h2 reveal d2">The deck is part of the analytical work</h2>
+            <p class="chapter-role reveal d3"><strong>Designer, consultant and speaker</strong> — experienced turning analysis into decisions</p>
+            <div class="edge-grid reveal d4">
+                <div class="edge-item">
+                    <div class="edge-label">Research</div>
+                    <p>Ask the right questions and understand the people closest to the problem.</p>
+                </div>
+                <div class="edge-item">
+                    <div class="edge-label">Visualize</div>
+                    <p>Turn complex workflows, dependencies and information into something teams can see together.</p>
+                </div>
+                <div class="edge-item">
+                    <div class="edge-label">Facilitate</div>
+                    <p>Create environments where different perspectives can surface.</p>
+                </div>
+                <div class="edge-item">
+                    <div class="edge-label">Communicate</div>
+                    <p>Turn findings into a story leaders can understand and act on.</p>
+                </div>
+            </div>
+            <p class="impact reveal d5">Analysis creates value when people can <span class="red">understand it, align around it and act on it</span>.</p>
+        </div>
+        <div class="photo reveal d2">
+            <img src="../assets/images/Ratta_speaking_at_an_event_v2.png" alt="Ratta speaking with a microphone at a developer event">
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 18 · FIRST 90 DAYS — learn, contribute, lead
+         ============================================================ -->
+    <section class="slide" aria-label="How I would get started">
+        <div class="pad">
+            <span class="slide-no">11 / 12</span>
+            <div class="kicker reveal d1">My first 60 days</div>
+            <h2 class="h2 reveal d2">A clear path from context to ownership</h2>
+            <div class="days-grid">
+                <div class="day-card reveal d3">
+                    <div class="month">Week 1</div>
+                    <h3>Orient</h3>
+                    <ul>
+                        <li>Align with my leader on priorities and expectations</li>
+                        <li>Understand active workstreams and immediate decisions</li>
+                        <li>Meet the partners closest to the work</li>
+                        <li>Apply my existing lululemon context and GTM learning</li>
+                    </ul>
+                </div>
+                <div class="day-card reveal d4">
+                    <div class="month">Weeks 2–4</div>
+                    <h3>Contribute</h3>
+                    <ul>
+                        <li>Listen before recommending</li>
+                        <li>Map the current state, stakeholders and dependencies</li>
+                        <li>Support analysis, workshops and leadership materials</li>
+                        <li>Make progress, risks and decisions visible</li>
+                    </ul>
+                </div>
+                <div class="day-card lead reveal d5">
+                    <div class="month">Days 31–60</div>
+                    <h3>Own<span class="reddot">.</span></h3>
+                    <ul>
+                        <li>Take ownership of a defined deliverable or workstream</li>
+                        <li>Facilitate stakeholder conversations</li>
+                        <li>Turn evidence into options and recommendations</li>
+                        <li>Follow through on decisions, owners and next steps</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bottom-band reveal d6">
+                <p class="takeaway">By day 60, success means I am a trusted contributor with <span class="red">clear ownership and visible momentum</span>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 19 · BEYOND 90 DAYS — own, optimize, transform
+         ============================================================ -->
+    <section class="slide exclude" aria-label="How I'd create value">
+        <div class="pad">
+            <span class="slide-no">19 / 20</span>
+            <div class="kicker reveal d1">Beyond the first 90 days</div>
+            <h2 class="h2 reveal d2">How I'd create value</h2>
+            <div class="beyond-cols" style="grid-template-columns:repeat(5,1fr);gap:34px;">
+                <div class="beyond-col reveal d3">
+                    <div class="tag">01</div>
+                    <h3>Find</h3>
+                    <p>Identify friction, opportunities and root causes across the GTM value chain.</p>
+                </div>
+                <div class="beyond-col reveal d4">
+                    <div class="tag">02</div>
+                    <h3>Connect</h3>
+                    <p>Bring together data, processes and stakeholder perspectives to understand the whole system.</p>
+                </div>
+                <div class="beyond-col reveal d5">
+                    <div class="tag">03</div>
+                    <h3>Recommend</h3>
+                    <p>Turn analysis into clear options, tradeoffs and actionable recommendations.</p>
+                </div>
+                <div class="beyond-col reveal d6">
+                    <div class="tag">04</div>
+                    <h3>Enable</h3>
+                    <p>Help teams move from recommendation to implementation with alignment and ownership.</p>
+                </div>
+                <div class="beyond-col reveal d7">
+                    <div class="tag">05</div>
+                    <h3>Measure</h3>
+                    <p>Use KPIs and feedback to understand whether the change actually made things better.</p>
+                </div>
+            </div>
+            <div class="bottom-band reveal d8">
+                <p class="takeaway">Transformation isn't the recommendation. <span class="red">It's what changes because of it.</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SLIDE 20 · THANK YOU
+         ============================================================ -->
+    <section class="slide s-thanks" aria-label="Thank you">
+        <div class="pad">
+            <span class="slide-no">12 / 12</span>
+            <div class="mark reveal d1"></div>
+            <h2 class="reveal d2">Ready to contribute from day one<span style="color:var(--red)">.</span></h2>
+            <p class="close-line reveal d3">I bring the combination this role asks for: transformation methods, lululemon operational context, strong facilitation, and the communication craft to make complex work clear. I would welcome the opportunity to discuss how I can help <span class="red">GTM Evolution</span> move cross-functional work from ambiguity to action.</p>
+            <div class="contact reveal d4">
+                <span class="name">Ratta Kidakarn</span>
+                <span class="sep"></span>
+                <span class="item">rattakids@gmail.com</span>
+                <span class="sep"></span>
+                <span class="item"><a href="https://rattakid.com/" target="_blank">rattakid.com</a></span>
+            </div>
+        </div>
+        <div class="thanks-photo reveal d2">
+            <img src="../assets/images/profile.png" alt="Ratta Kidakarn at her desk">
+        </div>
+    </section>
+
+</main>
+</div>
+
+<!-- Deck chrome -->
+<div class="page-count" id="pageCount">1 / 12</div>
+<div class="nav-hint" id="navHint">← → to navigate</div>
+
+<!-- Inline editing -->
+<div class="edit-hotzone" id="editHotzone" title="Edit mode"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)" aria-label="Toggle edit mode">✏️</button>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard / touch / wheel navigation +
+   uniform stage scaling (fixed 16:9).
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        document.querySelectorAll('.slide.exclude').forEach(slide => slide.remove());
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.current = 0;
+        this.stage = document.getElementById('deckStage');
+        this.bar = document.getElementById('progressBar');
+        this.count = document.getElementById('pageCount');
+        this.wheelLock = false;
+
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.showSlide(0);
+
+        // Fade the nav hint after a few seconds
+        setTimeout(() => document.getElementById('navHint').classList.add('fade'), 5000);
+    }
+
+    /* Scale the 1920×1080 stage to fit the window — never reflow content */
+    setupStageScale() {
+        const scale = () => {
+            const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * f) / 2;
+            const y = (window.innerHeight - 1080 * f) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.getAttribute && e.target.getAttribute('contenteditable')) return;
+            if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); this.next(); }
+            else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+            else if (e.key === 'Home') { e.preventDefault(); this.showSlide(0); }
+            else if (e.key === 'End') { e.preventDefault(); this.showSlide(this.slides.length - 1); }
+        });
+    }
+
+    setupTouchNav() {
+        let startX = 0, startY = 0;
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].clientX - startX;
+            const dy = e.changedTouches[0].clientY - startY;
+            if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+                dx < 0 ? this.next() : this.prev();
+            } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+                this.next(); // simple tap advances
+            }
+        }, { passive: true });
+    }
+
+    setupWheelNav() {
+        document.addEventListener('wheel', (e) => {
+            if (this.wheelLock || Math.abs(e.deltaY) < 25) return;
+            this.wheelLock = true;
+            e.deltaY > 0 ? this.next() : this.prev();
+            setTimeout(() => { this.wheelLock = false; }, 700);
+        }, { passive: true });
+    }
+
+    next() { this.showSlide(this.current + 1); }
+    prev() { this.showSlide(this.current - 1); }
+
+    showSlide(index) {
+        this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((s, i) => {
+            s.classList.toggle('active', i === this.current);
+            s.classList.toggle('visible', i === this.current);
+        });
+        this.bar.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
+        this.count.textContent = `${this.current + 1} / ${this.slides.length}`;
+    }
+}
+
+/* ===========================================
+   INLINE TEXT EDITOR
+   Hover top-left corner or press E → click text to edit.
+   Ctrl/Cmd+S saves edits to localStorage.
+   =========================================== */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.storageKey = 'gtm-deck-edits-v3';   /* v3: focused 12-slide GTM pitch */
+        this.editables = 'h1, h2, h3, p, li, .chip, .kicker, .co, .role, .stat, .stat-caption, .stat-note, .month, .big, .big-caption, .cap, .ex-label, .heard-label, .phase, .tag, .need, .proof, .num, .name, .roles, .item, .txt, .brand, .slide-no, .plus';
+        this.restore();
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('editing', this.isActive);
+        document.getElementById('editToggle').classList.toggle('active', this.isActive);
+        document.querySelectorAll(this.editables).forEach(el => {
+            if (this.isActive) el.setAttribute('contenteditable', 'true');
+            else el.removeAttribute('contenteditable');
+        });
+        if (!this.isActive) this.save();
+    }
+
+    save() {
+        const edits = {};
+        let n = 0;
+        document.querySelectorAll(this.editables).forEach(el => {
+            const id = 'e' + (n++);
+            el.dataset.editId = id;
+            edits[id] = el.innerHTML;
+        });
+        localStorage.setItem(this.storageKey, JSON.stringify(edits));
+    }
+
+    restore() {
+        const raw = localStorage.getItem(this.storageKey);
+        if (!raw) return;
+        try {
+            const edits = JSON.parse(raw);
+            let n = 0;
+            document.querySelectorAll(this.editables).forEach(el => {
+                const id = 'e' + (n++);
+                if (edits[id] !== undefined) { el.dataset.editId = id; el.innerHTML = edits[id]; }
+            });
+        } catch (e) { /* corrupted store — ignore */ }
+    }
+}
+
+const deck = new SlidePresentation();
+const editor = new InlineEditor();
+
+/* Edit-toggle interactions: click, hotzone hover w/ 400ms grace, E key */
+const hotzone = document.getElementById('editHotzone');
+const editToggle = document.getElementById('editToggle');
+let hideTimeout = null;
+
+editToggle.addEventListener('click', () => editor.toggleEditMode());
+hotzone.addEventListener('click', () => editor.toggleEditMode());
+
+hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+hotzone.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400);
+});
+editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+editToggle.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400);
+});
+
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'e' || e.key === 'E') && !(e.target.getAttribute && e.target.getAttribute('contenteditable'))) {
+        editor.toggleEditMode();
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key === 's' && editor.isActive) {
+        e.preventDefault();
+        editor.save();
+    }
+});
+</script>
+</body>
+</html>
