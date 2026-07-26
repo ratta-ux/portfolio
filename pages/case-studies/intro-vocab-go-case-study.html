@@ -1,1729 +1,1629 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Case study of Vocab Go - A mobile language learning app designed to make vocabulary acquisition more intuitive, engaging, and efficient through bite-sized lessons.">
-    <title>Vocab Go Learning App | UX Case Study</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Vocab Go — Case Study | Ratta Kidakarn</title>
+    <meta name="description" content="Vocab Go — an MVP mobile app that makes vocabulary learning intuitive through gamified, bite-sized lessons. UX case study by Ratta Kidakarn.">
+    <meta property="og:title" content="Vocab Go — Case Study">
+    <meta property="og:description" content="Vocab Go — an MVP mobile app that makes vocabulary learning intuitive through gamified, bite-sized lessons. UX case study by Ratta Kidakarn.">
+    <meta property="og:type" content="article">
+    <meta name="theme-color" content="#0e0e0c">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0084ff;
-            --dark: #121729;
-            --light: #f5f5f7;
-            --light-gray: #eaeaef;
-            --gray: #626477;
-            --accent: #0084ff;
-            --purple-light: #e6e1f9;
-            --blue-cta: #0095ff;
-            --pink: #e91e63;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        body {
-            background-color: var(--dark);
-            color: var(--dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background-color: var(--dark);
-            color: white;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .nav-container {
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .logo {
-            font-weight: 700;
-            font-size: 24px;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
+            --bg: #0e0e0c;
+            --bg-soft: #131311;
+            --card: #161613;
+            --ink: #ece7de;
+            --muted: #a09b90;
+            --faint: #6d6960;
+            --line: rgba(236, 231, 222, 0.12);
+            --line-soft: rgba(236, 231, 222, 0.07);
+            --accent: #d7f95c;
+            --accent-soft: rgba(215, 249, 92, 0.14);
+            --accent-ink: #141507;
+            --serif: "Fraunces", Georgia, serif;
+            --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --pad: clamp(1.25rem, 4vw, 3rem);
+            --radius: 20px;
         }
 
-        .nav-links li {
-            margin-left: 2rem;
-            position: relative;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 7rem; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 1rem;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
-        
-        .nav-links li a {
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-links li a:hover {
-            color: var(--primary);
-        }
-        
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
+        ::selection { background: var(--accent); color: var(--accent-ink); }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+        button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+        .container {
             width: 100%;
-            height: 2px;
-            background-color: var(--primary);
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: var(--pad);
+            padding-right: var(--pad);
         }
-        
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            color: white;
-            font-size: 24px;
+
+        .skip-link {
+            position: fixed; top: -100px; left: 1rem; z-index: 3000;
+            background: var(--accent); color: var(--accent-ink);
+            padding: 0.7rem 1.2rem; border-radius: 8px; font-weight: 600;
+            text-decoration: none; transition: top 0.2s ease;
         }
-        
-        .intro-section {
-            padding: 120px 0 60px;
-            background-color: var(--dark);
-            color: white;
+        .skip-link:focus { top: 1rem; }
+
+        .grain {
+            position: fixed; inset: -50%; width: 200%; height: 200%;
+            z-index: 2000; pointer-events: none; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
-        
-        .intro-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+
+        /* Cursor */
+        .cursor {
+            position: fixed; top: 0; left: 0; z-index: 3500;
+            width: 10px; height: 10px; border-radius: 999px;
+            background: var(--accent); pointer-events: none; opacity: 0;
+            display: none; align-items: center; justify-content: center;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), opacity 0.3s ease;
+            will-change: transform;
         }
-        
-        .intro-content {
-            width: 45%;
+        .cursor-text {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+            color: var(--accent-ink); white-space: nowrap;
+            opacity: 0; transform: scale(0.4);
+            transition: opacity 0.2s ease, transform 0.3s var(--ease-out);
         }
-        
-        .intro-image {
-            width: 50%;
+        .cursor.is-active { opacity: 1; }
+        .cursor.is-hover { width: 26px; height: 26px; }
+        .cursor.is-view { width: 88px; height: 88px; }
+        .cursor.is-view .cursor-text { opacity: 1; transform: scale(1); }
+        @media (pointer: fine) { .cursor { display: flex; } }
+
+        .progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+            z-index: 1600; transform-origin: 0 50%; transform: scaleX(0);
+            background: var(--accent);
         }
-        
-        .intro-image img {
-            width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+        /* Header */
+        .site-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1800;
+            transition: transform 0.45s var(--ease-out), background-color 0.35s ease, border-color 0.35s ease;
+            border-bottom: 1px solid transparent;
         }
-        
-        .section-number {
-            color: var(--pink);
-            font-weight: 700;
-            font-size: 24px;
-            margin-bottom: 10px;
-            display: block;
+        .site-header.is-scrolled {
+            background: rgba(14, 14, 12, 0.72);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-bottom-color: var(--line-soft);
         }
-        
-        .section-title {
-            font-size: 32px;
-            margin-bottom: 20px;
-            position: relative;
-            display: inline-block;
+        .site-header.is-hidden { transform: translateY(-100%); }
+        .nav-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.1rem var(--pad); max-width: 1280px; margin: 0 auto;
         }
-        
-        .section-divider {
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--pink);
-            margin-bottom: 20px;
+        .brand {
+            font-family: var(--serif); font-size: 1.35rem; font-weight: 500;
+            text-decoration: none; letter-spacing: 0.01em;
+            display: inline-flex; align-items: baseline; gap: 0.3rem;
         }
-        
-        .section-content {
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
+        .brand sup { font-family: var(--sans); font-size: 0.55rem; color: var(--accent); font-weight: 700; letter-spacing: 0.08em; }
+        .nav-menu { display: flex; align-items: center; gap: 2.2rem; list-style: none; }
+        .nav-menu a:not(.nav-cta) {
+            font-size: 0.92rem; font-weight: 500; color: var(--muted);
+            text-decoration: none; position: relative; padding: 0.3rem 0;
+            transition: color 0.25s ease;
         }
-        
-        .collaborative-project {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--pink);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 40px;
+        .nav-menu a:not(.nav-cta)::after {
+            content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+            background: var(--accent); transform: scaleX(0); transform-origin: 100% 50%;
+            transition: transform 0.35s var(--ease-out);
         }
-        
-        .collaborative-project h3 {
-            color: white;
-            margin-bottom: 10px;
+        .nav-menu a:not(.nav-cta):hover,
+        .nav-menu a[aria-current="true"] { color: var(--ink); }
+        .nav-menu a:not(.nav-cta):hover::after,
+        .nav-menu a[aria-current="true"]::after { transform: scaleX(1); transform-origin: 0 50%; }
+        .nav-cta {
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            color: var(--accent-ink); background: var(--accent);
+            padding: 0.55rem 1.25rem; border-radius: 999px;
+            transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
         }
-        
-        .collaborative-project p {
-            font-size: 14px;
-            margin-bottom: 15px;
+        .nav-cta:hover { box-shadow: 0 6px 24px rgba(215, 249, 92, 0.25); }
+        .nav-toggle { display: none; z-index: 1701; width: 44px; height: 44px; position: relative; }
+        .nav-toggle span {
+            position: absolute; left: 10px; width: 24px; height: 2px;
+            background: var(--ink);
+            transition: transform 0.35s var(--ease-out), opacity 0.2s ease;
         }
-        
-        .project-tag {
-            display: inline-block;
-            background-color: var(--pink);
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-bottom: 15px;
+        .nav-toggle span:nth-child(1) { top: 17px; }
+        .nav-toggle span:nth-child(2) { top: 25px; }
+        .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .nav-toggle[aria-expanded="true"] span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+        .mobile-menu {
+            position: fixed; inset: 0; z-index: 1700; background: var(--bg);
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 0 var(--pad);
+            clip-path: inset(0 0 100% 0); visibility: hidden;
+            transition: clip-path 0.6s var(--ease-expo), visibility 0s 0.6s;
         }
-        
-        .collaborator {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .mobile-menu.is-open {
+            clip-path: inset(0 0 0% 0); visibility: visible;
+            transition: clip-path 0.6s var(--ease-expo), visibility 0s;
         }
-        
-        .collaborator-image {
-            width: 50px;
-            height: 50px;
+        .mobile-menu ul { list-style: none; }
+        .mobile-menu li { overflow: hidden; }
+        .mobile-menu nav a {
+            display: inline-block; font-family: var(--serif);
+            font-size: clamp(2.2rem, 9vw, 3.4rem); font-weight: 400;
+            text-decoration: none; padding: 0.35rem 0;
+            transform: translateY(110%);
+            transition: transform 0.6s var(--ease-expo), color 0.25s ease;
+        }
+        .mobile-menu.is-open nav a { transform: translateY(0); }
+        .mobile-menu li:nth-child(1) a { transition-delay: 0.10s; }
+        .mobile-menu li:nth-child(2) a { transition-delay: 0.16s; }
+        .mobile-menu li:nth-child(3) a { transition-delay: 0.22s; }
+        .mobile-menu li:nth-child(4) a { transition-delay: 0.28s; }
+        .mobile-menu li:nth-child(5) a { transition-delay: 0.34s; }
+        .mobile-menu nav a:hover { color: var(--accent); }
+        .mobile-menu-foot {
+            position: absolute; bottom: 2.5rem; left: var(--pad); right: var(--pad);
+            display: flex; justify-content: space-between;
+            color: var(--muted); font-size: 0.85rem;
+        }
+        .mobile-menu-foot a { color: var(--muted); font-size: 0.85rem; }
+
+        /* Reveal */
+        html.js [data-reveal] {
+            opacity: 0; transform: translateY(28px);
+            transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+            transition-delay: var(--rd, 0s);
+        }
+        html.js [data-reveal].is-in { opacity: 1; transform: translateY(0); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.95rem; font-weight: 600; text-decoration: none;
+            padding: 0.95rem 1.9rem; border-radius: 999px;
+            position: relative; overflow: hidden;
+            transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, color 0.35s ease, background-color 0.35s ease, border-color 0.35s ease;
+        }
+        .btn svg { transition: transform 0.35s var(--ease-out); flex: none; }
+        .btn:hover svg { transform: translateX(4px); }
+        .btn-solid { background: var(--accent); color: var(--accent-ink); }
+        .btn-solid:hover { box-shadow: 0 10px 34px rgba(215, 249, 92, 0.28); }
+        .btn-ghost { border: 1px solid var(--line); color: var(--ink); background: transparent; }
+        .btn-ghost:hover { border-color: var(--ink); background: rgba(236, 231, 222, 0.04); }
+        .btn-dark { background: var(--accent-ink); color: var(--accent); }
+        .btn-dark:hover { box-shadow: 0 12px 34px rgba(20, 21, 7, 0.35); }
+
+        .tag {
+            font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em;
+            color: var(--muted); border: 1px solid var(--line);
+            padding: 0.28rem 0.75rem; border-radius: 999px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Case hero */
+        .case-hero { position: relative; padding-top: 8.5rem; overflow: hidden; }
+        .hero-glow {
+            position: absolute; top: -20%; right: -10%;
+            width: 60vw; height: 60vw; max-width: 800px; max-height: 800px;
             border-radius: 50%;
+            background: radial-gradient(circle, rgba(215, 249, 92, 0.07) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .crumbs {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem; margin-bottom: 2.4rem;
+        }
+        .crumb-back {
+            display: inline-flex; align-items: center; gap: 0.55rem;
+            font-size: 0.88rem; font-weight: 500; color: var(--muted);
+            text-decoration: none; transition: color 0.25s ease;
+        }
+        .crumb-back svg { transition: transform 0.3s var(--ease-out); }
+        .crumb-back:hover { color: var(--accent); }
+        .crumb-back:hover svg { transform: translateX(-4px); }
+        .crumb-index {
+            font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--faint);
+        }
+        .crumb-index em { color: var(--accent); font-style: normal; }
+        .case-label {
+            display: flex; align-items: center; gap: 0.8rem;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--muted); margin-bottom: 1.4rem;
+        }
+        .case-label::before { content: ""; width: 34px; height: 1px; background: var(--accent); }
+        .case-hero h1 {
+            font-family: var(--serif); font-weight: 380;
+            font-size: clamp(2.7rem, 6.5vw, 5.6rem);
+            line-height: 1.05; letter-spacing: -0.015em;
+            max-width: 17ch; margin-bottom: 1.6rem;
+        }
+        .case-hero h1 em { font-style: italic; color: var(--accent); }
+        .case-hero h1 .w {
+            display: inline-block; overflow: hidden; vertical-align: bottom;
+            padding-bottom: 0.09em; margin-bottom: -0.09em;
+        }
+        html.js .case-hero h1 .wi {
+            display: inline-block; transform: translateY(115%);
+            transition: transform 1s var(--ease-expo);
+            transition-delay: var(--wd, 0s);
+        }
+        html.js.is-loaded .case-hero h1 .wi { transform: translateY(0); }
+        .case-lede {
+            font-size: clamp(1.02rem, 1.35vw, 1.18rem); color: var(--muted);
+            max-width: 60ch; margin-bottom: 1.8rem;
+        }
+        .case-lede strong { color: var(--ink); font-weight: 500; }
+        .case-chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 3.2rem; }
+        .chip {
+            font-size: 0.8rem; font-weight: 500; color: var(--ink);
+            border: 1px solid var(--line); border-radius: 999px;
+            padding: 0.45rem 1rem; background: rgba(236, 231, 222, 0.03);
+        }
+        .chip .dot {
+            display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); margin-right: 0.45rem; vertical-align: 2px;
+        }
+        .case-hero-media {
+            border-radius: var(--radius) var(--radius) 0 0;
+            border: 1px solid var(--line);
+            border-bottom: none;
             overflow: hidden;
+            background: var(--card);
+            position: relative;
         }
-        
-        .collaborator-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .case-hero-media img {
+            width: 100%; display: block;
+            will-change: transform;
         }
-        
-        .collaborator-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
+        .media-bar {
+            display: flex; gap: 6px; padding: 0.85rem 1.1rem;
+            border-bottom: 1px solid var(--line-soft);
+            background: var(--bg-soft);
         }
-        
-        .collaborator-info a {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 14px;
+        .media-bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+        .media-bar span:first-child { background: var(--accent); }
+
+        /* Marquee */
+        .marquee {
+            border-top: 1px solid var(--line-soft);
+            border-bottom: 1px solid var(--line-soft);
+            padding: 1.2rem 0; overflow: hidden;
         }
-        
-        .main-content-section {
-            padding: 80px 0;
-            background-color: #fff;
+        .marquee-track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
+        .marquee:hover .marquee-track { animation-play-state: paused; }
+        .marquee-track ul { display: flex; align-items: center; list-style: none; flex: none; }
+        .marquee-track li {
+            display: flex; align-items: center; gap: 2.2rem; padding-right: 2.2rem;
+            font-family: var(--serif); font-size: clamp(1rem, 1.8vw, 1.3rem);
+            color: var(--muted); white-space: nowrap;
         }
-        
+        .marquee-track li::after { content: "\2726"; font-size: 0.8em; color: var(--accent); }
+        .marquee-track em { font-style: italic; color: var(--ink); }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+
+        /* Case body with rail */
+        .case-body {
+            display: grid;
+            grid-template-columns: 200px minmax(0, 1fr);
+            gap: clamp(2rem, 5vw, 5rem);
+            align-items: start;
+        }
+        .case-rail {
+            position: sticky; top: 8rem;
+            display: flex; flex-direction: column; gap: 0.2rem;
+            padding-top: clamp(5.5rem, 11vw, 9rem);
+        }
+        .case-rail a {
+            display: flex; align-items: center; gap: 0.7rem;
+            font-size: 0.82rem; font-weight: 500; color: var(--faint);
+            text-decoration: none; padding: 0.45rem 0;
+            transition: color 0.3s ease;
+        }
+        .case-rail a::before {
+            content: ""; width: 18px; height: 1px; background: var(--faint);
+            transition: width 0.35s var(--ease-out), background-color 0.3s ease;
+        }
+        .case-rail a:hover { color: var(--ink); }
+        .case-rail a.is-active { color: var(--accent); }
+        .case-rail a.is-active::before { width: 30px; background: var(--accent); }
+        .case-rail .rail-num { font-size: 0.68rem; letter-spacing: 0.1em; color: inherit; opacity: 0.7; }
+
+        .case-section { padding: clamp(5.5rem, 11vw, 9rem) 0 0; }
+        .case-section:last-child { padding-bottom: clamp(5.5rem, 11vw, 9rem); }
+        .section-label {
+            display: flex; align-items: center; gap: 0.8rem;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--muted); margin-bottom: 1.1rem;
+        }
+        .section-label::before { content: ""; width: 34px; height: 1px; background: var(--accent); }
+        .section-label .idx { color: var(--accent); }
+        .section-title {
+            font-family: var(--serif); font-weight: 400;
+            font-size: clamp(1.9rem, 4vw, 3.1rem);
+            line-height: 1.1; letter-spacing: -0.01em;
+            max-width: 24ch; margin-bottom: 1.4rem;
+        }
+        .section-title em { font-style: italic; color: var(--accent); }
+        .section-sub { color: var(--muted); max-width: 60ch; margin-bottom: 2.4rem; }
+        .section-sub strong { color: var(--ink); font-weight: 500; }
+
+        /* Summary cards */
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-top: 40px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1.2rem, 2.5vw, 1.8rem);
         }
-        
-        .summary-column h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
+        .summary-card {
+            background: var(--card); border: 1px solid var(--line-soft);
+            border-radius: var(--radius); padding: clamp(1.5rem, 2.6vw, 2rem);
+            transition: border-color 0.4s ease, transform 0.5s var(--ease-out);
         }
-        
-        .summary-column h3::before {
-            content: '—';
-            margin-right: 10px;
-            color: var(--pink);
+        .summary-card:hover { border-color: var(--line); transform: translateY(-4px); }
+        .summary-card h3 {
+            font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem;
         }
-        
-        .summary-column ul {
-            list-style: none;
+        .summary-card ul { list-style: none; display: grid; gap: 0.55rem; }
+        .summary-card li {
+            color: var(--muted); font-size: 0.94rem;
+            display: flex; align-items: baseline; gap: 0.6rem;
         }
-        
-        .summary-column ul li {
-            margin-bottom: 10px;
+        .summary-card li::before { content: "\2726"; font-size: 0.6rem; color: var(--accent); flex: none; }
+        .summary-card .tools { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+        /* Problem */
+        .problem-q {
+            font-family: var(--serif); font-weight: 380; font-style: italic;
+            font-size: clamp(1.6rem, 3.2vw, 2.5rem); line-height: 1.25;
+            border-left: 2px solid var(--accent);
+            padding-left: clamp(1.2rem, 2.5vw, 2rem);
+            max-width: 30ch; margin-bottom: 2rem;
+        }
+        .problem-q em { color: var(--accent); }
+        .case-copy p { color: var(--muted); max-width: 62ch; margin-bottom: 1.3rem; }
+        .case-copy p strong { color: var(--ink); font-weight: 500; }
+
+        /* Gallery */
+        .gallery { display: grid; gap: clamp(1.4rem, 3vw, 2.2rem); margin-top: 2.6rem; }
+        .gallery.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .gallery.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .gallery.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .shot {
+            border-radius: var(--radius); overflow: hidden;
+            border: 1px solid var(--line-soft); background: var(--card);
             position: relative;
-            padding-left: 20px;
+            transition: border-color 0.4s ease, transform 0.5s var(--ease-out), box-shadow 0.5s ease;
         }
-        
-        .summary-column ul li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--pink);
-            font-weight: bold;
+        .shot:hover {
+            border-color: var(--line); transform: translateY(-5px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
         }
-        
-        .summary-column p {
-            line-height: 1.6;
-        }
-        
-        .problem-section {
-            padding: 80px 0;
-            background-color: var(--purple-light);
-        }
-        
-        .problem-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .problem-column p {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 18px;
-        }
-        
-        .problems-showcase {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .problem-showcase-image {
+        .shot-img { overflow: hidden; }
+        .shot img {
             width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            transition: transform 0.9s var(--ease-out);
         }
-        
-        .problem-showcase-image img {
-            width: 100%;
-            height: auto;
-            display: block;
+        .shot:hover img { transform: scale(1.03); }
+        .shot-cap {
+            display: flex; align-items: baseline; gap: 0.8rem;
+            padding: 1rem 1.2rem; border-top: 1px solid var(--line-soft);
         }
-        
-        .problem-card {
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .shot-cap .n { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); }
+        .shot-cap .t { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+        .shot-cap .d { font-size: 0.82rem; color: var(--muted); }
+        .shot-num-float {
+            position: absolute; top: 1rem; left: 1.1rem; z-index: 2;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+            color: var(--ink); background: rgba(14, 14, 12, 0.55);
+            -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+            border: 1px solid rgba(236, 231, 222, 0.14);
+            padding: 0.3rem 0.7rem; border-radius: 999px;
         }
-        
-        .problem-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .problem-card-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .problem-card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .problem-card:hover .problem-card-image img {
-            transform: scale(1.05);
-        }
-        
-        .problem-label {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: var(--pink);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .problem-card-content {
-            padding: 20px;
-        }
-        
-        .problem-card-content h4 {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        
-        .solution-section {
-            padding: 80px 0;
-            background-color: #fff;
-            overflow: hidden;
-        }
-        
-        .solution-showcase {
+
+        /* Outcomes */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: clamp(1.2rem, 2.5vw, 1.8rem);
+            margin-top: 2.4rem;
+        }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--line-soft);
+            border-radius: var(--radius); padding: clamp(1.6rem, 2.8vw, 2.2rem);
+            transition: border-color 0.4s ease, transform 0.5s var(--ease-out);
+            position: relative; overflow: hidden;
+        }
+        .stat-card::after {
+            content: ""; position: absolute; left: 0; bottom: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: scaleX(0); transform-origin: 0 50%;
+            transition: transform 0.8s var(--ease-out) 0.3s;
+        }
+        .stat-card.is-in::after { transform: scaleX(1); }
+        .stat-card:hover { border-color: var(--line); transform: translateY(-5px); }
+        .stat-value {
+            font-family: var(--serif); font-weight: 450;
+            font-size: clamp(2.4rem, 4.5vw, 3.4rem); line-height: 1;
+            color: var(--accent); margin-bottom: 0.8rem;
+            display: flex; align-items: baseline;
+        }
+        .stat-value .suffix { font-size: 0.55em; margin-left: 0.1em; }
+        .stat-label { font-weight: 600; font-size: 1.02rem; margin-bottom: 0.5rem; }
+        .stat-desc { color: var(--muted); font-size: 0.92rem; }
+
+        /* CTA */
+        .contact { padding: clamp(4rem, 8vw, 7rem) 0 0; }
+        .contact-card {
+            background: var(--accent); color: var(--accent-ink);
+            border-radius: clamp(20px, 3vw, 36px);
+            padding: clamp(2.8rem, 6vw, 5rem) clamp(1.6rem, 5vw, 4.5rem);
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .contact-card::before {
+            content: ""; position: absolute; top: -40%; left: 50%;
+            transform: translateX(-50%); width: 70%; height: 100%;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.35) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .contact-label {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.22em;
+            text-transform: uppercase; opacity: 0.65; margin-bottom: 1.4rem;
+        }
+        .contact-title {
+            font-family: var(--serif); font-weight: 420;
+            font-size: clamp(2rem, 4.6vw, 3.6rem); line-height: 1.08;
+            letter-spacing: -0.015em; max-width: 20ch; margin: 0 auto 1.4rem;
+        }
+        .contact-title em { font-style: italic; }
+        .contact-sub { max-width: 54ch; margin: 0 auto 2.4rem; font-size: 1rem; opacity: 0.8; }
+        .contact-actions {
+            display: flex; justify-content: center; align-items: center;
+            gap: 1.2rem; flex-wrap: wrap;
+        }
+
+        /* More work */
+        .more-grid {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(1.4rem, 3vw, 2.4rem); margin-top: 2.4rem;
+        }
+        .work-card {
+            display: flex; flex-direction: column; text-decoration: none;
+            border: 1px solid var(--line-soft); border-radius: var(--radius);
+            overflow: hidden; background: var(--card); position: relative;
+            transition: border-color 0.4s ease, transform 0.5s var(--ease-out), box-shadow 0.5s ease;
+        }
+        .work-card:hover {
+            border-color: var(--line); transform: translateY(-6px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        }
+        .work-media { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: var(--bg-soft); }
+        .work-media img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.9s var(--ease-out), filter 0.6s ease;
+            filter: saturate(0.95);
+        }
+        .work-card:hover .work-media img { transform: scale(1.045); filter: saturate(1.05); }
+        .work-body { display: flex; flex-direction: column; gap: 0.6rem; padding: clamp(1.2rem, 2.2vw, 1.7rem); flex-grow: 1; }
+        .work-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .work-card:hover .tag { color: var(--ink); border-color: var(--muted); }
+        .work-title-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.3rem; }
+        .work-title { font-family: var(--serif); font-size: clamp(1.35rem, 2.2vw, 1.75rem); font-weight: 450; line-height: 1.15; }
+        .work-arrow {
+            flex: none; width: 40px; height: 40px; border-radius: 50%;
+            border: 1px solid var(--line); display: grid; place-items: center;
+            transition: background-color 0.35s ease, border-color 0.35s ease, transform 0.45s var(--ease-out);
+        }
+        .work-arrow svg { transition: transform 0.4s var(--ease-out); }
+        .work-card:hover .work-arrow { background: var(--accent); border-color: var(--accent); transform: rotate(-45deg); }
+        .work-card:hover .work-arrow svg { stroke: var(--accent-ink); }
+        .work-desc { color: var(--muted); font-size: 0.93rem; }
+
+        /* Footer */
+        .site-footer { border-top: 1px solid var(--line-soft); padding: 3.5rem 0 2.2rem; margin-top: clamp(5.5rem, 11vw, 9rem); }
+        .footer-grid {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            gap: 2.5rem; flex-wrap: wrap; margin-bottom: 3rem;
+        }
+        .footer-brand .brand { font-size: 1.6rem; }
+        .footer-brand p { color: var(--muted); font-size: 0.9rem; max-width: 30ch; margin-top: 0.8rem; }
+        .footer-col h3 {
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--faint); margin-bottom: 1rem;
+        }
+        .footer-col ul { list-style: none; display: grid; gap: 0.55rem; }
+        .footer-col a { color: var(--muted); text-decoration: none; font-size: 0.92rem; transition: color 0.25s ease; }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom {
+            border-top: 1px solid var(--line-soft); padding-top: 1.6rem;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 1rem; flex-wrap: wrap; color: var(--faint); font-size: 0.82rem;
+        }
+        .footer-time { display: inline-flex; align-items: center; gap: 0.5rem; }
+        .footer-time .tz { color: var(--muted); }
+
+        .back-top {
+            position: fixed; bottom: 1.8rem; right: 1.8rem; z-index: 1400;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--card); border: 1px solid var(--line);
+            display: grid; place-items: center;
+            opacity: 0; visibility: hidden; transform: translateY(12px);
+            transition: opacity 0.35s ease, transform 0.35s var(--ease-out), visibility 0.35s, background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .back-top.is-show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-top:hover { background: var(--accent); border-color: var(--accent); }
+        .back-top:hover svg { stroke: var(--accent-ink); }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .case-body { grid-template-columns: 1fr; }
+            .case-rail { display: none; }
+        }
+        @media (max-width: 860px) {
+            .summary-grid { grid-template-columns: 1fr; }
+            .gallery.cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .gallery.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
-        
-        .solution-item {
-            background-color: var(--purple-light);
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .solution-item-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .solution-item-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-        
-        .solution-image {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .solution-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .solution-details {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .solution-benefit {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .solution-benefit-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: var(--pink);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            flex-shrink: 0;
-        }
-        
-        .solution-benefit-text {
-            font-size: 14px;
-        }
-        
-        .solution-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .comparison-column {
-            background-color: rgba(0, 0, 0, 0.05);
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .comparison-column h5 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .comparison-column.before h5::before {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #ff9800;
-        }
-        
-        .comparison-column.after h5::before {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #4caf50;
-        }
-        
-        .quote-section {
-            padding: 60px 0;
-            background-color: var(--dark);
-            color: white;
-        }
-        
-        .quote-container {
-            position: relative;
-            padding: 0 80px;
-        }
-        
-        .quote-mark {
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 120px;
-            color: rgba(233, 30, 99, 0.1);
-            font-family: Georgia, serif;
-            line-height: 1;
-        }
-        
-        .quote-content {
-            font-size: 28px;
-            line-height: 1.4;
-            font-weight: 300;
-            margin-bottom: 20px;
-            color: white;
-        }
-        
-        .quote-attribution {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .quote-attribution span {
-            color: var(--pink);
-            font-weight: 600;
-        }
-        
-        .outcomes-section {
-            padding: 80px 0;
-            background-color: var(--blue-cta);
-            color: white;
-        }
-        
-        .outcomes-section .section-title {
-            color: white;
-        }
-        
-        .outcomes-section .section-divider {
-            background-color: white;
-        }
-        
-        .outcomes-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .outcome-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 30px 20px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        
-        .outcome-card:hover {
-            transform: translateY(-5px);
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .outcome-icon {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: white;
-        }
-        
-        .outcome-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        
-        .outcome-text {
-            font-size: 15px;
-            opacity: 0.9;
-            line-height: 1.5;
-        }
-        
-        .process-section {
-            padding: 80px 0;
-            background-color: #fff;
-        }
-        
-        .process-item {
-            margin-bottom: 60px;
-        }
-        
-        .process-item-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        .process-item-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: flex-start;
-        }
-        
-        .process-image {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .process-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .process-details {
-            padding-right: 20px;
-        }
-        
-        .process-details p {
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .user-voices {
-            margin-top: 60px;
-        }
-        
-        .user-voices-title {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        
-        .user-voices-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        
-        .user-voice-card {
-            background-color: var(--purple-light);
-            border-radius: 8px;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .user-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--pink);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 18px;
-        }
-        
-        .user-details h4 {
-            font-size: 16px;
-            margin-bottom: 2px;
-        }
-        
-        .user-details p {
-            font-size: 14px;
-            color: var(--gray);
-        }
-        
-        .user-quote {
-            font-size: 14px;
-            line-height: 1.5;
-            font-style: italic;
-        }
-        
-        .ui-principles {
-            margin-top: 60px;
-        }
-        
-        .ui-principles-title {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        
-        .ui-principles-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        
-        .principle-card {
-            padding: 20px;
-        }
-        
-        .principle-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--purple-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--pink);
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-        
-        .principle-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .principle-text {
-            font-size: 14px;
-            line-height: 1.5;
-            color: var(--gray);
-        }
-        
-        .gallery-section {
-            padding: 80px 0;
-            background-color: var(--purple-light);
-        }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .gallery-item {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            height: 250px;
-            cursor: pointer;
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.5s ease;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-        
-        .gallery-item-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .gallery-item:hover .gallery-item-overlay {
-            opacity: 1;
-        }
-        
-        .gallery-item-overlay span {
-            color: white;
-            font-weight: 600;
-            font-size: 18px;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .learnings-section {
-            padding: 80px 0;
-            background-color: #fff;
-        }
-        
-        .learnings-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .learning-card {
-            padding: 30px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border-left: 3px solid var(--pink);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .learning-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .learning-card-number {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--pink);
-            margin-bottom: 15px;
-        }
-        
-        .learning-card h3 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .learning-card p {
-            color: var(--gray);
-            font-size: 15px;
-        }
-        
-        .cta-section {
-            padding: 100px 0;
-            text-align: center;
-            background-color: var(--blue-cta);
-            color: white;
-        }
-        
-        .cta-container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .cta-title {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: white;
-        }
-        
-        .cta-description {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 30px;
-            font-size: 18px;
-        }
-        
-        .password-form {
-            display: flex;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .password-input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 30px 0 0 30px;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .password-input:focus {
-            border-color: var(--primary);
-        }
-        
-        .password-button {
-            background-color: white;
-            color: var(--blue-cta);
-            border: none;
-            padding: 0 25px;
-            border-radius: 0 30px 30px 0;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .password-button:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .more-projects {
-            padding: 80px 0;
-            background-color: var(--dark);
-            color: white;
-        }
-        
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .project-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .project-card-content {
-            padding: 20px;
-        }
-        
-        .project-card-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .project-card-description {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .project-card-link {
-            display: inline-block;
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .project-card-link:hover {
-            color: #0066cc;
-        }
-        
-        footer {
-            padding: 40px 0;
-            background-color: var(--dark);
-            color: white;
-        }
-        
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .footer-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-links a {
-            color: white;
-            font-size: 18px;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        
-        .animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .back-to-link {
-            display: inline-flex;
-            align-items: center;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-        
-        .back-to-link:hover {
-            color: var(--primary);
-        }
-        
-        .back-to-link i {
-            margin-right: 5px;
-        }
-        
-        @media (max-width: 992px) {
-            .intro-container {
-                flex-direction: column;
-            }
-            
-            .intro-content, .intro-image {
-                width: 100%;
-            }
-            
-            .intro-image {
-                margin-top: 30px;
-            }
-            
-            .summary-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .problem-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .solution-item-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .process-item-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .outcomes-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .user-voices-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .ui-principles-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .learnings-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
         @media (max-width: 768px) {
-            .section-title {
-                font-size: 28px;
+            .nav-menu { display: none; }
+            .nav-toggle { display: block; }
+            .more-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 560px) {
+            .gallery.cols-2, .gallery.cols-3 { grid-template-columns: 1fr; }
+            .btn { width: 100%; justify-content: center; }
+            .contact-actions { flex-direction: column; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
-            
-            .nav-links {
-                display: none;
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background-color: var(--dark);
-                padding: 1rem 0;
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .nav-links li {
-                margin: 0;
-                width: 100%;
-                text-align: center;
-            }
-            
-            .nav-links li a {
-                display: block;
-                padding: 0.8rem 0;
-            }
-            
-            .hamburger {
-                display: block;
-                cursor: pointer;
-                color: white;
-                font-size: 24px;
-                z-index: 100;
-            }
-            
-            .quote-container {
-                padding: 0 40px;
-            }
-            
-            .quote-content {
-                font-size: 22px;
-            }
-            
-            .ui-principles-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2.5rem;
-            border-radius: 16px;
-            max-width: 400px;
-            width: 90%;
-            margin: auto;
-            text-align: center;
-            position: relative;
-            transform: translateY(-20px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal.active .modal-content {
-            transform: translateY(0) scale(1);
-        }
-
-        .modal-title {
-            color: var(--dark);
-            font-size: 1.75rem;
-            margin-bottom: 1.25rem;
-            font-weight: 700;
-        }
-
-        .modal-text {
-            color: var(--gray);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-
-        .modal-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1;
-        }
-
-        .modal-button:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 132, 255, 0.3);
-        }
-
-        .modal-button:hover::before {
-            transform: translateX(0);
-        }
-
-        .modal-button span {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Add close button */
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: rgba(0, 0, 0, 0.2);
-            transform: rotate(90deg);
-        }
-
-        .modal-close::before,
-        .modal-close::after {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 2px;
-            background: var(--dark);
-            border-radius: 1px;
-        }
-
-        .modal-close::before {
-            transform: rotate(45deg);
-        }
-
-        .modal-close::after {
-            transform: rotate(-45deg);
-        }
-
-        .solution-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-            position: relative;
-        }
-
-        .solution-image-card {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            transform: translateY(50px);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
-
-        .solution-image-card.animate {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .solution-image-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .solution-image-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .solution-image-card:hover img {
-            transform: scale(1.1);
-        }
-
-        .solution-image-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            display: flex;
-            align-items: flex-end;
-            padding: 20px;
-        }
-
-        .solution-image-card:hover .solution-image-overlay {
-            opacity: 1;
-        }
-
-        .solution-image-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .solution-image-card:hover .solution-image-title {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .solution-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .floating-animation {
-            animation: float 3s ease-in-out infinite;
+            html.js [data-reveal] { opacity: 1; transform: none; }
+            html.js .case-hero h1 .wi { transform: none; }
+            .marquee-track { animation: none; }
+            .cursor { display: none !important; }
         }
     </style>
 </head>
 <body>
-    <header id="header">
-        <div class="nav-container">
-            <a href="../../index.html" class="logo">
-                Ratta
-            </a>
-            <ul class="nav-links">
-                <li><a href="../../index.html#projects">Work</a></li>
-                <li><a href="../../index.html#skills">Services</a></li>
+    <a class="skip-link" href="#summary">Skip to content</a>
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"><span class="cursor-text">View</span></div>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="site-header" id="header">
+        <nav class="nav-bar" aria-label="Primary">
+            <a href="../../index.html" class="brand">Ratta<sup>&reg;</sup></a>
+            <ul class="nav-menu">
+                <li><a href="../../index.html#work" aria-current="true">Work</a></li>
+                <li><a href="../../index.html#services">Services</a></li>
                 <li><a href="../about-page.html">About</a></li>
                 <li><a href="../blog-page.html">Blog</a></li>
+                <li><a href="mailto:rattakids@gmail.com" class="nav-cta" data-magnetic>Let's talk</a></li>
             </ul>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-        </div>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+                <span></span><span></span>
+            </button>
+        </nav>
     </header>
 
-    <section class="intro-section">
-        <div class="container intro-container">
-            <div class="intro-content">
-                <div class="project-tag fade-in">Vocab Go</div><br>
-                <h1 class="section-title fade-in">Vocab Go Learning App</h1>
-                <span class="section-divider fade-in"></span>
-                <p class="section-content fade-in">Transforming language learning through an engaging mobile experience with bite-sized lessons.</p>
-                <p class="section-content fade-in">A mobile app designed to make vocabulary acquisition more intuitive and efficient through gamified learning experiences and personalized practice.</p>
+    <div class="mobile-menu" id="mobileMenu">
+        <nav aria-label="Mobile">
+            <ul>
+                <li><a href="../../index.html#work">Work</a></li>
+                <li><a href="../../index.html#services">Services</a></li>
+                <li><a href="../about-page.html">About</a></li>
+                <li><a href="../blog-page.html">Blog</a></li>
+                <li><a href="mailto:rattakids@gmail.com">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-foot">
+            <span>Vancouver, Canada</span>
+            <a href="mailto:rattakids@gmail.com">rattakids@gmail.com</a>
+        </div>
+    </div>
+
+    <main id="main">
+        <!-- ════════════════════════════════════════════════════════════
+             SHOWCASE — Learn a little, win a lot (self-contained)
+             Scroll-driven intro for Vocab Go. Distinct from the Makro
+             and AIA showcases: scale/zoom scene transitions, a 3D
+             flashcard that flips with scroll, a self-answering quiz,
+             fanned app screens, ring-gauge stats and a game-style
+             progress bar.
+        ════════════════════════════════════════════════════════════ -->
+        <section class="showcase-vg" id="showcaseVg" aria-label="Vocab Go — from grind to game">
+            <style>
+                html.no-js .showcase-vg { display: none; }
+
+                .vg-track { height: 640vh; position: relative; }
+                .vg-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+
+                .vg-glow { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
+                .vg-glow-a {
+                    top: -20%; right: -10%; width: 56vw; height: 56vw;
+                    max-width: 780px; max-height: 780px;
+                    background: radial-gradient(circle, rgba(215, 249, 92, 0.07) 0%, transparent 62%);
+                }
+                .vg-glow-b {
+                    bottom: -26%; left: -14%; width: 60vw; height: 60vw;
+                    max-width: 840px; max-height: 840px;
+                    background: radial-gradient(circle, rgba(124, 92, 255, 0.09) 0%, transparent 62%);
+                }
+
+                /* Persistent chrome */
+                .vg-top {
+                    position: absolute; top: 5.4rem; left: 0; right: 0; z-index: 30;
+                    display: flex; align-items: center; justify-content: space-between;
+                    gap: 1rem; max-width: 1280px; margin: 0 auto; padding: 0 var(--pad);
+                }
+                .vg-kicker {
+                    display: flex; align-items: center; gap: 0.8rem;
+                    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+                    text-transform: uppercase; color: var(--muted);
+                }
+                .vg-kicker::before { content: ""; width: 34px; height: 1px; background: var(--accent); }
+                .vg-skip {
+                    font-size: 0.8rem; font-weight: 600; color: var(--muted);
+                    border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 1.05rem;
+                    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+                }
+                .vg-skip:hover { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+
+                /* Scenes — zoom transitions */
+                .vg-scenes { position: absolute; inset: 0; }
+                .vg-scene {
+                    position: absolute; inset: 0;
+                    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+                    align-items: center; gap: clamp(1.5rem, 4vw, 4rem);
+                    max-width: 1280px; margin: 0 auto;
+                    padding: 6.5rem var(--pad) 6rem;
+                    opacity: 0; transform: scale(0.94) translateY(18px);
+                    transition: opacity 0.65s var(--ease-out), transform 0.8s var(--ease-expo);
+                    pointer-events: none;
+                }
+                .vg-scene.is-active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+                .vg-scene.is-past { opacity: 0; transform: scale(1.05) translateY(-14px); }
+                .vg-num {
+                    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+                    color: var(--accent); margin-bottom: 1rem;
+                }
+                .vg-scene h2 {
+                    font-family: var(--serif); font-weight: 390;
+                    font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+                    line-height: 1.07; letter-spacing: -0.01em;
+                    max-width: 15ch; margin-bottom: 1.1rem;
+                }
+                .vg-scene h2 em { font-style: italic; color: var(--accent); }
+                .vg-scene .vg-sub { color: var(--muted); max-width: 42ch; font-size: clamp(0.95rem, 1.2vw, 1.08rem); }
+                .vg-scene .vg-sub strong { color: var(--ink); font-weight: 500; }
+                .vg-visual { position: relative; min-height: 220px; }
+
+                /* Scene 1 — floating words */
+                .vg-words { position: relative; height: clamp(250px, 42vh, 400px); }
+                .vg-word {
+                    position: absolute;
+                    font-family: var(--serif); font-style: italic;
+                    font-size: clamp(1rem, 1.8vw, 1.5rem); color: var(--muted);
+                    border: 1px solid var(--line); border-radius: 999px;
+                    padding: 0.5rem 1.2rem; background: var(--card);
+                    animation: vgDrift 8s ease-in-out infinite;
+                    transition: color 0.3s ease, border-color 0.3s ease;
+                }
+                .vg-word:hover { color: var(--ink); border-color: var(--muted); }
+                .vg-word-1 { top: 2%; left: 6%; animation-delay: 0s; }
+                .vg-word-2 { top: 16%; right: 4%; animation-delay: -2.2s; }
+                .vg-word-3 { top: 44%; left: 0%; animation-delay: -4.4s; }
+                .vg-word-4 { top: 58%; right: 12%; animation-delay: -1.4s; }
+                .vg-word-5 { bottom: 4%; left: 22%; animation-delay: -5.8s; }
+                @keyframes vgDrift {
+                    0%, 100% { margin-top: 0; }
+                    50% { margin-top: -14px; }
+                }
+                .vg-quit {
+                    position: absolute; bottom: 18%; right: 0;
+                    background: var(--card); border: 1px solid var(--line);
+                    border-radius: 16px; padding: 1rem 1.3rem;
+                    font-size: 0.9rem; color: var(--ink); font-weight: 500;
+                    transform: rotate(2.5deg);
+                    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+                }
+                .vg-quit b { color: var(--accent); }
+
+                /* Scene 2 — contrast cards */
+                .vg-contrast { display: grid; gap: clamp(0.9rem, 1.8vw, 1.3rem); }
+                .vg-way {
+                    border-radius: var(--radius); padding: clamp(1.2rem, 2.2vw, 1.6rem);
+                    display: flex; align-items: center; gap: 1rem;
+                    opacity: 0; transform: translateY(24px);
+                    transition: opacity 0.6s var(--ease-out), transform 0.7s var(--ease-expo), border-color 0.3s ease;
+                }
+                .vg-scene.is-active .vg-way { opacity: 1; transform: translateY(0); }
+                .vg-way--old {
+                    border: 1.5px dashed var(--line); color: var(--faint);
+                    text-decoration: line-through; text-decoration-color: rgba(160, 155, 144, 0.5);
+                }
+                .vg-way--new {
+                    background: var(--accent); color: var(--accent-ink);
+                    border: 1.5px solid var(--accent);
+                    font-weight: 600; transition-delay: 0.15s;
+                    box-shadow: 0 18px 50px rgba(215, 249, 92, 0.18);
+                }
+                .vg-way .mark {
+                    flex: none; width: 34px; height: 34px; border-radius: 50%;
+                    display: grid; place-items: center; font-weight: 700;
+                }
+                .vg-way--old .mark { border: 1.5px dashed var(--line); }
+                .vg-way--new .mark { background: rgba(20, 21, 7, 0.14); }
+                .vg-way small { display: block; font-weight: 400; opacity: 0.75; font-size: 0.82rem; }
+
+                /* Scene 3 — flashcard flip */
+                .vg-flip-zone { perspective: 1400px; display: grid; place-items: center; }
+                .vg-flip-box { width: min(340px, 100%); }
+                .vg-flip {
+                    position: relative; width: 100%; aspect-ratio: 8 / 5;
+                    transform-style: preserve-3d; will-change: transform;
+                }
+                .vg-face {
+                    position: absolute; inset: 0;
+                    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+                    border-radius: 22px; display: flex; flex-direction: column;
+                    align-items: center; justify-content: center; gap: 0.4rem;
+                    padding: 6% 8%; text-align: center; overflow: hidden;
+                }
+                .vg-face .lang {
+                    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em;
+                    text-transform: uppercase; opacity: 0.6;
+                }
+                .vg-face .word { font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.3rem); font-weight: 450; line-height: 1.15; }
+                .vg-face .hintline { font-size: 0.82rem; opacity: 0.65; }
+                .vg-face--front { background: var(--accent); color: var(--accent-ink); }
+                .vg-face--back {
+                    background: var(--card); color: var(--ink);
+                    border: 1.5px solid var(--accent);
+                    transform: rotateY(180deg);
+                }
+                .vg-face--back .word { color: var(--accent); }
+                .vg-flip-hint {
+                    margin-top: 1.2rem; text-align: center;
+                    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em;
+                    text-transform: uppercase; color: var(--faint);
+                }
+
+                /* Scene 4 — quiz */
+                .vg-quiz {
+                    position: relative;
+                    background: var(--card); border: 1px solid var(--line-soft);
+                    border-radius: var(--radius); padding: clamp(1.4rem, 2.6vw, 2rem);
+                    max-width: 400px; margin: 0 auto;
+                }
+                .vg-quiz-q { font-family: var(--serif); font-size: clamp(1.15rem, 2vw, 1.5rem); margin-bottom: 1.2rem; }
+                .vg-quiz-q em { color: var(--accent); font-style: italic; }
+                .vg-opts { display: grid; gap: 0.6rem; }
+                .vg-opt {
+                    display: flex; align-items: center; justify-content: space-between;
+                    border: 1px solid var(--line); border-radius: 12px;
+                    padding: 0.75rem 1rem; color: var(--muted); font-size: 0.95rem;
+                    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .vg-opt .tick { opacity: 0; font-weight: 700; transition: opacity 0.3s ease; }
+                .vg-opt.is-picked {
+                    background: var(--accent); border-color: var(--accent);
+                    color: var(--accent-ink); font-weight: 600;
+                    transform: scale(1.03);
+                }
+                .vg-opt.is-picked .tick { opacity: 1; }
+                .vg-xp {
+                    position: absolute; top: -16px; right: 1.4rem;
+                    background: var(--accent); color: var(--accent-ink);
+                    font-size: 0.78rem; font-weight: 700;
+                    border-radius: 999px; padding: 0.4rem 0.9rem;
+                    opacity: 0; transform: translateY(10px) scale(0.8);
+                    transition: opacity 0.4s ease, transform 0.5s var(--ease-expo);
+                }
+                .vg-quiz.is-correct .vg-xp { opacity: 1; transform: translateY(0) scale(1); }
+
+                /* Scene 5 — fanned app screens */
+                .vg-fan { position: relative; height: clamp(280px, 46vh, 440px); }
+                .vg-shot {
+                    position: absolute; top: 0; left: 50%;
+                    width: clamp(120px, 34%, 170px);
+                    border-radius: 20px; padding: 6px;
+                    background: #1c1c18; border: 1px solid var(--line);
+                    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
+                    opacity: 0;
+                    transition: opacity 0.6s var(--ease-out), transform 0.8s var(--ease-expo);
+                }
+                .vg-shot img { width: 100%; border-radius: 15px; display: block; }
+                .vg-shot-1 { transform: translateX(-50%) translateY(40px); }
+                .vg-shot-2 { transform: translateX(-50%) translateY(40px); transition-delay: 0.12s; }
+                .vg-shot-3 { transform: translateX(-50%) translateY(40px); transition-delay: 0.24s; }
+                .vg-scene.is-active .vg-shot-1 { opacity: 1; transform: translateX(-118%) translateY(6%) rotate(-9deg); }
+                .vg-scene.is-active .vg-shot-2 { opacity: 1; transform: translateX(-50%) translateY(0) rotate(0deg); z-index: 2; }
+                .vg-scene.is-active .vg-shot-3 { opacity: 1; transform: translateX(18%) translateY(6%) rotate(9deg); }
+                .vg-shot:hover { z-index: 5; }
+
+                /* Scene 6 — ring stats */
+                .vg-scene--impact { grid-template-columns: 1fr; text-align: center; align-content: center; justify-items: center; }
+                .vg-scene--impact h2 { max-width: 22ch; margin-left: auto; margin-right: auto; }
+                .vg-scene--impact .vg-sub { margin: 0 auto 2.4rem; }
+                .vg-rings {
+                    display: flex; gap: clamp(1.4rem, 4vw, 3.2rem);
+                    justify-content: center; flex-wrap: wrap; margin-bottom: 2.6rem;
+                }
+                .vg-ring { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; }
+                .vg-ring svg { width: clamp(96px, 12vw, 130px); height: auto; transform: rotate(-90deg); }
+                .vg-ring circle { fill: none; stroke-width: 7; }
+                .vg-ring .trk { stroke: var(--line-soft); }
+                .vg-ring .fil { stroke: var(--accent); stroke-linecap: round; }
+                .vg-ring .num {
+                    position: absolute;
+                    font-family: var(--serif); font-weight: 450;
+                    font-size: clamp(1.3rem, 2.2vw, 1.8rem); color: var(--accent);
+                }
+                .vg-ring .face { position: relative; display: grid; place-items: center; }
+                .vg-ring .lbl { font-size: 0.82rem; color: var(--muted); max-width: 15ch; }
+
+                /* Game-style progress bar (bottom centre) */
+                .vg-rail {
+                    position: absolute; bottom: 1.6rem; left: 50%; z-index: 30;
+                    transform: translateX(-50%);
+                    display: flex; align-items: center; gap: 0.9rem;
+                    background: rgba(19, 19, 17, 0.8);
+                    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+                    border: 1px solid var(--line-soft); border-radius: 999px;
+                    padding: 0.55rem 1.1rem;
+                }
+                .vg-rail-pips { display: flex; gap: 0.55rem; }
+                .vg-rail-pips button { padding: 0.3rem 0.15rem; }
+                .vg-rail-pips i {
+                    display: block; width: 9px; height: 9px;
+                    background: var(--line); transform: rotate(45deg);
+                    transition: background-color 0.35s ease, transform 0.35s var(--ease-out);
+                }
+                .vg-rail-pips button.is-on i { background: var(--accent); }
+                .vg-rail-pips button.is-now i { transform: rotate(45deg) scale(1.45); }
+                .vg-rail-label {
+                    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
+                    text-transform: uppercase; color: var(--muted);
+                    min-width: 8ch; text-align: left;
+                }
+
+                .vg-hint {
+                    position: absolute; bottom: 4.6rem; left: 50%; z-index: 30;
+                    transform: translateX(-50%);
+                    color: var(--faint); font-size: 0.68rem;
+                    letter-spacing: 0.22em; text-transform: uppercase;
+                    opacity: 0; transition: opacity 0.5s ease;
+                }
+                .vg-stage[data-scene="1"] .vg-hint { opacity: 1; animation: vgPulseHint 2.4s ease-in-out infinite; }
+                @keyframes vgPulseHint {
+                    0%, 100% { opacity: 0.45; }
+                    50% { opacity: 1; }
+                }
+
+                /* Responsive */
+                @media (max-width: 860px) {
+                    .vg-scene {
+                        grid-template-columns: 1fr;
+                        align-content: start; gap: 1.6rem;
+                        padding-top: 9.5rem; text-align: center;
+                    }
+                    .vg-scene h2, .vg-scene .vg-sub { margin-left: auto; margin-right: auto; }
+                    .vg-words { height: clamp(200px, 30vh, 280px); }
+                    .vg-quit { bottom: 4%; right: 4%; font-size: 0.82rem; }
+                    .vg-way { text-align: left; }
+                    .vg-flip-box { width: min(300px, 84vw); }
+                    .vg-quiz { max-width: min(400px, 88vw); }
+                    .vg-fan { height: clamp(220px, 30svh, 300px); }
+                    .vg-shot { width: clamp(96px, 30%, 130px); }
+                    .vg-rail-label { display: none; }
+                    .vg-rail { gap: 0; padding: 0.5rem 0.9rem; }
+                    .vg-hint { display: none; }
+                    .vg-top { top: 4.6rem; }
+                }
+
+                /* Reduced motion: static storyboard */
+                @media (prefers-reduced-motion: reduce) {
+                    .vg-track { height: auto; }
+                    .vg-stage { position: static; height: auto; overflow: visible; padding: 6.5rem 0 2rem; }
+                    .vg-scenes { position: static; }
+                    .vg-scene {
+                        position: static; opacity: 1; transform: none; pointer-events: auto;
+                        padding: 2.5rem var(--pad); min-height: 0;
+                    }
+                    .vg-scene.is-past { opacity: 1; transform: none; }
+                    .vg-way, .vg-shot { opacity: 1; }
+                    .vg-shot { position: static; transform: none !important; display: inline-block; margin: 0 0.4rem; }
+                    .vg-fan { height: auto; text-align: center; }
+                    .vg-rail, .vg-hint, .vg-skip, .vg-glow { display: none; }
+                    .vg-top { position: static; margin-bottom: 1rem; }
+                }
+            </style>
+
+            <div class="vg-track" id="vgTrack">
+                <div class="vg-stage" id="vgStage" data-scene="1">
+                    <div class="vg-glow vg-glow-a" id="vgGlowA" aria-hidden="true"></div>
+                    <div class="vg-glow vg-glow-b" id="vgGlowB" aria-hidden="true"></div>
+
+                    <div class="vg-top">
+                        <p class="vg-kicker">The making of Vocab Go</p>
+                        <button class="vg-skip" id="vgSkip" type="button">Skip intro ↓</button>
+                    </div>
+
+                    <div class="vg-scenes">
+                        <!-- 01 · The grind -->
+                        <div class="vg-scene is-active" data-vg="1">
+                            <div>
+                                <p class="vg-num">01 / 06 — The grind</p>
+                                <h2>Learning a language shouldn't feel like <em>homework.</em></h2>
+                                <p class="vg-sub">Vocabulary is the wall most learners hit — <strong>hard to retain, easy to forget</strong>, and motivation fades fast.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-words" aria-hidden="true">
+                                    <span class="vg-word vg-word-1">Hola</span>
+                                    <span class="vg-word vg-word-2">你好</span>
+                                    <span class="vg-word vg-word-3">Bonjour</span>
+                                    <span class="vg-word vg-word-4">こんにちは</span>
+                                    <span class="vg-word vg-word-5">Ciao</span>
+                                    <div class="vg-quit">😵‍💫 Most learners quit by <b>week two</b></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 02 · The insight -->
+                        <div class="vg-scene" data-vg="2">
+                            <div>
+                                <p class="vg-num">02 / 06 — The insight</p>
+                                <h2>Little and often beats <em>long and rare.</em></h2>
+                                <p class="vg-sub">Research pointed one way: <strong>bite-sized, gamified practice</strong> — quick wins that keep momentum alive.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-contrast">
+                                    <div class="vg-way vg-way--old">
+                                        <span class="mark">✗</span>
+                                        <span>Marathon grammar drills<small>2 hours, once a week</small></span>
+                                    </div>
+                                    <div class="vg-way vg-way--new">
+                                        <span class="mark">✓</span>
+                                        <span>Bite-sized vocabulary bursts<small>2 minutes, every day</small></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 03 · Flashcards -->
+                        <div class="vg-scene" data-vg="3">
+                            <div>
+                                <p class="vg-num">03 / 06 — Flashcards</p>
+                                <h2>Flip it till you <em>know it.</em></h2>
+                                <p class="vg-sub"><strong>Keep scrolling to flip the card</strong> — learners build their own decks in seconds and drill them anywhere.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-flip-zone">
+                                    <div class="vg-flip-box">
+                                        <div class="vg-flip" id="vgFlip" aria-hidden="true">
+                                            <div class="vg-face vg-face--front">
+                                                <span class="lang">English</span>
+                                                <span class="word">Apple 🍎</span>
+                                                <span class="hintline">Tap to reveal</span>
+                                            </div>
+                                            <div class="vg-face vg-face--back">
+                                                <span class="lang">Japanese</span>
+                                                <span class="word">りんご</span>
+                                                <span class="hintline">rin-go</span>
+                                            </div>
+                                        </div>
+                                        <p class="vg-flip-hint" id="vgFlipHint">Scroll to flip</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 04 · Practice -->
+                        <div class="vg-scene" data-vg="4">
+                            <div>
+                                <p class="vg-num">04 / 06 — Practice</p>
+                                <h2>Quizzes that ask at the <em>perfect moment.</em></h2>
+                                <p class="vg-sub">Multiple-choice drills powered by <strong>spaced repetition</strong> — keep scrolling and watch the right answer land.</p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-quiz" id="vgQuiz">
+                                    <span class="vg-xp">+10 XP ✦</span>
+                                    <p class="vg-quiz-q">How do you say <em>"water"</em> in Japanese?</p>
+                                    <div class="vg-opts" id="vgOpts">
+                                        <div class="vg-opt"><span>ひ · hi</span><span class="tick">—</span></div>
+                                        <div class="vg-opt" data-correct><span>みず · mizu</span><span class="tick">✓</span></div>
+                                        <div class="vg-opt"><span>つち · tsuchi</span><span class="tick">—</span></div>
+                                        <div class="vg-opt"><span>かぜ · kaze</span><span class="tick">—</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 05 · The app -->
+                        <div class="vg-scene" data-vg="5">
+                            <div>
+                                <p class="vg-num">05 / 06 — The app</p>
+                                <h2>Meet <em>Vocab Go.</em></h2>
+                                <p class="vg-sub">Dashboard, flashcards and progress tracking — <strong>an MVP built for daily momentum.</strong></p>
+                            </div>
+                            <div class="vg-visual">
+                                <div class="vg-fan">
+                                    <div class="vg-shot vg-shot-1"><img src="../../assets/images/vocab-go-solution-02.png" alt="Vocab Go flashcard creation screen" loading="lazy"></div>
+                                    <div class="vg-shot vg-shot-2"><img src="../../assets/images/vocab-go-solution-01.png" alt="Vocab Go learning dashboard" loading="lazy"></div>
+                                    <div class="vg-shot vg-shot-3"><img src="../../assets/images/vocab-go-solution-05.png" alt="Vocab Go progress tracking screen" loading="lazy"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 06 · Impact -->
+                        <div class="vg-scene vg-scene--impact" data-vg="6">
+                            <div>
+                                <p class="vg-num">06 / 06 — Impact</p>
+                                <h2>Small habits, <em>big numbers.</em></h2>
+                                <p class="vg-sub">What bite-sized learning delivered for users.</p>
+                                <div class="vg-rings">
+                                    <div class="vg-ring">
+                                        <div class="face">
+                                            <svg viewBox="0 0 120 120" aria-hidden="true">
+                                                <circle class="trk" cx="60" cy="60" r="48"/>
+                                                <circle class="fil" cx="60" cy="60" r="48" data-frac="0.3"/>
+                                            </svg>
+                                            <span class="num"><span data-vg-count="30">0</span>%</span>
+                                        </div>
+                                        <span class="lbl">More vocabulary retained</span>
+                                    </div>
+                                    <div class="vg-ring">
+                                        <div class="face">
+                                            <svg viewBox="0 0 120 120" aria-hidden="true">
+                                                <circle class="trk" cx="60" cy="60" r="48"/>
+                                                <circle class="fil" cx="60" cy="60" r="48" data-frac="0.4"/>
+                                            </svg>
+                                            <span class="num"><span data-vg-count="40">0</span>%</span>
+                                        </div>
+                                        <span class="lbl">Longer learning sessions</span>
+                                    </div>
+                                    <div class="vg-ring">
+                                        <div class="face">
+                                            <svg viewBox="0 0 120 120" aria-hidden="true">
+                                                <circle class="trk" cx="60" cy="60" r="48"/>
+                                                <circle class="fil" cx="60" cy="60" r="48" data-frac="1"/>
+                                            </svg>
+                                            <span class="num"><span data-vg-count="2">0</span>x</span>
+                                        </div>
+                                        <span class="lbl">Faster word acquisition</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-solid" id="vgEnter" type="button" data-magnetic>
+                                    Read the full case study
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(90deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="vg-rail" aria-label="Showcase chapters">
+                        <div class="vg-rail-pips">
+                            <button type="button" class="is-on is-now" data-i="1" aria-label="The grind"><i></i></button>
+                            <button type="button" data-i="2" aria-label="The insight"><i></i></button>
+                            <button type="button" data-i="3" aria-label="Flashcards"><i></i></button>
+                            <button type="button" data-i="4" aria-label="Practice"><i></i></button>
+                            <button type="button" data-i="5" aria-label="The app"><i></i></button>
+                            <button type="button" data-i="6" aria-label="Impact"><i></i></button>
+                        </div>
+                        <span class="vg-rail-label" id="vgRailLabel">The grind</span>
+                    </nav>
+
+                    <div class="vg-hint" aria-hidden="true">Scroll to play</div>
+                </div>
             </div>
-            
-            <div class="intro-image fade-in">
-                <img src="../../assets/images/vocab-go-screenshot.png" alt="Vocab Go Learning App Interface" style="background-color: white; padding: 20px;">
+
+            <script>
+                (function () {
+                    'use strict';
+                    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    const track = document.getElementById('vgTrack');
+                    const stage = document.getElementById('vgStage');
+                    const sceneEls = Array.from(stage.querySelectorAll('.vg-scene'));
+                    const railBtns = Array.from(stage.querySelectorAll('.vg-rail-pips button'));
+                    const railLabel = document.getElementById('vgRailLabel');
+                    const labels = ['The grind', 'The insight', 'Flashcards', 'Practice', 'The app', 'Impact'];
+                    const glowA = document.getElementById('vgGlowA');
+                    const glowB = document.getElementById('vgGlowB');
+                    const flip = document.getElementById('vgFlip');
+                    const flipHint = document.getElementById('vgFlipHint');
+                    const quiz = document.getElementById('vgQuiz');
+                    const opts = Array.from(stage.querySelectorAll('.vg-opt'));
+                    const correctOpt = stage.querySelector('.vg-opt[data-correct]');
+                    const rings = Array.from(stage.querySelectorAll('.vg-ring .fil'));
+                    const CIRC = 2 * Math.PI * 48;
+                    const SCENES = 6;
+                    const ease = (t) => 1 - Math.pow(1 - t, 3);
+                    let counted = false;
+
+                    rings.forEach(r => {
+                        r.style.strokeDasharray = String(CIRC);
+                        r.style.strokeDashoffset = String(CIRC);
+                    });
+
+                    function fillRings(instant) {
+                        rings.forEach(r => {
+                            const frac = parseFloat(r.dataset.frac);
+                            if (instant) { r.style.strokeDashoffset = String(CIRC * (1 - frac)); return; }
+                            const dur = 1300;
+                            const t0 = performance.now();
+                            const step = (t) => {
+                                const p = Math.min((t - t0) / dur, 1);
+                                r.style.strokeDashoffset = String(CIRC * (1 - frac * ease(p)));
+                                if (p < 1) requestAnimationFrame(step);
+                            };
+                            requestAnimationFrame(step);
+                            setTimeout(() => { r.style.strokeDashoffset = String(CIRC * (1 - frac)); }, dur + 250);
+                        });
+                        stage.querySelectorAll('[data-vg-count]').forEach(el => {
+                            const target = parseFloat(el.dataset.vgCount);
+                            if (instant) { el.textContent = String(target); return; }
+                            const dur = 1300;
+                            const t0 = performance.now();
+                            const step = (t) => {
+                                const p = Math.min((t - t0) / dur, 1);
+                                el.textContent = String(Math.round(target * ease(p)));
+                                if (p < 1) requestAnimationFrame(step);
+                            };
+                            requestAnimationFrame(step);
+                            setTimeout(() => { el.textContent = String(target); }, dur + 250);
+                        });
+                    }
+
+                    if (reduceMotion) {
+                        sceneEls.forEach(el => el.classList.add('is-active'));
+                        correctOpt.classList.add('is-picked');
+                        quiz.classList.add('is-correct');
+                        fillRings(true);
+                        return;
+                    }
+
+                    let cur = 0;
+
+                    function update() {
+                        const r = track.getBoundingClientRect();
+                        const total = r.height - window.innerHeight;
+                        if (total <= 0) return;
+                        const p = Math.min(Math.max(-r.top / total, 0), 1);
+                        const f = p * SCENES;
+                        const idx = Math.max(1, Math.min(Math.floor(f) + 1, SCENES));
+                        const sp = Math.min(Math.max(f - (idx - 1), 0), 1);
+
+                        if (idx !== cur) {
+                            cur = idx;
+                            stage.dataset.scene = String(idx);
+                            sceneEls.forEach((el, i) => {
+                                el.classList.toggle('is-active', i + 1 === idx);
+                                el.classList.toggle('is-past', i + 1 < idx);
+                            });
+                            railBtns.forEach((b, i) => {
+                                b.classList.toggle('is-on', i + 1 <= idx);
+                                b.classList.toggle('is-now', i + 1 === idx);
+                            });
+                            railLabel.textContent = labels[idx - 1];
+                            if (idx === 6 && !counted) { counted = true; fillRings(false); }
+                        }
+
+                        // Flashcard flip driven by scroll inside scene 3
+                        if (idx < 3) {
+                            flip.style.transform = 'rotateY(0deg)';
+                        } else if (idx === 3) {
+                            const d = Math.min(sp * 1.25, 1);
+                            flip.style.transform = 'rotateY(' + (d * 180) + 'deg)';
+                            flipHint.textContent = d > 0.5 ? 'りんご — nailed it ✦' : 'Scroll to flip';
+                        } else {
+                            flip.style.transform = 'rotateY(180deg)';
+                        }
+
+                        // Quiz answers itself inside scene 4
+                        if (idx === 4) {
+                            correctOpt.classList.toggle('is-picked', sp > 0.45);
+                            quiz.classList.toggle('is-correct', sp > 0.7);
+                        } else if (idx > 4) {
+                            correctOpt.classList.add('is-picked');
+                            quiz.classList.add('is-correct');
+                        } else {
+                            correctOpt.classList.remove('is-picked');
+                            quiz.classList.remove('is-correct');
+                        }
+
+                        // Glow parallax
+                        glowA.style.transform = 'translateY(' + (p * -120) + 'px)';
+                        glowB.style.transform = 'translateY(' + (p * 95) + 'px)';
+                    }
+
+                    window.addEventListener('scroll', update, { passive: true });
+                    window.addEventListener('resize', update);
+                    update();
+
+                    function jumpTo(i) {
+                        const r = track.getBoundingClientRect();
+                        const top = window.scrollY + r.top;
+                        const total = r.height - window.innerHeight;
+                        window.scrollTo({ top: top + total * ((i - 0.5) / SCENES), behavior: 'smooth' });
+                    }
+                    railBtns.forEach((b) => {
+                        b.addEventListener('click', () => jumpTo(parseInt(b.dataset.i, 10)));
+                    });
+                    function exitShowcase() {
+                        const r = track.getBoundingClientRect();
+                        window.scrollTo({ top: window.scrollY + r.bottom - 70, behavior: 'smooth' });
+                    }
+                    document.getElementById('vgSkip').addEventListener('click', exitShowcase);
+                    document.getElementById('vgEnter').addEventListener('click', exitShowcase);
+                })();
+            </script>
+        </section>
+
+        <section class="case-hero" aria-label="Vocab Go case study">
+            <div class="hero-glow" aria-hidden="true"></div>
+            <div class="container">
+                <div class="crumbs" data-reveal>
+                    <a href="../../index.html#work" class="crumb-back">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6 6-6-6 6-6"/></svg>
+                        All work
+                    </a>
+                    <span class="crumb-index">Case study <em>03</em> / 05</span>
+                </div>
+                <p class="case-label" data-reveal>Vocab Go — Language learning</p>
+                <h1><span class="w" style="--wd:0.05s"><span class="wi">Learn</span></span>
+                    <span class="w" style="--wd:0.12s"><span class="wi">a</span></span>
+                    <span class="w" style="--wd:0.19s"><span class="wi">language</span></span>
+                    <span class="w" style="--wd:0.26s"><span class="wi">in</span></span>
+                    <span class="w" style="--wd:0.33s"><span class="wi"><em>bite-sized</em></span></span>
+                    <span class="w" style="--wd:0.40s"><span class="wi">moments.</span></span></h1>
+                <p class="case-lede" data-reveal style="--rd:.15s">Vocab Go is a mobile app designed to make <strong>vocabulary acquisition more intuitive and efficient</strong> through gamified learning experiences and personalised practice.</p>
+                <div class="case-chips" data-reveal style="--rd:.22s"><span class="chip"><span class="dot"></span>UX Lead</span><span class="chip"><span class="dot"></span>iOS</span><span class="chip"><span class="dot"></span>Education</span><span class="chip"><span class="dot"></span>MVP</span></div>
+                <div class="case-hero-media" data-reveal style="--rd:.3s">
+                    <div class="media-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <img src="../../assets/images/vocab-go-screenshot.png" alt="Vocab Go learning app interface" id="heroShot" fetchpriority="high">
+                </div>
+            </div>
+        </section>
+
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <ul><li>Language learning</li><li><em>Gamification</em></li><li>Flashcards</li><li><em>Spaced repetition</em></li><li>iOS Design</li></ul>
+                <ul><li>Language learning</li><li><em>Gamification</em></li><li>Flashcards</li><li><em>Spaced repetition</em></li><li>iOS Design</li></ul>
             </div>
         </div>
-    </section>
 
-    <section class="main-content-section" id="summary">
         <div class="container">
-            <span class="section-number fade-in">01/</span>
-            <h2 class="section-title fade-in">Summary</h2>
-            <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in">What was delivered and how</p>
-            
-            <div class="summary-grid">
-                <div class="summary-column fade-in">
-                    <h3>Role</h3>
+            <div class="case-body">
+                <aside class="case-rail" aria-label="Case study sections">
+                    <a href="#summary" data-rail="summary"><span class="rail-num">01</span> Summary</a>
+                    <a href="#problem" data-rail="problem"><span class="rail-num">02</span> Problem</a>
+                    <a href="#solution" data-rail="solution"><span class="rail-num">03</span> Solution</a>
+                    <a href="#outcomes" data-rail="outcomes"><span class="rail-num">04</span> Outcomes</a>
+                </aside>
+                <div class="case-sections">
+                    <section id="summary" class="case-section" aria-labelledby="summary-title">
+                        <p class="section-label" data-reveal><span class="idx">01</span> Summary</p>
+                        <h2 class="section-title" id="summary-title" data-reveal>What was delivered, <em>and how</em></h2>
+                        <div class="summary-grid">
+                            <div class="summary-card" data-reveal>
+                                <h3>Role</h3>
+                                <ul><li>UX Lead</li><li>Interaction design</li><li>Visual design</li><li>User flows</li><li>Rapid prototyping</li></ul>
+                            </div>
+                            <div class="summary-card" data-reveal style="--rd:.1s">
+                                <h3>Deliverables</h3>
+                                <ul><li>Problem-defining workshop</li><li>Fully-detailed journey map</li><li>Wireframes</li><li>User-interface designs</li><li>High-fidelity prototype</li></ul>
+                            </div>
+                            <div class="summary-card" data-reveal style="--rd:.2s">
+                                <h3>Tools</h3>
+                                <div class="tools"><span class="tag">Figma</span><span class="tag">Mural board</span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="problem" class="case-section" aria-labelledby="problem-title">
+                        <p class="section-label" data-reveal><span class="idx">02</span> The problem</p>
+                        <blockquote class="problem-q" id="problem-title" data-reveal>How do you transform language learning into an <em>engaging, immersive experience?</em></blockquote>
+                        <div class="case-copy" data-reveal style="--rd:.12s"><p>Learning a new language can be frustrating and time-consuming, requiring commitment, repetition and structured practice. <strong>Many learners struggle to retain vocabulary and stay motivated</strong>, making traditional methods feel overwhelming.</p><p>Vocab Go was designed to tackle these challenges by understanding how people learn best. Through careful research, we explored ways to make vocabulary acquisition more intuitive, engaging and efficient.</p></div>
+                    </section>
+
+                    <section id="solution" class="case-section" aria-labelledby="solution-title">
+                        <p class="section-label" data-reveal><span class="idx">03</span> The solution</p>
+                        <h2 class="section-title" id="solution-title" data-reveal>Eight screens that make learning <em>stick</em></h2>
+                        <div class="case-copy" data-reveal style="--rd:.12s"><p>As the lead designer, I owned the learning experience across <strong>multiple-choice questions, search and flashcard creation</strong> — collaborating with research, product, engineering and leadership to build a seamless, high-performing learning tool.</p></div>
+                        <div class="gallery cols-4"><figure class="shot" data-reveal style="--rd:0.07s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-01.png" alt="Interactive learning dashboard" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">01</span><span class="t">Learning dashboard</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.14s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-02.png" alt="Flashcard creation interface" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">02</span><span class="t">Flashcard creation</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.21s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-03.png" alt="Multiple choice questions" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">03</span><span class="t">Multiple choice</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.00s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-04.png" alt="Search functionality" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">04</span><span class="t">Search</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.07s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-05.png" alt="Progress tracking" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">05</span><span class="t">Progress tracking</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.14s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-06.png" alt="Achievement system" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">06</span><span class="t">Achievements</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.21s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-07.png" alt="Practice sessions" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">07</span><span class="t">Practice sessions</span></div></div></figure><figure class="shot" data-reveal style="--rd:0.00s"><div class="shot-img"><img src="../../assets/images/vocab-go-solution-08.png" alt="User profile" loading="lazy"></div><div class="shot-cap" style="flex-direction:column;gap:0.15rem;"><div style="display:flex;gap:0.8rem;align-items:baseline;"><span class="n">08</span><span class="t">User profile</span></div></div></figure></div>
+                    </section>
+
+                    <section id="outcomes" class="case-section" aria-labelledby="outcomes-title">
+                        <p class="section-label" data-reveal><span class="idx">04</span> Outcomes</p>
+                        <h2 class="section-title" id="outcomes-title" data-reveal>Learning, <em>accelerated</em></h2>
+                        <p class="section-sub" data-reveal style="--rd:.1s">What the new learning experience delivered for users.</p>
+                        <div class="stats-grid"><div class="stat-card" data-reveal style="--rd:0.0s"><div class="stat-value"><span></span><span data-count="30" data-decimals="0">0</span><span class="suffix">%</span></div><div class="stat-label">More vocabulary retained</div><div class="stat-desc">Through interactive flashcards and multiple-choice exercises.</div></div><div class="stat-card" data-reveal style="--rd:0.1s"><div class="stat-value"><span></span><span data-count="40" data-decimals="0">0</span><span class="suffix">%</span></div><div class="stat-label">Longer sessions</div><div class="stat-desc">A structured, gamified experience kept learners motivated.</div></div><div class="stat-card" data-reveal style="--rd:0.0s"><div class="stat-value"><span></span><span data-count="2" data-decimals="0">0</span><span class="suffix">x</span></div><div class="stat-label">Faster acquisition</div><div class="stat-desc">Personalised learning and spaced repetition doubled the pace of learning new words.</div></div></div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <section class="contact" aria-labelledby="cta-title">
+            <div class="container">
+                <div class="contact-card" data-reveal>
+                    <p class="contact-label">Want the full story?</p>
+                    <h2 class="contact-title" id="cta-title">The complete case study is <em>available on request.</em></h2>
+                    <p class="contact-sub">Research artefacts, process, iterations and learnings — I'd love to walk you through the details of Vocab Go in person or over a call.</p>
+                    <div class="contact-actions">
+                        <a href="mailto:rattakids@gmail.com?subject=Full%20case%20study%20request%3A%20Vocab%20Go" class="btn btn-dark" data-magnetic>
+                            Request full case study
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                        </a>
+                        <a href="mailto:rattakids@gmail.com" class="contact-email-link" style="font-weight:600;font-size:1rem;color:var(--accent-ink);text-decoration:none;border-bottom:1.5px solid rgba(20,21,7,0.4);padding-bottom:2px;">rattakids@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="case-section" aria-labelledby="more-title" style="padding-bottom:0;">
+            <div class="container">
+                <p class="section-label" data-reveal><span class="idx">05</span> More case studies</p>
+                <h2 class="section-title" id="more-title" data-reveal>Keep <em>exploring</em></h2>
+                <div class="more-grid"><a href="intro-tdm-case-study.html" class="work-card" data-reveal data-cursor="view" style="--rd:0.0s"><div class="work-media"><img src="../../assets/images/tdm-screenshot-home.jpg" alt="TDM bank reconciliation software dashboard" loading="lazy"></div><div class="work-body"><div class="work-meta"><span class="tag">Fintech</span><span class="tag">Web</span></div><div class="work-title-row"><h3 class="work-title">TDM Bank Reconciliation</h3><span class="work-arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="work-desc">Transforming bank reconciliation from manual spreadsheets into an automated digital workflow.</p></div></a><a href="intro-learnbig-case-study.html" class="work-card" data-reveal data-cursor="view" style="--rd:0.1s"><div class="work-media"><img src="../../assets/images/learnbig-screenshot-home.jpg" alt="LearnBig multi-language reading platform" loading="lazy"></div><div class="work-body"><div class="work-meta"><span class="tag">Education</span><span class="tag">Web</span></div><div class="work-title-row"><h3 class="work-title">LearnBig</h3><span class="work-arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="work-desc">A multi-language digital reading platform making education accessible to underserved communities.</p></div></a></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="../../index.html" class="brand">Ratta<sup>&reg;</sup></a>
+                    <p>UX &amp; Product Designer crafting experiences that feel human.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Sitemap</h3>
                     <ul>
-                        <li>UX Lead</li>
-                        <li>Interaction design</li>
-                        <li>Visual design</li>
-                        <li>User flows</li>
-                        <li>Rapid prototype</li>
+                        <li><a href="../../index.html#work">Work</a></li>
+                        <li><a href="../../index.html#services">Services</a></li>
+                        <li><a href="../about-page.html">About</a></li>
+                        <li><a href="../blog-page.html">Blog</a></li>
+                        <li><a href="../../index.html#contact">Contact</a></li>
                     </ul>
                 </div>
-                
-                <div class="summary-column fade-in">
-                    <h3>Deliverables</h3>
+                <div class="footer-col">
+                    <h3>Connect</h3>
                     <ul>
-                        <li>Problem defining workshop</li>
-                        <li>A fully-detailed journey map</li>
-                        <li>Wireframes</li>
-                        <li>User-interface designs</li>
-                        <li>High-fidelity prototype</li>
-                    </ul>
-                </div>
-                
-                <div class="summary-column fade-in">
-                    <h3>Tools</h3>
-                    <ul>
-                        <li>Figma</li>
-                        <li>Mural board</li>
+                        <li><a href="https://linkedin.com/in/rattakid" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+                        <li><a href="mailto:rattakids@gmail.com">Email &#8599;</a></li>
+                        <li><a href="../../assets/pdfs/ratta-ux-design-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute; &#8599;</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="problem-section" id="problem">
-        <div class="container">
-            <span class="section-number fade-in">02/</span>
-            <h2 class="section-title fade-in">How do you transform language learning into an engaging and immersive digital experience?
-            </h2>
-            <span class="section-divider fade-in"></span>
-            
-            <div class="problem-grid">
-                <div class="problem-column fade-in">
-                    <p>
-                        Learning a new language can be frustrating and time-consuming, requiring commitment, repetition, and structured practice. Many learners struggle to retain vocabulary and stay motivated, making traditional methods feel overwhelming.
-The Vocab Go project was designed to tackle these challenges by understanding how people learn best. Through careful research, we explored ways to make vocabulary acquisition more intuitive, engaging, and efficient.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="solution-section" id="solution">
-        <div class="container">
-            <span class="section-number fade-in">03/</span>
-            <h2 class="section-title fade-in">Solution</h2>
-            <span class="section-divider fade-in"></span>
-            
-            <div class="problem-grid">
-                <div class="problem-column fade-in">
-                    <p>
-                        As the lead designer, I owned the learning experience through multiple-choice questions, search, and flashcard creation, ensuring an interactive and effective approach to language learning. I collaborated closely with user research, product, design, engineering, and leadership to build a seamless, high-performing tool that enhances language learning for all users.
-                    </p>
-                </div>
-            </div>
-
-            <div class="solution-grid">
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-01.png" alt="Vocab Go Solution 1">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Interactive Learning Dashboard</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-02.png" alt="Vocab Go Solution 2">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Flashcard Creation Interface</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-03.png" alt="Vocab Go Solution 3">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Multiple Choice Questions</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-04.png" alt="Vocab Go Solution 4">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Search Functionality</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-05.png" alt="Vocab Go Solution 5">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Progress Tracking</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-06.png" alt="Vocab Go Solution 6">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Achievement System</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-07.png" alt="Vocab Go Solution 7">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">Practice Sessions</h3>
-                    </div>
-                </div>
-                <div class="solution-image-card fade-in">
-                    <img src="../../assets/images/vocab-go-solution-08.png" alt="Vocab Go Solution 8">
-                    <div class="solution-image-overlay">
-                        <h3 class="solution-image-title">User Profile</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="outcomes-section" id="outcomes">
-        <div class="container">
-            <span class="section-number fade-in" style="color: white;">04/</span>
-            <h2 class="section-title fade-in">Outcome</h2>
-            <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in" style="color: rgba(255,255,255,0.9);">The results of implementing the new insurance app</p>
-            
-            <div class="outcomes-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
-                <div class="outcome-card fade-in">
-                    <div class="outcome-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3 class="outcome-title">Improved learning efficiency</h3>
-                    <p class="outcome-text">
-                        Users retained 30% more vocabulary through interactive flashcards and multiple-choice exercises.
-                    </p>
-                </div>
-                
-                <div class="outcome-card fade-in">
-                    <div class="outcome-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="outcome-title">Increased engagement</h3>
-                    <p class="outcome-text">
-                        User session time increased by 40%, keeping learners motivated with a structured and gamified experience.
-                    </p>
-                </div>
-                
-                <div class="outcome-card fade-in">
-                    <div class="outcome-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="outcome-title">Faster vocabulary acquisition</h3>
-                    <p class="outcome-text">
-                        Users learned new words 2x faster, leveraging personalized learning and spaced repetition techniques.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section" id="portfolio">
-        <div class="container cta-container">
-            <h2 class="cta-title fade-in">Want to See More?</h2>
-            <p class="cta-description fade-in">Enter the password to access the complete portfolio with detailed case studies.</p>
-            <form class="password-form fade-in">
-                <input type="password" placeholder="Enter password" class="password-input">
-                <button type="submit" class="password-button">Access Full Portfolio</button>
-            </form>
-        </div>
-    </section>
-
-    <section class="more-projects">
-        <div class="container">
-            <span class="section-number fade-in">08/</span>
-            <h2 class="section-title fade-in">More Case Studies</h2>
-            <span class="section-divider fade-in"></span>
-            <p class="section-content fade-in">Other projects in my portfolio</p>
-            
-            <div class="projects-grid">
-                <div class="project-card fade-in">
-                    <div class="project-card-content">
-                        <h3 class="project-card-title">Makro Pro E-commerce App</h3>
-                        <p class="project-card-description">Simplify e-commerce experience for all: Deciphering user needs triggering.</p>
-                        <a href="intro-makro-case-study.html" class="project-card-link">View Case Study →</a>
-                    </div>
-                </div>
-                
-                <div class="project-card fade-in">
-                    <div class="project-card-content">
-                        <h3 class="project-card-title">Vocab Go Learning</h3>
-                        <p class="project-card-description">Designing an MVP mobile experience to learn a new language through quick, bite-sized lessons.</p>
-                        <a href="intro-vocab-go-case-study.html" class="project-card-link">View Case Study →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container footer-container">
-            <div class="footer-text">
-                &copy; 2025 Ratta. All rights reserved.
-            </div>
-            <div class="social-links">
-                <a href="https://linkedin.com/in/rattakid" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-dribbble"></i></a>
-                <a href="#"><i class="fab fa-behance"></i></a>
-                <a href="#"><i class="fab fa-medium"></i></a>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Ratta Kidakarn. All rights reserved.</span>
+                <span class="footer-time">Vancouver <span class="tz" id="localTime">&mdash;</span></span>
             </div>
         </div>
     </footer>
 
-    <div class="modal" id="contactModal">
-        <div class="modal-content">
-            <div class="modal-close"></div>
-            <h3 class="modal-title">Case Study Coming Soon</h3>
-            <p class="modal-text">This case study is currently being prepared. If you'd like to learn more about this project, I'd be happy to discuss it in detail.</p>
-            <a href="mailto:Rattakids@gmail.com" class="modal-button">
-                <span>Contact Me</span>
-            </a>
-        </div>
-    </div>
+    <button class="back-top" id="backTop" aria-label="Back to top">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m-6 6 6-6 6 6"/></svg>
+    </button>
 
     <script>
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        // Observe all elements with fade-in class
-        document.querySelectorAll('.fade-in').forEach(element => {
-            observer.observe(element);
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
+        (function () {
+            'use strict';
+
+            const docEl = document.documentElement;
+            docEl.classList.remove('no-js');
+            docEl.classList.add('js');
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+            /* Hero reveal */
+            if (reduceMotion) {
+                docEl.classList.add('is-loaded');
             } else {
-                header.classList.remove('scrolled');
+                const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
+                Promise.race([fontsReady, new Promise(r => setTimeout(r, 600))])
+                    .then(() => setTimeout(() => docEl.classList.add('is-loaded'), 50));
             }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
+
+            /* Reveal on scroll */
+            const revealEls = document.querySelectorAll('[data-reveal]');
+            if ('IntersectionObserver' in window && !reduceMotion) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
                     });
-                }
-            });
-        });
-        
-        // Password form handling
-        document.querySelector('.password-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const password = document.querySelector('.password-input').value;
-            if (password) {
-                showContactModal();
+                }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+                revealEls.forEach(el => io.observe(el));
             } else {
-                alert('Please enter the password');
+                revealEls.forEach(el => el.classList.add('is-in'));
             }
-        });
-        
-        // Mobile menu toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            // Toggle hamburger icon between bars and times
-            const icon = hamburger.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
-                navLinks.classList.remove('active');
-                const icon = hamburger.querySelector('i');
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
+
+            /* Count-up stats */
+            const statEls = document.querySelectorAll('[data-count]');
+            const runCount = (el) => {
+                const target = parseFloat(el.dataset.count);
+                const decimals = parseInt(el.dataset.decimals || '0', 10);
+                if (reduceMotion || !('requestAnimationFrame' in window)) {
+                    el.textContent = target.toFixed(decimals);
+                    return;
+                }
+                const dur = 1400;
+                const t0 = performance.now();
+                const step = (t) => {
+                    const p = Math.min((t - t0) / dur, 1);
+                    const e = 1 - Math.pow(1 - p, 3);
+                    el.textContent = (target * e).toFixed(decimals);
+                    if (p < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+                setTimeout(() => { el.textContent = target.toFixed(decimals); }, dur + 300);
+            };
+            if ('IntersectionObserver' in window && !reduceMotion) {
+                const statIo = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            runCount(entry.target);
+                            statIo.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                statEls.forEach(el => statIo.observe(el));
+            } else {
+                statEls.forEach(el => { el.textContent = parseFloat(el.dataset.count).toFixed(parseInt(el.dataset.decimals || '0', 10)); });
             }
-        });
-        
-        // Close mobile menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = hamburger.querySelector('i');
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
-            });
-        });
 
-        function showContactModal() {
-            const modal = document.getElementById('contactModal');
-            modal.classList.add('active');
-            
-            // Close modal when clicking outside or on close button
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal || e.target.closest('.modal-close')) {
-                    modal.classList.remove('active');
-                }
-            });
-
-            // Add escape key listener
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                }
-            });
-        }
-
-        // Solution images animation
-        const solutionCards = document.querySelectorAll('.solution-image-card');
-        const solutionObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    // Add staggered delay based on index
-                    setTimeout(() => {
-                        entry.target.classList.add('animate');
-                    }, index * 150); // 150ms delay between each card
-                }
-            });
-        }, { threshold: 0.2 });
-
-        solutionCards.forEach(card => {
-            solutionObserver.observe(card);
-            
-            // Add floating animation to random cards
-            if (Math.random() > 0.5) {
-                card.classList.add('floating-animation');
-            }
-        });
-        
-        // Add hover effect for solution cards
-        solutionCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                // Add slight push effect to surrounding cards
-                const siblings = Array.from(card.parentElement.children);
-                siblings.forEach(sibling => {
-                    if (sibling !== card) {
-                        sibling.style.transform = 'scale(0.98)';
-                    }
+            /* Rail active state */
+            const railLinks = document.querySelectorAll('[data-rail]');
+            if ('IntersectionObserver' in window && railLinks.length) {
+                const railIo = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            railLinks.forEach(l => l.classList.toggle('is-active', l.dataset.rail === entry.target.id));
+                        }
+                    });
+                }, { rootMargin: '-25% 0px -60% 0px' });
+                ['summary', 'problem', 'solution', 'outcomes'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) railIo.observe(el);
                 });
+            }
+
+            /* Header, progress, back-to-top, hero parallax */
+            const header = document.getElementById('header');
+            const progress = document.querySelector('.progress');
+            const backTop = document.getElementById('backTop');
+            const heroShot = document.getElementById('heroShot');
+            let lastY = window.scrollY;
+
+            function onScroll() {
+                const y = window.scrollY;
+                header.classList.toggle('is-scrolled', y > 40);
+                if (y > 500 && y > lastY) {
+                    header.classList.add('is-hidden');
+                } else {
+                    header.classList.remove('is-hidden');
+                }
+                backTop.classList.toggle('is-show', y > 700);
+                const max = document.documentElement.scrollHeight - window.innerHeight;
+                progress.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
+                if (heroShot && finePointer && !reduceMotion && y < window.innerHeight * 1.5) {
+                    heroShot.style.transform = 'translateY(' + Math.min(y * 0.05, 60) + 'px) scale(1.02)';
+                }
+                lastY = y;
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            backTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
             });
 
-            card.addEventListener('mouseleave', () => {
-                // Reset surrounding cards
-                const siblings = Array.from(card.parentElement.children);
-                siblings.forEach(sibling => {
-                    if (sibling !== card) {
-                        sibling.style.transform = '';
-                    }
-                });
+            /* Mobile menu */
+            const navToggle = document.querySelector('.nav-toggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            function setMenu(open) {
+                mobileMenu.classList.toggle('is-open', open);
+                navToggle.setAttribute('aria-expanded', String(open));
+                navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+            navToggle.addEventListener('click', () => {
+                setMenu(!mobileMenu.classList.contains('is-open'));
             });
-        });
+            mobileMenu.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => setMenu(false));
+            });
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) setMenu(false);
+            });
+
+            /* Custom cursor */
+            const cursor = document.querySelector('.cursor');
+            if (cursor && finePointer && !reduceMotion) {
+                let cx = -100, cy = -100, tx = -100, ty = -100;
+                let cursorVisible = false;
+                document.addEventListener('mousemove', (e) => {
+                    tx = e.clientX; ty = e.clientY;
+                    if (!cursorVisible) { cursor.classList.add('is-active'); cursorVisible = true; }
+                });
+                document.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('is-active'); cursorVisible = false;
+                });
+                (function loop() {
+                    cx += (tx - cx) * 0.18;
+                    cy += (ty - cy) * 0.18;
+                    cursor.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
+                    requestAnimationFrame(loop);
+                })();
+                document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursor.classList.add(el.dataset.cursor === 'view' ? 'is-view' : 'is-hover');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        cursor.classList.remove('is-view', 'is-hover');
+                    });
+                });
+            }
+
+            /* Magnetic buttons */
+            if (finePointer && !reduceMotion) {
+                document.querySelectorAll('[data-magnetic]').forEach(el => {
+                    const strength = 0.28;
+                    el.addEventListener('mousemove', (e) => {
+                        const r = el.getBoundingClientRect();
+                        const x = e.clientX - r.left - r.width / 2;
+                        const y = e.clientY - r.top - r.height / 2;
+                        el.style.transform = 'translate(' + x * strength + 'px,' + y * strength + 'px)';
+                    });
+                    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+                });
+            }
+
+            /* Local time */
+            const timeEl = document.getElementById('localTime');
+            if (timeEl) {
+                const fmt = new Intl.DateTimeFormat('en-CA', {
+                    hour: 'numeric', minute: '2-digit', timeZone: 'America/Vancouver', hour12: true
+                });
+                const tick = () => { timeEl.textContent = fmt.format(new Date()); };
+                tick();
+                setInterval(tick, 30000);
+            }
+        })();
     </script>
 </body>
 </html>

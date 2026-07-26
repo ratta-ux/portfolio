@@ -1,910 +1,1283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Ratta | Product Designer</title>
-    <!-- Rename this file to about.html when saving -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <title>About Ratta — UX & Product Designer</title>
+    <meta name="description" content="From flight attendant to product designer — the story of Ratta Kidakarn, a UX & Product Designer based in Vancouver, Canada.">
+    <meta property="og:title" content="About Ratta — UX & Product Designer">
+    <meta property="og:description" content="From the skies to screens — my journey into design.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rattakid.com/pages/about-page.html">
+    <meta name="theme-color" content="#0e0e0c">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ============================================================
+           DESIGN TOKENS (shared with homepage)
+        ============================================================ */
         :root {
-            --primary: #0e1621;
-            --secondary: #0ea5e9;
-            --accent: #38bdf8;
-            --light: #f0f9ff;
-            --dark: #0f172a;
-            --text: #e2e8f0;
-            --text-dark: #334155;
-            --bg-light: #f1f5f9;
-            --bg-white: #ffffff;
-            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --bg: #0e0e0c;
+            --bg-soft: #131311;
+            --card: #161613;
+            --ink: #ece7de;
+            --muted: #a09b90;
+            --faint: #6d6960;
+            --line: rgba(236, 231, 222, 0.12);
+            --line-soft: rgba(236, 231, 222, 0.07);
+            --accent: #d7f95c;
+            --accent-soft: rgba(215, 249, 92, 0.14);
+            --accent-ink: #141507;
+            --serif: "Fraunces", Georgia, serif;
+            --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --pad: clamp(1.25rem, 4vw, 3rem);
+            --radius: 20px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 70px;
+            scroll-padding-top: 6rem;
         }
 
         body {
-            background-color: var(--primary);
-            color: var(--text);
-            line-height: 1.6;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 1rem;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            width: 100%;
-            max-width: 100%;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-        }
+        ::selection { background: var(--accent); color: var(--accent-ink); }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+        button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding-left: var(--pad);
+            padding-right: var(--pad);
         }
 
-        /* Header Styles */
-        header {
-            background-color: var(--primary);
-            color: var(--text);
+        .skip-link {
             position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            top: -100px;
+            left: 1rem;
+            z-index: 3000;
+            background: var(--accent);
+            color: var(--accent-ink);
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus { top: 1rem; }
+
+        .grain {
+            position: fixed;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: 2000;
+            pointer-events: none;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        .header-container {
+        /* ============================================================
+           CUSTOM CURSOR + PROGRESS
+        ============================================================ */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 3500;
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--accent);
+            pointer-events: none;
+            opacity: 0;
+            display: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), opacity 0.3s ease;
+            will-change: transform;
+        }
+        .cursor.is-active { opacity: 1; }
+        .cursor.is-hover { width: 26px; height: 26px; }
+        @media (pointer: fine) { .cursor { display: block; } }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            z-index: 1600;
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            background: var(--accent);
+        }
+
+        /* ============================================================
+           HEADER (shared pattern)
+        ============================================================ */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1800;
+            transition: transform 0.45s var(--ease-out), background-color 0.35s ease, border-color 0.35s ease;
+            border-bottom: 1px solid transparent;
+        }
+        .site-header.is-scrolled {
+            background: rgba(14, 14, 12, 0.72);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-bottom-color: var(--line-soft);
+        }
+        .site-header.is-hidden { transform: translateY(-100%); }
+
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1rem var(--pad);
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .brand {
+            font-family: var(--serif);
+            font-size: 1.35rem;
+            font-weight: 500;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.3rem;
+        }
+        .brand sup {
+            font-family: var(--sans);
+            font-size: 0.55rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+        .nav-menu a:not(.nav-cta) {
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            position: relative;
+            padding: 0.3rem 0;
+            transition: color 0.25s ease;
+        }
+        .nav-menu a:not(.nav-cta)::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: 100% 50%;
+            transition: transform 0.35s var(--ease-out);
+        }
+        .nav-menu a:not(.nav-cta):hover,
+        .nav-menu a[aria-current="page"] { color: var(--ink); }
+        .nav-menu a:not(.nav-cta):hover::after,
+        .nav-menu a[aria-current="page"]::after {
+            transform: scaleX(1);
+            transform-origin: 0 50%;
+        }
+        .nav-cta {
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--accent-ink);
+            background: var(--accent);
+            padding: 0.55rem 1.25rem;
+            border-radius: 999px;
+            transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
+        }
+        .nav-cta:hover { box-shadow: 0 6px 24px rgba(215, 249, 92, 0.25); }
+
+        .nav-toggle {
+            display: none;
+            z-index: 1701;
+            width: 44px;
+            height: 44px;
+            position: relative;
+        }
+        .nav-toggle span {
+            position: absolute;
+            left: 10px;
+            width: 24px;
+            height: 2px;
+            background: var(--ink);
+            transition: transform 0.35s var(--ease-out), opacity 0.2s ease;
+        }
+        .nav-toggle span:nth-child(1) { top: 17px; }
+        .nav-toggle span:nth-child(2) { top: 25px; }
+        .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .nav-toggle[aria-expanded="true"] span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            z-index: 1700;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 var(--pad);
+            clip-path: inset(0 0 100% 0);
+            visibility: hidden;
+            transition: clip-path 0.6s var(--ease-expo), visibility 0s 0.6s;
+        }
+        .mobile-menu.is-open {
+            clip-path: inset(0 0 0% 0);
+            visibility: visible;
+            transition: clip-path 0.6s var(--ease-expo), visibility 0s;
+        }
+        .mobile-menu ul { list-style: none; }
+        .mobile-menu li { overflow: hidden; }
+        .mobile-menu nav a {
+            display: inline-block;
+            font-family: var(--serif);
+            font-size: clamp(2.2rem, 9vw, 3.4rem);
+            font-weight: 400;
+            text-decoration: none;
+            padding: 0.35rem 0;
+            transform: translateY(110%);
+            transition: transform 0.6s var(--ease-expo), color 0.25s ease;
+        }
+        .mobile-menu.is-open nav a { transform: translateY(0); }
+        .mobile-menu li:nth-child(1) a { transition-delay: 0.10s; }
+        .mobile-menu li:nth-child(2) a { transition-delay: 0.16s; }
+        .mobile-menu li:nth-child(3) a { transition-delay: 0.22s; }
+        .mobile-menu li:nth-child(4) a { transition-delay: 0.28s; }
+        .mobile-menu li:nth-child(5) a { transition-delay: 0.34s; }
+        .mobile-menu nav a:hover { color: var(--accent); }
+        .mobile-menu-foot {
+            position: absolute;
+            bottom: 2.5rem;
+            left: var(--pad);
+            right: var(--pad);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--light);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--secondary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--secondary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding-top: 5rem;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            background-color: rgba(14, 165, 233, 0.2);
-            color: var(--secondary);
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 2rem;
-            padding: 3rem 0;
-        }
-
-        .hero-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .hero-text h1 {
-            font-size: 3rem;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-text h1 span {
-            color: var(--secondary);
-        }
-
-        .hero-text p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 500px;
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 300px;
-            text-align: right;
-            position: relative;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            transition: transform 0.5s ease;
-        }
-
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 2px solid var(--secondary);
-            border-radius: 12px;
-            top: 20px;
-            left: 20px;
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        .hero-image:hover img {
-            transform: translateY(-5px);
-        }
-
-        /* Story Sections */
-        .story-section {
-            padding: 5rem 0;
-            position: relative;
-        }
-
-        .story-section:nth-child(odd) {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-
-        .story-container {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 3rem;
-        }
-
-        .story-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .story-image {
-            flex: 1;
-            min-width: 300px;
-            text-align: center;
-            position: relative;
-        }
-
-        .story-image img {
-            max-width: 100%;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            transition: transform 0.5s ease;
-        }
-
-        .story-image:hover img {
-            transform: translateY(-5px);
-        }
-
-        .story-section:nth-child(even) .story-container {
-            flex-direction: row-reverse;
-        }
-
-        /* Path Elements */
-        .path-element {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 2rem;
-            border-left: 2px dashed rgba(14, 165, 233, 0.3);
-        }
-
-        .path-element::before {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--secondary);
-        }
-
-        .path-element h3 {
-            margin-bottom: 1rem;
-            color: var(--light);
-            font-size: 1.5rem;
-        }
-
-        .path-element p {
-            color: var(--text);
-            opacity: 0.9;
-        }
-
-        /* Skills Section */
-        .skills {
-            padding: 8rem 0;
-            background-color: rgba(255, 255, 255, 0.02);
-            position: relative;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 4rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 0;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            height: 4px;
-            width: 60px;
-            background: var(--secondary);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-
-        .section-title p {
-            max-width: 700px;
-            margin: 2rem auto 0;
-            color: var(--text);
-            opacity: 0.9;
-            line-height: 1.8;
-        }
-
-        .skills-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: rgba(14, 165, 233, 0.2);
-            color: var(--secondary);
-            border-radius: 50px;
+            color: var(--muted);
             font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 0.5rem;
         }
+        .mobile-menu-foot a { color: var(--muted); font-size: 0.85rem; }
 
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px);
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .skill-icon {
-            margin-bottom: 1.5rem;
-            color: var(--secondary);
-            font-size: 2rem;
-        }
-
-        .skill-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .skill-description {
-            color: var(--text);
-            opacity: 0.9;
-            line-height: 1.7;
-        }
-
-        /* CTA Section */
-        .cta {
-            position: relative;
-            padding: 6rem 0;
-            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            opacity: 0.1;
-        }
-
-        .cta-container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background-color: white;
-            color: var(--secondary);
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--light);
-        }
-
-        .footer-logo span {
-            color: var(--secondary);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .footer-links li {
-            margin: 0 1rem;
-        }
-
-        .footer-links a {
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--secondary);
-            transform: translateY(-5px);
-        }
-
-        .social-link i {
-            font-size: 1.2rem;
-            color: var(--light);
-        }
-
-        .footer-text {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        /* Animations */
-        .fade-up {
+        /* ============================================================
+           REVEAL SYSTEM
+        ============================================================ */
+        html.js [data-reveal] {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(28px);
+            transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+            transition-delay: var(--rd, 0s);
         }
-
-        .fade-up.active {
+        html.js [data-reveal].is-in {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .fade-in {
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-
-        .fade-in.active {
-            opacity: 1;
-        }
-
-        .fade-right {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-right.active {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .fade-left {
-            opacity: 0;
-            transform: translateX(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-left.active {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Back to top */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--secondary);
-            color: white;
+        /* ============================================================
+           HERO
+        ============================================================ */
+        .hero {
+            min-height: 88svh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            position: relative;
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            overflow: hidden;
+        }
+        .hero-glow {
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            max-width: 800px;
+            max-height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(215, 249, 92, 0.07) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+            gap: clamp(2.5rem, 6vw, 6rem);
+            align-items: center;
+        }
+        .hero-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1.6rem;
+        }
+        .hero-label::before {
+            content: "";
+            width: 34px;
+            height: 1px;
+            background: var(--accent);
+        }
+        .hero h1 {
+            font-family: var(--serif);
+            font-weight: 380;
+            font-size: clamp(2.6rem, 5.8vw, 5rem);
+            line-height: 1.06;
+            letter-spacing: -0.015em;
+            margin-bottom: 1.8rem;
+        }
+        .hero h1 em { font-style: italic; color: var(--accent); }
+        .hero h1 .w {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
+            padding-bottom: 0.08em;
+            margin-bottom: -0.08em;
+        }
+        html.js .hero h1 .wi {
+            display: inline-block;
+            transform: translateY(115%);
+            transition: transform 1s var(--ease-expo);
+            transition-delay: var(--wd, 0s);
+        }
+        html.js.is-loaded .hero h1 .wi { transform: translateY(0); }
+
+        .hero-lede {
+            font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+            color: var(--muted);
+            max-width: 50ch;
+            margin-bottom: 2.2rem;
+        }
+        .hero-lede strong { color: var(--ink); font-weight: 500; }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .hero-photo { position: relative; }
+        .hero-photo-frame {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--line);
+            transform: rotate(2.5deg);
+            transition: transform 0.6s var(--ease-out);
+            background: var(--card);
+        }
+        .hero-photo:hover .hero-photo-frame { transform: rotate(0deg) scale(1.02); }
+        .hero-photo img {
+            width: 100%;
+            aspect-ratio: 4 / 4.6;
+            object-fit: cover;
+            object-position: top;
+            filter: saturate(0.95);
+        }
+        .hero-photo-tag {
+            position: absolute;
+            bottom: -14px;
+            left: -14px;
+            background: var(--bg-soft);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 0.5rem 1.1rem;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--muted);
+            transform: rotate(-3deg);
+        }
+        .hero-photo-tag strong { color: var(--ink); font-weight: 600; }
+
+        /* ============================================================
+           BUTTONS (shared)
+        ============================================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            padding: 0.95rem 1.9rem;
+            border-radius: 999px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, color 0.35s ease, background-color 0.35s ease, border-color 0.35s ease;
+        }
+        .btn svg { transition: transform 0.35s var(--ease-out); flex: none; }
+        .btn:hover svg { transform: translateX(4px); }
+        .btn-solid { background: var(--accent); color: var(--accent-ink); }
+        .btn-solid:hover { box-shadow: 0 10px 34px rgba(215, 249, 92, 0.28); }
+        .btn-ghost {
+            border: 1px solid var(--line);
+            color: var(--ink);
+            background: transparent;
+        }
+        .btn-ghost:hover { border-color: var(--ink); background: rgba(236, 231, 222, 0.04); }
+        .btn-down svg { transform: rotate(90deg); }
+        .btn-down:hover svg { transform: rotate(90deg) translateX(4px); }
+        .btn-dark { background: var(--accent-ink); color: var(--accent); }
+        .btn-dark:hover { box-shadow: 0 12px 34px rgba(20, 21, 7, 0.35); }
+
+        /* ============================================================
+           SECTION SCAFFOLD (shared)
+        ============================================================ */
+        .section { padding: clamp(5.5rem, 11vw, 9rem) 0; }
+        .section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: clamp(2.8rem, 6vw, 4.5rem);
+        }
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1.1rem;
+        }
+        .section-label::before {
+            content: "";
+            width: 34px;
+            height: 1px;
+            background: var(--accent);
+        }
+        .section-label .idx { color: var(--accent); }
+        .section-title {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+            line-height: 1.08;
+            letter-spacing: -0.01em;
+            max-width: 20ch;
+        }
+        .section-title em { font-style: italic; color: var(--accent); }
+        .section-side {
+            color: var(--muted);
+            font-size: 0.95rem;
+            max-width: 34ch;
+            padding-bottom: 0.4rem;
+        }
+
+        /* ============================================================
+           JOURNEY TIMELINE
+        ============================================================ */
+        .journey-list {
+            position: relative;
+            padding-left: clamp(2.2rem, 5vw, 3.5rem);
+        }
+        .journey-track {
+            position: absolute;
+            top: 8px;
+            bottom: 8px;
+            left: 7px;
+            width: 2px;
+            background: var(--line-soft);
+            border-radius: 2px;
+        }
+        .journey-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(var(--accent), var(--accent));
+            border-radius: 2px;
+        }
+        .chapter {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: clamp(2rem, 5vw, 4.5rem);
+            align-items: center;
+            padding: clamp(2.2rem, 5vw, 4rem) 0;
+        }
+        .chapter:not(:last-child) { border-bottom: 1px dashed var(--line-soft); }
+        .chapter::before {
+            content: "";
+            position: absolute;
+            left: calc(-1 * clamp(2.2rem, 5vw, 3.5rem) + 1px);
+            top: clamp(3rem, 6vw, 4.8rem);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--faint);
+            transition: border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .chapter.is-past::before {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 5px var(--accent-soft);
+        }
+        .chapter:nth-of-type(even) .chapter-media { order: -1; }
+        .chapter-num {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            color: var(--faint);
+            margin-bottom: 0.9rem;
+            transition: color 0.4s ease;
+        }
+        .chapter.is-past .chapter-num { color: var(--accent); }
+        .chapter h3 {
+            font-family: var(--serif);
+            font-weight: 420;
+            font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+            line-height: 1.12;
+            margin-bottom: 1.1rem;
+        }
+        .chapter p { color: var(--muted); max-width: 52ch; }
+        .chapter p strong { color: var(--ink); font-weight: 500; }
+        .chapter-media {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--line-soft);
+            background: var(--card);
+        }
+        .chapter-media img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            filter: saturate(0.92);
+            transition: transform 0.9s var(--ease-out), filter 0.6s ease;
+        }
+        .chapter:hover .chapter-media img {
+            transform: scale(1.04);
+            filter: saturate(1.05);
+        }
+
+        /* ============================================================
+           STATEMENT
+        ============================================================ */
+        .statement {
+            background: var(--bg-soft);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .statement-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vw;
+            max-width: 900px;
+            max-height: 900px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(215, 249, 92, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .statement-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+        .statement blockquote {
+            font-family: var(--serif);
+            font-weight: 380;
+            font-style: italic;
+            font-size: clamp(1.9rem, 4.6vw, 3.8rem);
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            max-width: 24ch;
+            margin: 0 auto 1.8rem;
+            position: relative;
+        }
+        .statement blockquote em {
+            font-style: italic;
+            color: var(--accent);
+        }
+        .statement figcaption { color: var(--faint); font-size: 0.9rem; }
+
+        /* ============================================================
+           SKILLS
+        ============================================================ */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(1.2rem, 2.5vw, 1.8rem);
+        }
+        .skill-card {
+            background: var(--card);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius);
+            padding: clamp(1.6rem, 3vw, 2.4rem);
+            transition: border-color 0.4s ease, transform 0.5s var(--ease-out), box-shadow 0.5s ease;
+        }
+        .skill-card:hover {
+            border-color: var(--line);
+            transform: translateY(-6px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        }
+        .skill-num {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 1.4rem;
+        }
+        .skill-card h3 {
+            font-family: var(--serif);
+            font-weight: 450;
+            font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+            margin-bottom: 0.8rem;
+        }
+        .skill-card p { color: var(--muted); font-size: 0.96rem; margin-bottom: 1.4rem; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tag {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            border: 1px solid var(--line);
+            padding: 0.28rem 0.75rem;
+            border-radius: 999px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .skill-card:hover .tag { color: var(--ink); border-color: var(--muted); }
+
+        /* ============================================================
+           CTA (shared)
+        ============================================================ */
+        .contact { padding: clamp(4rem, 8vw, 7rem) 0; }
+        .contact-card {
+            background: var(--accent);
+            color: var(--accent-ink);
+            border-radius: clamp(20px, 3vw, 36px);
+            padding: clamp(3rem, 7vw, 6rem) clamp(1.6rem, 5vw, 5rem);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-card::before {
+            content: "";
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 100%;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.35) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .contact-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            opacity: 0.65;
+            margin-bottom: 1.6rem;
+        }
+        .contact-title {
+            font-family: var(--serif);
+            font-weight: 420;
+            font-size: clamp(2.3rem, 6vw, 4.6rem);
+            line-height: 1.06;
+            letter-spacing: -0.015em;
+            max-width: 18ch;
+            margin: 0 auto 1.6rem;
+        }
+        .contact-title em { font-style: italic; }
+        .contact-sub {
+            max-width: 52ch;
+            margin: 0 auto 2.6rem;
+            font-size: 1.02rem;
+            opacity: 0.8;
+        }
+        .contact-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .contact-email-link {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--accent-ink);
+            text-decoration: none;
+            border-bottom: 1.5px solid rgba(20, 21, 7, 0.4);
+            padding-bottom: 2px;
+            transition: border-color 0.3s ease;
+        }
+        .contact-email-link:hover { border-color: var(--accent-ink); }
+
+        /* ============================================================
+           FOOTER (shared)
+        ============================================================ */
+        .site-footer {
+            border-top: 1px solid var(--line-soft);
+            padding: 3.5rem 0 2.2rem;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        .footer-brand .brand { font-size: 1.6rem; }
+        .footer-brand p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            max-width: 30ch;
+            margin-top: 0.8rem;
+        }
+        .footer-col h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--faint);
+            margin-bottom: 1rem;
+        }
+        .footer-col ul { list-style: none; display: grid; gap: 0.55rem; }
+        .footer-col a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            transition: color 0.25s ease;
+        }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom {
+            border-top: 1px solid var(--line-soft);
+            padding-top: 1.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: var(--faint);
+            font-size: 0.82rem;
+        }
+        .footer-time { display: inline-flex; align-items: center; gap: 0.5rem; }
+        .footer-time .tz { color: var(--muted); }
+
+        .back-top {
+            position: fixed;
+            bottom: 1.8rem;
+            right: 1.8rem;
+            z-index: 1400;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--line);
+            display: grid;
+            place-items: center;
             opacity: 0;
             visibility: hidden;
-            z-index: 99;
+            transform: translateY(12px);
+            transition: opacity 0.35s ease, transform 0.35s var(--ease-out), visibility 0.35s, background-color 0.3s ease, border-color 0.3s ease;
         }
+        .back-top.is-show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-top:hover { background: var(--accent); border-color: var(--accent); }
+        .back-top:hover svg { stroke: var(--accent-ink); }
 
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+        @media (max-width: 960px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-photo { max-width: 440px; }
         }
 
         @media (max-width: 768px) {
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-text {
-                order: 2;
-            }
-
-            .hero-image {
-                order: 1;
-                margin-bottom: 2rem;
-            }
-
-            .hero-text p {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .story-container {
-                flex-direction: column !important;
-                text-align: center;
-            }
-
-            .story-text {
-                order: 2;
-            }
-
-            .story-image {
-                order: 1;
-                margin-bottom: 2rem;
-            }
-
-            .path-element {
-                padding-left: 0;
-                border-left: none;
-                text-align: center;
-            }
-
-            .path-element::before {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .nav-links {
-                display: none;
-            }
+            .nav-menu { display: none; }
+            .nav-toggle { display: block; }
+            .section-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .chapter { grid-template-columns: 1fr; gap: 1.4rem; }
+            .chapter-media { order: -1; }
+            .skills-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
-            .hero-text h1 {
-                font-size: 1.8rem;
-            }
+            .hero { padding-top: 7rem; }
+            .btn { width: 100%; justify-content: center; }
+            .hero-actions, .contact-actions { flex-direction: column; }
+        }
 
-            .section-title h2 {
-                font-size: 2rem;
+        /* ============================================================
+           REDUCED MOTION
+        ============================================================ */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
-
-            .path-element h3 {
-                font-size: 1.3rem;
-            }
+            html.js [data-reveal] { opacity: 1; transform: none; }
+            html.js .hero h1 .wi { transform: none; }
+            .cursor { display: none !important; }
         }
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#journey">Skip to content</a>
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"></div>
+
     <!-- Header -->
-    <header>
-        <div class="header-container">
-            <a href="../index.html" class="logo">Ratta</a>
-            <ul class="nav-links">
-                <li><a href="../index.html#projects">Work</a></li>
-                <li><a href="../index.html#skills">Services</a></li>
-                <li><a href="#">About</a></li>
+    <header class="site-header" id="header">
+        <nav class="nav-bar" aria-label="Primary">
+            <a href="../index.html" class="brand">Ratta<sup>®</sup></a>
+            <ul class="nav-menu">
+                <li><a href="../index.html#work">Work</a></li>
+                <li><a href="../index.html#services">Services</a></li>
+                <li><a href="about-page.html" aria-current="page">About</a></li>
                 <li><a href="blog-page.html">Blog</a></li>
+                <li><a href="#contact" class="nav-cta" data-magnetic>Let's talk</a></li>
             </ul>
-        </div>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+                <span></span><span></span>
+            </button>
+        </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text fade-right">
-                    <span class="hero-badge">ABOUT</span>
-                    <h1>Hey I'm Ratta Kidakarn, a <span>Product Designer</span> who loves building engaging experiences</h1>
-                    <p>During my time as a flight attendant, I became interested in UX design, which was gaining popularity. This sparked my desire to learn something completely new while using my current skills.</p>
-                </div>
-                <div class="hero-image fade-left">
-                    <img src="../assets/images/Ratta_as_flight_attendant.png" alt="Ratta as flight attendant">
-                </div>
-            </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <nav aria-label="Mobile">
+            <ul>
+                <li><a href="../index.html#work">Work</a></li>
+                <li><a href="../index.html#services">Services</a></li>
+                <li><a href="about-page.html">About</a></li>
+                <li><a href="blog-page.html">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-foot">
+            <span>Vancouver, Canada</span>
+            <a href="mailto:rattakids@gmail.com">rattakids@gmail.com</a>
         </div>
-    </section>
+    </div>
 
-    <!-- Story Section 1 -->
-    <section class="story-section">
-        <div class="container">
-            <div class="story-container">
-                <div class="story-text fade-right">
-                    <div class="path-element">
-                        <h3>The Beginning</h3>
-                        <p>It was tough at first, balancing my job and learning new skills like using design tools and understanding design principles during my days off and after flights.</p>
+    <main id="main">
+        <!-- Hero -->
+        <section class="hero" aria-label="About Ratta">
+            <div class="hero-glow" aria-hidden="true"></div>
+            <div class="container">
+                <div class="hero-grid">
+                    <div>
+                        <p class="hero-label" data-reveal>About me</p>
+                        <h1>
+                            <span class="w" style="--wd:.05s"><span class="wi">From</span></span>
+                            <span class="w" style="--wd:.11s"><span class="wi">the</span></span>
+                            <span class="w" style="--wd:.17s"><span class="wi"><em>skies</em></span></span>
+                            <span class="w" style="--wd:.23s"><span class="wi">to</span></span>
+                            <span class="w" style="--wd:.29s"><span class="wi"><em>screens.</em></span></span>
+                        </h1>
+                        <p class="hero-lede" data-reveal style="--rd:.15s">Hey, I'm Ratta Kidakarn — a product designer who loves building engaging experiences. My curiosity for UX design sparked <strong>while I was working as a flight attendant</strong>, and it grew into a career of turning empathy into products people love.</p>
+                        <div class="hero-actions" data-reveal style="--rd:.25s">
+                            <a href="#journey" class="btn btn-solid btn-down" data-magnetic>
+                                Read my story
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                            </a>
+                            <a href="../assets/pdfs/ratta-ux-design-resume.pdf" target="_blank" rel="noopener" class="btn btn-ghost" data-magnetic>
+                                Download résumé
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M5 20h14"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-photo" data-reveal style="--rd:.3s">
+                        <div class="hero-photo-frame">
+                            <img src="../assets/images/ratta-flight-home.jpg" alt="Ratta working as a flight attendant beside an aircraft" fetchpriority="high">
+                        </div>
+                        <span class="hero-photo-tag"><strong>Chapter one</strong> — five-star airline</span>
                     </div>
                 </div>
-                <div class="story-image fade-left">
-                    <img src="../assets/images/Ratta_learning_design.jpg" alt="Ratta learning design">
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Story Section 2 -->
-    <section class="story-section">
-        <div class="container">
-            <div class="story-container">
-                <div class="story-text fade-left">
-                    <div class="path-element">
-                        <h3>The Learning Journey</h3>
-                        <p>I started learning on my own by watching YouTube videos about design. Eventually, I realized I needed more structured learning, so I signed up for a design boot camp in the USA. This meant I had to adjust to a tough schedule, waking up very early (like 3 a.m.) because of the time difference, to attend mentor calls and sessions. But, I was very passionate about it.</p>
+        <!-- Journey -->
+        <section id="journey" class="section" aria-labelledby="journey-title">
+            <div class="container">
+                <div class="section-head">
+                    <div data-reveal>
+                        <p class="section-label"><span class="idx">01</span> My journey</p>
+                        <h2 class="section-title" id="journey-title">Five chapters, <em>one designer</em></h2>
                     </div>
+                    <p class="section-side" data-reveal style="--rd:.15s">The unusual path that taught me empathy, resilience and craft — scroll through the story.</p>
                 </div>
-                <div class="story-image fade-right">
-                    <img src="../assets/images/Ratta_at_design_bootcamp.jpg" alt="Ratta at design bootcamp">
-                </div>
-            </div>
-        </div>
-    </section>
+                <div class="journey-list" id="journeyList">
+                    <div class="journey-track" aria-hidden="true"><div class="journey-fill" id="journeyFill"></div></div>
 
-    <!-- Story Section 3 -->
-    <section class="story-section">
-        <div class="container">
-            <div class="story-container">
-                <div class="story-text fade-right">
-                    <div class="path-element">
-                        <h3>First Design Projects</h3>
-                        <p>I began with basic tasks like drawing wireframes on paper, learning how to use Figma, and figuring out how to apply for jobs with no previous experience. I even did something creative by conducting quick user interviews at Starbucks, offering people a free drink for their time. This hands-on approach helped me create my first design project from start to finish, and I'm still proud of it today.</p>
-                    </div>
-                </div>
-                <div class="story-image fade-left">
-                    <img src="../assets/images/Ratta_conducting_user_research.png" alt="Ratta conducting user research">
-                </div>
-            </div>
-        </div>
-    </section>
+                    <article class="chapter" data-reveal>
+                        <div>
+                            <p class="chapter-num">Chapter 01</p>
+                            <h3>The beginning</h3>
+                            <p>While flying with a five-star airline, I became fascinated by UX design. It was tough at first — <strong>balancing my job and learning design tools and principles</strong> during days off and after long-haul flights — but the spark wouldn't fade.</p>
+                        </div>
+                        <div class="chapter-media">
+                            <img src="../assets/images/Ratta_learning_design.jpg" alt="Ratta learning design" loading="lazy">
+                        </div>
+                    </article>
 
-    <!-- Story Section 4 -->
-    <section class="story-section">
-        <div class="container">
-            <div class="story-container">
-                <div class="story-text fade-left">
-                    <div class="path-element">
-                        <h3>Growth as a Designer</h3>
-                        <p>After years in the industry, my experiences shaped me into a better designer, one who bridges the gap between digital and physical spaces in both consumer and enterprise products. I now bring human-centered design to the forefront, advocate for user needs, and employ strategic design in complex problem spaces to deliver compelling user experiences.</p>
-                    </div>
-                </div>
-                <div class="story-image fade-right">
-                    <img src="../assets/images/Ratta-on-conference-stage.jpeg" alt="Ratta facilitating design workshop">
-                </div>
-            </div>
-        </div>
-    </section>
+                    <article class="chapter" data-reveal>
+                        <div>
+                            <p class="chapter-num">Chapter 02</p>
+                            <h3>The learning journey</h3>
+                            <p>I started with YouTube tutorials, then enrolled in a design boot camp in the USA. The time difference meant <strong>waking up at 3 a.m. for mentor calls</strong> — a schedule only passion could sustain.</p>
+                        </div>
+                        <div class="chapter-media">
+                            <img src="../assets/images/Ratta_at_design_bootcamp.jpg" alt="Ratta at design bootcamp" loading="lazy">
+                        </div>
+                    </article>
 
-    <!-- Story Section 5 -->
-    <section class="story-section">
-        <div class="container">
-            <div class="story-container">
-                <div class="story-text fade-right">
-                    <div class="path-element">
-                        <h3>My Philosophy</h3>
-                        <p>Through all the ups and downs, I learned an important lesson: even if the world says "no," never say "no" to yourself. Keep going, keep learning, and always believe in your own journey.</p>
-                    </div>
-                </div>
-                <div class="story-image fade-left">
-                    <img src="../assets/images/Ratta_speaking_at_event.png" alt="Ratta speaking at event">
-                </div>
-            </div>
-        </div>
-    </section>
+                    <article class="chapter" data-reveal>
+                        <div>
+                            <p class="chapter-num">Chapter 03</p>
+                            <h3>First design projects</h3>
+                            <p>From paper wireframes to Figma, I learned by doing — even <strong>conducting quick user interviews at Starbucks</strong>, offering people a free drink for their time. That scrappy, hands-on approach produced my first end-to-end design project, and I'm still proud of it today.</p>
+                        </div>
+                        <div class="chapter-media">
+                            <img src="../assets/images/ratta-research-about.jpg" alt="Ratta conducting user research" loading="lazy">
+                        </div>
+                    </article>
 
-    <!-- Skills Section -->
-    <section class="skills">
-        <div class="container">
-            <div class="section-title fade-up">
-                <span class="skills-badge">SERVICES</span>
-                <h2>Discover my unique skillset</h2>
-                <p>To create seamless user experiences. From initial research to ongoing support, my comprehensive skill set ensures that every aspect of UX design is covered with precision and creativity. Here's how I can bring value to your project:</p>
-            </div>
-            
-            <div class="skills-grid">
-                <!-- Skill 1 -->
-                <div class="skill-card fade-up">
-                    <div class="skill-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3 class="skill-title">UX Research</h3>
-                    <p class="skill-description">Dive into user needs and behaviors using interviews, surveys, and testing, laying a user-centered foundation for each project.</p>
-                </div>
-                
-                <!-- Skill 2 -->
-                <div class="skill-card fade-up">
-                    <div class="skill-icon">
-                        <i class="fas fa-paint-brush"></i>
-                    </div>
-                    <h3 class="skill-title">Design</h3>
-                    <p class="skill-description">Translate research into intuitive, visually appealing interfaces, focusing on user satisfaction from wireframes to prototypes.</p>
-                </div>
-                
-                <!-- Skill 3 -->
-                <div class="skill-card fade-up">
-                    <div class="skill-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3 class="skill-title">Development</h3>
-                    <p class="skill-description">Collaborate with developers to ensure designs are not only visually striking but also technically sound and scalable.</p>
-                </div>
-                
-                <!-- Skill 4 -->
-                <div class="skill-card fade-up">
-                    <div class="skill-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3 class="skill-title">Optimization</h3>
-                    <p class="skill-description">Post-launch, I engage in refining and enhancing user experiences.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <article class="chapter" data-reveal>
+                        <div>
+                            <p class="chapter-num">Chapter 04</p>
+                            <h3>Growth as a designer</h3>
+                            <p>Years in the industry shaped me into a designer who <strong>bridges digital and physical spaces</strong> across consumer and enterprise products — bringing human-centred design to the forefront and applying strategic thinking to complex problem spaces.</p>
+                        </div>
+                        <div class="chapter-media">
+                            <img src="../assets/images/ratta-stage-about.jpg" alt="Ratta speaking on a conference stage" loading="lazy">
+                        </div>
+                    </article>
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <div class="cta-container fade-up">
-                <h2>Design solves business problems</h2>
-                <p>Book a call with me today for a quick 15 mins demo.</p>
-                <a href="mailto:rattakids@gmail.com" class="btn">Contact Now</a>
+                    <article class="chapter" data-reveal>
+                        <div>
+                            <p class="chapter-num">Chapter 05</p>
+                            <h3>Giving back</h3>
+                            <p>Today I mentor and speak at design events, <strong>teaching the next generation of designers</strong> — because the ups and downs of my own journey taught me lessons worth sharing.</p>
+                        </div>
+                        <div class="chapter-media">
+                            <img src="../assets/images/ratta-event-about.jpg" alt="Ratta speaking at a design event" loading="lazy">
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Statement -->
+        <section class="section statement" aria-label="Philosophy">
+            <div class="statement-glow" aria-hidden="true"></div>
+            <div class="container">
+                <figure data-reveal>
+                    <p class="statement-label">My philosophy</p>
+                    <blockquote>"Even if the world says no — <em>never say no to yourself.</em>"</blockquote>
+                    <figcaption>The lesson behind every chapter of my journey</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills" class="section" aria-labelledby="skills-title">
+            <div class="container">
+                <div class="section-head">
+                    <div data-reveal>
+                        <p class="section-label"><span class="idx">02</span> What I do</p>
+                        <h2 class="section-title" id="skills-title">A skillset built for <em>every stage</em></h2>
+                    </div>
+                    <p class="section-side" data-reveal style="--rd:.15s">From initial research to ongoing support — every aspect of UX design, covered with precision and creativity.</p>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card" data-reveal>
+                        <span class="skill-num">01</span>
+                        <h3>UX Research</h3>
+                        <p>Diving into user needs and behaviours using interviews, surveys and testing — laying a user-centred foundation for each project.</p>
+                        <div class="skill-tags">
+                            <span class="tag">Interviews</span>
+                            <span class="tag">Surveys</span>
+                            <span class="tag">Usability testing</span>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-reveal style="--rd:.1s">
+                        <span class="skill-num">02</span>
+                        <h3>Design</h3>
+                        <p>Translating research into intuitive, visually appealing interfaces — focusing on user satisfaction from wireframes to prototypes.</p>
+                        <div class="skill-tags">
+                            <span class="tag">Wireframes</span>
+                            <span class="tag">High-fidelity UI</span>
+                            <span class="tag">Prototyping</span>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-reveal>
+                        <span class="skill-num">03</span>
+                        <h3>Development collaboration</h3>
+                        <p>Working side-by-side with developers so designs are not only visually striking but also technically sound and scalable.</p>
+                        <div class="skill-tags">
+                            <span class="tag">Design systems</span>
+                            <span class="tag">Handoff</span>
+                            <span class="tag">QA reviews</span>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-reveal style="--rd:.1s">
+                        <span class="skill-num">04</span>
+                        <h3>Optimisation</h3>
+                        <p>Post-launch, I keep refining and enhancing user experiences with analytics, feedback loops and experimentation.</p>
+                        <div class="skill-tags">
+                            <span class="tag">A/B testing</span>
+                            <span class="tag">Analytics</span>
+                            <span class="tag">Iteration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA -->
+        <section id="contact" class="contact" aria-labelledby="contact-title">
+            <div class="container">
+                <div class="contact-card" data-reveal>
+                    <p class="contact-label">Get in touch</p>
+                    <h2 class="contact-title" id="contact-title">Design solves <em>business problems.</em></h2>
+                    <p class="contact-sub">Curious what that could look like for your product? Book a quick 15-minute call with me — I'd love to hear what you're building.</p>
+                    <div class="contact-actions">
+                        <a href="mailto:rattakids@gmail.com" class="btn btn-dark" data-magnetic>
+                            Book a 15-min call
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                        </a>
+                        <a href="mailto:rattakids@gmail.com" class="contact-email-link">rattakids@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer>
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-logo">Ratta</div>
-            <ul class="footer-links">
-                <li><a href="/index.html">Work</a></li>
-                <li><a href="/index.html#skills">Services</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="blog-page.html">Blog</a></li>
-                <li><a href="/index.html#contact">Contact</a></li>
-            </ul>
-            <div class="social-links">
-                <a href="https://linkedin.com/in/rattakid" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-behance"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="../index.html" class="brand">Ratta<sup>®</sup></a>
+                    <p>UX &amp; Product Designer crafting experiences that feel human.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Sitemap</h3>
+                    <ul>
+                        <li><a href="../index.html#work">Work</a></li>
+                        <li><a href="../index.html#services">Services</a></li>
+                        <li><a href="about-page.html">About</a></li>
+                        <li><a href="blog-page.html">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://linkedin.com/in/rattakid" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+                        <li><a href="mailto:rattakids@gmail.com">Email ↗</a></li>
+                        <li><a href="../assets/pdfs/ratta-ux-design-resume.pdf" target="_blank" rel="noopener">Résumé ↗</a></li>
+                    </ul>
+                </div>
             </div>
-            <p class="footer-text">© 2025 Ratta Kidakarn. All rights reserved.</p>
+            <div class="footer-bottom">
+                <span>© 2026 Ratta Kidakarn. All rights reserved.</span>
+                <span class="footer-time">Vancouver <span class="tz" id="localTime">—</span></span>
+            </div>
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <a href="#" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+    <button class="back-top" id="backTop" aria-label="Back to top">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m-6 6 6-6 6 6"/></svg>
+    </button>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Animation on scroll
-        function reveal() {
-            const fadeUps = document.querySelectorAll('.fade-up');
-            const fadeIns = document.querySelectorAll('.fade-in');
-            const fadeRights = document.querySelectorAll('.fade-right');
-            const fadeLefts = document.querySelectorAll('.fade-left');
-            
-            const elements = [
-                { items: fadeUps, className: 'active' },
-                { items: fadeIns, className: 'active' },
-                { items: fadeRights, className: 'active' },
-                { items: fadeLefts, className: 'active' }
-            ];
-            
-            elements.forEach(element => {
-                for (let i = 0; i < element.items.length; i++) {
-                    const windowHeight = window.innerHeight;
-                    const elementTop = element.items[i].getBoundingClientRect().top;
-                    const elementVisible = 150;
-                    
-                    if (elementTop < windowHeight - elementVisible) {
-                        element.items[i].classList.add(element.className);
-                    }
-                }
-            });
-        }
+        (function () {
+            'use strict';
 
-        window.addEventListener('scroll', reveal);
-        // Initial check
-        reveal();
-        
-        // Back to top button
-        const backToTop = document.querySelector('.back-to-top');
-        
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 500) {
-                backToTop.classList.add('show');
+            const docEl = document.documentElement;
+            docEl.classList.remove('no-js');
+            docEl.classList.add('js');
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+            /* ---------- Hero reveal (no preloader on subpages) ---------- */
+            if (reduceMotion) {
+                docEl.classList.add('is-loaded');
             } else {
-                backToTop.classList.remove('show');
+                const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
+                Promise.race([fontsReady, new Promise(r => setTimeout(r, 600))])
+                    .then(() => setTimeout(() => docEl.classList.add('is-loaded'), 50));
             }
-        });
-        
-        backToTop.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+
+            /* ---------- Reveal on scroll ---------- */
+            const revealEls = document.querySelectorAll('[data-reveal]');
+            if ('IntersectionObserver' in window && !reduceMotion) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+                revealEls.forEach(el => io.observe(el));
+            } else {
+                revealEls.forEach(el => el.classList.add('is-in'));
+            }
+
+            /* ---------- Header, progress, back-to-top, journey fill ---------- */
+            const header = document.getElementById('header');
+            const progress = document.querySelector('.progress');
+            const backTop = document.getElementById('backTop');
+            const journeyList = document.getElementById('journeyList');
+            const journeyFill = document.getElementById('journeyFill');
+            const chapters = document.querySelectorAll('.chapter');
+            let lastY = window.scrollY;
+
+            function updateJourney() {
+                if (!journeyList || !journeyFill) return;
+                const rect = journeyList.getBoundingClientRect();
+                const anchor = window.innerHeight * 0.65;
+                const total = rect.height;
+                const passed = Math.min(Math.max(anchor - rect.top, 0), total);
+                journeyFill.style.height = (passed / total * 100) + '%';
+                chapters.forEach(ch => {
+                    const dotY = ch.getBoundingClientRect().top + 60;
+                    ch.classList.toggle('is-past', dotY < anchor);
+                });
+            }
+
+            function onScroll() {
+                const y = window.scrollY;
+                header.classList.toggle('is-scrolled', y > 40);
+                if (y > 500 && y > lastY) {
+                    header.classList.add('is-hidden');
+                } else {
+                    header.classList.remove('is-hidden');
+                }
+                backTop.classList.toggle('is-show', y > 700);
+                const max = document.documentElement.scrollHeight - window.innerHeight;
+                progress.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
+                updateJourney();
+                lastY = y;
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', updateJourney);
+            onScroll();
+
+            backTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
             });
-        });
+
+            /* ---------- Mobile menu ---------- */
+            const navToggle = document.querySelector('.nav-toggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            function setMenu(open) {
+                mobileMenu.classList.toggle('is-open', open);
+                navToggle.setAttribute('aria-expanded', String(open));
+                navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+            navToggle.addEventListener('click', () => {
+                setMenu(!mobileMenu.classList.contains('is-open'));
+            });
+            mobileMenu.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => setMenu(false));
+            });
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) setMenu(false);
+            });
+
+            /* ---------- Custom cursor ---------- */
+            const cursor = document.querySelector('.cursor');
+            if (cursor && finePointer && !reduceMotion) {
+                let cx = -100, cy = -100, tx = -100, ty = -100;
+                let cursorVisible = false;
+
+                document.addEventListener('mousemove', (e) => {
+                    tx = e.clientX; ty = e.clientY;
+                    if (!cursorVisible) { cursor.classList.add('is-active'); cursorVisible = true; }
+                });
+                document.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('is-active'); cursorVisible = false;
+                });
+
+                (function loop() {
+                    cx += (tx - cx) * 0.18;
+                    cy += (ty - cy) * 0.18;
+                    cursor.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
+                    requestAnimationFrame(loop);
+                })();
+
+                document.querySelectorAll('a, button').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
+                    el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
+                });
+            }
+
+            /* ---------- Magnetic buttons ---------- */
+            if (finePointer && !reduceMotion) {
+                document.querySelectorAll('[data-magnetic]').forEach(el => {
+                    const strength = 0.28;
+                    el.addEventListener('mousemove', (e) => {
+                        const r = el.getBoundingClientRect();
+                        const x = e.clientX - r.left - r.width / 2;
+                        const y = e.clientY - r.top - r.height / 2;
+                        el.style.transform = 'translate(' + x * strength + 'px,' + y * strength + 'px)';
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        el.style.transform = '';
+                    });
+                });
+            }
+
+            /* ---------- Local time (Vancouver) ---------- */
+            const timeEl = document.getElementById('localTime');
+            if (timeEl) {
+                const fmt = new Intl.DateTimeFormat('en-CA', {
+                    hour: 'numeric', minute: '2-digit', timeZone: 'America/Vancouver', hour12: true
+                });
+                const tick = () => { timeEl.textContent = fmt.format(new Date()); };
+                tick();
+                setInterval(tick, 30000);
+            }
+        })();
     </script>
 </body>
 </html>
